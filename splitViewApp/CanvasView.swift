@@ -9,6 +9,7 @@
 import UIKit
 
 class CanvasView: UIView {
+    
     // MARK: Properties
     
     let isPredictionEnabled = UIDevice.currentDevice().userInterfaceIdiom == .Pad
@@ -222,7 +223,6 @@ class CanvasView: UIView {
             // This touch is ending, remove the line corresponding to it from `activeLines`.
             activeLines.removeObjectForKey(touch)
             
-            
             // check for 'x' over any data point on chart
             let recentPoints: [LinePoint]? = lines.count > 0 ? lines[0].points : nil
             
@@ -239,7 +239,7 @@ class CanvasView: UIView {
                 }
             }
         }
-        
+        // update the view
         setNeedsDisplayInRect(updateRect)
     }
     

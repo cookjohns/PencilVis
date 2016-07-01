@@ -268,9 +268,11 @@ class Line: NSObject {
 
 
 class LinePoint: NSObject  {
+    
     // MARK: Types
     
     struct PointType: OptionSetType {
+        
         // MARK: Properties
         
         let rawValue: Int
@@ -373,7 +375,6 @@ class LinePoint: NSObject  {
                 }
             }
         }
-        
         return true
     }
 }

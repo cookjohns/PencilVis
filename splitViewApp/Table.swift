@@ -34,7 +34,7 @@ class Table {
     
     // MARK: - FUNCTIONS
     
-    // FIXME: - deleting random items can still cause crash
+    // FIXME: - deleting random items can still causing crash
     func deleteItem(index: Int) {
         
         var tempMonths: [String] = []

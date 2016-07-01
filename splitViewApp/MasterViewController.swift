@@ -4,19 +4,17 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     // MARK: - VARIABLES
     
-    var table: Table!
+    var table:      Table!
     var detailView: DetailViewController!
     let reuseIdentifier = "cell" // also set as cell identifier in storyboard
-    var textView: UITextView!
-    var clearButton: UIButton!
+    var textView:     UITextView!
+    var clearButton:  UIButton!
     var workingData: [Double]! = []
     
     var circleRecognizer: CircleGestureRecognizer!
     
     var canvasView = CanvasView()
     @IBOutlet weak var collectionView: UICollectionView!
-    
-    var visualizeAzimuth = false
     
 //    var items = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48"]
         
@@ -35,8 +33,8 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         segmentedControl.addTarget(self, action: #selector(MasterViewController.chartTypeChanged(_:)), forControlEvents: .ValueChanged)
         
         // add constraints for segmented controller
-        let bottomContstraint = segmentedControl.bottomAnchor.constraintEqualToAnchor(bottomLayoutGuide.topAnchor, constant: -8)
-        let margins = view.layoutMarginsGuide
+        let bottomContstraint  = segmentedControl.bottomAnchor.constraintEqualToAnchor(bottomLayoutGuide.topAnchor, constant: -8)
+        let margins            = view.layoutMarginsGuide
         let leadingConstraint  = segmentedControl.leadingAnchor.constraintEqualToAnchor(margins.leadingAnchor)
         let trailingConstraint = segmentedControl.trailingAnchor.constraintEqualToAnchor(margins.trailingAnchor)
         
@@ -46,9 +44,9 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         // setup textField
         textView = UITextView(frame: CGRectMake(100, 350.0, 300.0, 200.0))
-        textView.textAlignment = NSTextAlignment.Left
-        textView.textColor = UIColor.blueColor()
-        textView.backgroundColor = UIColor(white: 0.9, alpha: 1)
+        textView.textAlignment      = NSTextAlignment.Left
+        textView.textColor          = UIColor.blueColor()
+        textView.backgroundColor    = UIColor(white: 0.9, alpha: 1)
         textView.layer.borderColor  = UIColor.grayColor().CGColor
         textView.layer.borderWidth  = 2
         textView.layer.cornerRadius = 8
@@ -59,9 +57,9 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         clearButton = UIButton()
         clearButton.frame = CGRect(x: 100.0, y: 900.0, width: 300, height: 40)
         clearButton.layer.cornerRadius = 8
-        clearButton.backgroundColor = UIColor(white: 0.9, alpha: 1)
-        clearButton.layer.borderColor = UIColor.grayColor().CGColor
-        clearButton.layer.borderWidth = 1
+        clearButton.backgroundColor    = UIColor(white: 0.9, alpha: 1)
+        clearButton.layer.borderColor  = UIColor.grayColor().CGColor
+        clearButton.layer.borderWidth  = 1
         clearButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         clearButton.setTitle("Clear annotation", forState: .Normal)
         clearButton.addTarget(self, action: #selector(clearAnnotation), forControlEvents: .TouchUpInside)
@@ -171,7 +169,7 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     @IBAction func clearAnnotation(sender: UIButton) {
-        //        print("Button pressed")
+        print("Button pressed")
         
         // pop up alert
         let title = "Delete annotations?"
@@ -180,7 +178,6 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         let ac = UIAlertController(title: title, message: message, preferredStyle: .ActionSheet)
         
         // alert actions
-        
         let deleteAction = UIAlertAction(title: "Delete", style: .Destructive, handler: {
             (action) -> Void in
             

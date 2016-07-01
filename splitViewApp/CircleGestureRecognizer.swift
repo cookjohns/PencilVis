@@ -12,7 +12,7 @@ import UIKit.UIGestureRecognizerSubclass
 class CircleGestureRecognizer: UIGestureRecognizer {
   
   private var touchedPoints = [CGPoint]() // point history
-  var fitResult = CircleResult() // info about how circle-like the path is
+  var fitResult = CircleResult()  // info about how circle-like the path is
   var tolerance: CGFloat = 0.2    // "perfect circle" tolerance
   var isCircle = false
   var path = CGPathCreateMutable()
@@ -97,7 +97,7 @@ class CircleGestureRecognizer: UIGestureRecognizer {
     let fitBoundingBox = CGRect(
       x: fitResult.center.x - fitResult.radius,
       y: fitResult.center.y - fitResult.radius,
-      width: 2 * fitResult.radius,
+      width:  2 * fitResult.radius,
       height: 2 * fitResult.radius)
     let pathBoundingBox = CGPathGetBoundingBox(path)
     

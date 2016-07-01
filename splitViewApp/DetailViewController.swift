@@ -101,7 +101,6 @@ class DetailViewController: UIViewController {
         // set up chart colors, and save references in dictionary
         var colors: [UIColor] = []
         
-        
         for i in 0..<dataPoints.count {
             let red   = Double(arc4random_uniform(256))
             let green = Double(arc4random_uniform(256))
@@ -203,10 +202,10 @@ class DetailViewController: UIViewController {
     
     // MARK: - Touch Handling
     
-    // FIXME: - double tap outside of chart causes crash
     func doubleTap() {
-        //print("Double tap recognized at cell \(pieChartView.highlighted[0].xIndex)")
+        print("Double tap recognized at cell \(pieChartView.highlighted[0].xIndex)")
         
+        // leave function if no valid chart index has been highlighted (double tap outside chart)
         if (pieChartView.highlighted.isEmpty) {
             return
         }
@@ -237,58 +236,20 @@ class DetailViewController: UIViewController {
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         canvasView.drawTouches(touches, withEvent: event)
-        
-        if visualizeAzimuth {
-            for touch in touches {
-                if touch.type == .Stylus {
-                    //reticleView.hidden = false
-                    //updateReticleViewWithTouch(touch, event: event)
-                }
-            }
-        }
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         canvasView.drawTouches(touches, withEvent: event)
-        
-        if visualizeAzimuth {
-            for touch in touches {
-                if touch.type == .Stylus {
-                    //updateReticleViewWithTouch(touch, event: event)
-                    
-                    // Use the last predicted touch to update the reticle.
-                    //guard let predictedTouch = event?.predictedTouchesForTouch(touch)?.last else { return }
-                    
-                    //updateReticleViewWithTouch(predictedTouch, event: event, isPredicted: true)
-                }
-            }
-        }
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         canvasView.drawTouches(touches, withEvent: event)
         canvasView.endTouches(touches, cancel: false)
-        
-        if visualizeAzimuth {
-            for touch in touches {
-                if touch.type == .Stylus {
-                    //reticleView.hidden = true
-                }
-            }
-        }
     }
     
     override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
         guard let touches = touches else { return }
         canvasView.endTouches(touches, cancel: true)
-        
-        if visualizeAzimuth {
-            for touch in touches {
-                if touch.type == .Stylus {
-                    //reticleView.hidden = true
-                }
-            }
-        }
     }
     
     override func touchesEstimatedPropertiesUpdated(touches: Set<NSObject>) {
