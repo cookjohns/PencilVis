@@ -207,6 +207,10 @@ class DetailViewController: UIViewController {
     func doubleTap() {
         //print("Double tap recognized at cell \(pieChartView.highlighted[0].xIndex)")
         
+        if (pieChartView.highlighted.isEmpty) {
+            return
+        }
+        
         let highlightedPointName = table.monthsToShow[pieChartView.highlighted[0].xIndex]
         let pointToDelete = table.monthsIndexWithMatchingName(highlightedPointName)
         
