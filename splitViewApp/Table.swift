@@ -20,6 +20,8 @@ class Table {
     var unitsVisible:  [Bool]!   // currently showing
     var updated:        Bool!    // flag for update signal
     
+    var items: [String]!
+    
     // MARK: - INITIALIZER
     
     init() {
@@ -30,6 +32,8 @@ class Table {
         monthsVisible = [true, true, true, true, true, true, true, true, true, true, true, true]
         unitsVisible  = [true, true, true, true, true, true, true, true, true, true, true, true]
         updated       = false
+        
+        items = ["", "A", "B", "C", "D", "1", "7", "8", "9", "10", "2", "12", "13", "14", "15", "3", "17", "18", "19", "20", "4", "22", "23", "24", "25", "5", "27", "28", "29", "30", "6", "32", "33", "34", "35", "7", "37", "38", "39", "40", "8", "42", "43", "44", "45"]
     }
     
     // MARK: - FUNCTIONS

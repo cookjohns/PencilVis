@@ -1,6 +1,6 @@
 import UIKit
 
-class MasterViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UITextViewDelegate {
+class MasterViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextViewDelegate {
     
     // MARK: - VARIABLES
     
@@ -16,8 +16,6 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
     var canvasView = CanvasView()
     @IBOutlet weak var collectionView: UICollectionView!
     
-//    var items = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48"]
-        
     // MARK: - FUNCTIONS
     
     override func loadView() {
@@ -43,7 +41,7 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         trailingConstraint.active = true
         
         // setup textField
-        textView = UITextView(frame: CGRectMake(100, 350.0, 300.0, 200.0))
+        textView = UITextView(frame: CGRectMake(100, 600.0, 300.0, 200.0))
         textView.textAlignment      = NSTextAlignment.Left
         textView.textColor          = UIColor.blueColor()
         textView.backgroundColor    = UIColor(white: 0.9, alpha: 1)
@@ -305,7 +303,7 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
     // tell the collection view how many cells to make
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //return self.items.count
-        return self.table.months.count
+        return self.table.items.count
     }
     
     // make a cell for each cell index path
@@ -316,11 +314,17 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         // set up cell's appearance
         cell.layer.borderColor  = UIColor.grayColor().CGColor
-        cell.layer.borderWidth  = 1
-        cell.layer.cornerRadius = 8
-        cell.label.text = self.table.months[indexPath.item]
+        cell.layer.borderWidth  = 0.5
+        cell.label.text = self.table.items[indexPath.item]
         
-        if table.monthsToShow.contains(table.months[indexPath.item]) {
+        if (indexPath.item < 6 || indexPath.item % 5 == 0) {
+            // set background to lightblue for title fields
+            cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
+            let textAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 32.0)!]
+            let text = NSAttributedString(string: "\(table.items[indexPath.item])", attributes: textAttributes)
+            cell.label.attributedText = text
+        }
+        else if table.monthsToShow.contains(table.items[indexPath.item]) {
             // cell is active, set gray background
             cell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
         }
@@ -354,5 +358,20 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
 
         // signal detailView to redraw chart
         detailView.updated = true
+    }
+    
+    // MARK: - UICOllectionViewDelegateFlowLayout
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return -0.5
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        let cellWidth = collectionView.frame.width / 5.0
+        return CGSize(width: cellWidth, height: 50)
     }
 }
