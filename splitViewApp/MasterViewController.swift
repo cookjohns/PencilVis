@@ -41,7 +41,7 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         trailingConstraint.active = true
         
         // setup textField
-        textView = UITextView(frame: CGRectMake(100, 600.0, 300.0, 200.0))
+        textView = UITextView(frame: CGRectMake(100, 730.0, 300.0, 150.0))
         textView.textAlignment      = NSTextAlignment.Left
         textView.textColor          = UIColor.blueColor()
         textView.backgroundColor    = UIColor(white: 0.9, alpha: 1)
@@ -102,20 +102,13 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
             let indexPath = self.collectionView.indexPathForItemAtPoint(point)
             if let index = indexPath {
                 let cell = self.collectionView.cellForItemAtIndexPath(indexPath!) as! CollectionViewCell
-                let units = unitsForMonth(cell.label.text!)
-                textView.insertText("\(units)\n")
-                workingData.append(units)
+                let units = Double(cell.label.text!)
+                if let val = units {
+                    textView.insertText("\(val)\n")
+                }
+                workingData.append(units!)
             }
         }
-    }
-    
-    func unitsForMonth(input: String) -> Double {
-        for i in 0..<table.months.count {
-            if (table.months[i] == input) {
-                return table.unitsSold[i]
-            }
-        }
-        return 0.0
     }
     
     func textViewDidChange(textView: UITextView) {
@@ -179,8 +172,11 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         let deleteAction = UIAlertAction(title: "Delete", style: .Destructive, handler: {
             (action) -> Void in
             
-            // do the annotations deletion here
+            // do the annotations deletion
             self.detailView.canvasView.clear()
+            
+            // clear the textView
+            self.textView.text = ""
         })
         ac.addAction(deleteAction)
         
@@ -324,11 +320,15 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
             let text = NSAttributedString(string: "\(table.items[indexPath.item])", attributes: textAttributes)
             cell.label.attributedText = text
         }
-        else if table.monthsToShow.contains(table.items[indexPath.item]) {
-            // cell is active, set gray background
+        if table.monthsToShow.contains(table.items[indexPath.item]) {
+            // cell is active, set blue background
+            cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
+        }
+        else if (indexPath.item % 5 == 0){
+            // if cell is inactive month label, set background to gray color
             cell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
         }
-        else {
+        else if (indexPath.item > 5 && indexPath.item % 5 != 0){
             // cell is inactive, set white background
             cell.contentView.backgroundColor = UIColor.whiteColor()
         }
@@ -342,20 +342,55 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         // handle tap events
         //print("You selected cell #\(indexPath.item)!")
         
-        // get the cell
-        let selectedCell: UICollectionViewCell = collectionView.cellForItemAtIndexPath(indexPath)!
+        // check for valid selection box
+        if (indexPath.item < 5) {
+            return
+        }
         
-        if table.monthsToShow.contains(table.months[indexPath.item]) {
-            // active, so make inactive, then delete item in table and change cell color
-            table.deleteItem(indexPath.item)
-            selectedCell.contentView.backgroundColor = UIColor.whiteColor()
+        // get month index
+        let selectedMonth  = (indexPath.item / 5) - 1
+        
+        // get the cell
+        let selectedCell: CollectionViewCell = collectionView.cellForItemAtIndexPath(indexPath)! as! CollectionViewCell
+        
+        // if the selected cell is a month
+        if (indexPath.item > 4 && indexPath.item % 5 == 0) {
+            
+            if table.monthsToShow.contains(table.months[selectedMonth]) {
+                // active, so make inactive, then delete item in table and change cell color
+                table.deleteItem(selectedMonth)
+                selectedCell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
+            }
+            else {
+                // inactive, so make it active, then add item back to table and change cell color
+                table.addItem(selectedMonth)
+                selectedCell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
+            }
         }
         else {
-            // inactive, so make it active, then add item back to table and change cell color
-            table.addItem(indexPath.item)
-            selectedCell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
-        }
+            // otherwise, selected cell is a week
+            let selectedAmount = Double(table.items[indexPath.item])
 
+            if (table.weeksVisible[indexPath.item] == true) {
+                // active, so make it inactive, then delete the week amount from total and gray out text color
+                table.weeksVisible[indexPath.item] = false
+                
+                // change value for month in chart
+                table.updateItem(selectedMonth, amount: -(selectedAmount!))
+                
+                selectedCell.label.textColor = UIColor.lightGrayColor()
+            }
+            else {
+                // inactive, so make it active, then add week amount back in and recolor cell text
+                table.weeksVisible[indexPath.item] = true
+                
+                // change value for month in chart
+                table.updateItem(selectedMonth, amount: selectedAmount!)
+                
+                selectedCell.label.textColor = UIColor.blackColor()
+            }
+        }
+        
         // signal detailView to redraw chart
         detailView.updated = true
     }

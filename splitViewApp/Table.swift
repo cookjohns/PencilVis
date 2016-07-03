@@ -18,6 +18,7 @@ class Table {
     var unitsSoldShow: [Double]! // chart data
     var monthsVisible: [Bool]!   // currently showing
     var unitsVisible:  [Bool]!   // currently showing
+    var weeksVisible:  [Bool]!   // currently showing
     var updated:        Bool!    // flag for update signal
     
     var items: [String]!
@@ -26,14 +27,19 @@ class Table {
     
     init() {
         months        = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-        unitsSold     = [20.0, 4.0, 6.0, 3.0, 12.0, 16.0, 4.0, 18.0, 2.0, 4.0, 5.0, 4.0]
+        unitsSold     = [34.0, 54.0, 74.0, 94.0, 114.0, 134.0, 154.0, 174.0, 93.0, 67.0, 54.0, 104.0]
         monthsToShow  = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-        unitsSoldShow = [20.0, 4.0, 6.0, 3.0, 12.0, 16.0, 4.0, 18.0, 2.0, 4.0, 5.0, 4.0]
+        unitsSoldShow = [34.0, 54.0, 74.0, 94.0, 114.0, 134.0, 154.0, 174.0, 93.0, 67.0, 54.0, 104.0]
         monthsVisible = [true, true, true, true, true, true, true, true, true, true, true, true]
         unitsVisible  = [true, true, true, true, true, true, true, true, true, true, true, true]
+        weeksVisible  = []
+        for i in 0..<65 {
+            weeksVisible.append(true)
+        }
+        
         updated       = false
         
-        items = ["", "A", "B", "C", "D", "1", "7", "8", "9", "10", "2", "12", "13", "14", "15", "3", "17", "18", "19", "20", "4", "22", "23", "24", "25", "5", "27", "28", "29", "30", "6", "32", "33", "34", "35", "7", "37", "38", "39", "40", "8", "42", "43", "44", "45"]
+        items = ["", "1", "2", "3", "4", "Jan", "7", "8", "9", "10", "Feb", "12", "13", "14", "15", "Mar", "17", "18", "19", "20", "Apr", "22", "23", "24", "25", "May", "27", "28", "29", "30", "Jun", "32", "33", "34", "35", "Jul", "37", "38", "39", "40", "Aug", "42", "43", "44", "45", "Sep", "28", "12", "11", "42", "Oct", "1", "19", "30", "17", "Nov", "6", "4", "15", "29", "Dec", "0", "37", "22", "45"]
     }
     
     // MARK: - FUNCTIONS
@@ -78,6 +84,10 @@ class Table {
         }
         monthsToShow  = tempMonths
         unitsSoldShow = tempUnits
+    }
+    
+    func updateItem(index: Int, amount: Double) {
+        unitsSoldShow[index] += amount
     }
     
     func totalUnitsShowing() -> Double {
