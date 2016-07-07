@@ -360,15 +360,37 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
                 // active, so make inactive, then delete item in table and change cell color
                 table.deleteItem(selectedMonth)
                 selectedCell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
+                
+                // set all weeks as inactive
+                for i in 1...4 {
+                    table.weeksVisible[selectedMonth+i] = false
+                    let nextIndexPath = NSIndexPath(forRow: indexPath.row + i, inSection: indexPath.section)
+                    let nextCell: CollectionViewCell = collectionView.cellForItemAtIndexPath(nextIndexPath) as! CollectionViewCell
+                    nextCell.label.textColor = UIColor.lightGrayColor()
+                }
             }
             else {
                 // inactive, so make it active, then add item back to table and change cell color
                 table.addItem(selectedMonth)
                 selectedCell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
+                
+                // set all weeks as active
+                for i in 1...4 {
+                    table.weeksVisible[selectedMonth+i] = true
+                    let nextIndexPath = NSIndexPath(forRow: indexPath.row + i, inSection: indexPath.section)
+                    let nextCell: CollectionViewCell = collectionView.cellForItemAtIndexPath(nextIndexPath) as! CollectionViewCell
+                    nextCell.label.textColor = UIColor.blackColor()
+                }
             }
         }
         else {
             // otherwise, selected cell is a week
+            
+            // if selected month is inactive, break
+            if (table.monthsVisible[selectedMonth] == false) {
+                return
+            }
+            
             let selectedAmount = Double(table.items[indexPath.item])
 
             if (table.weeksVisible[indexPath.item] == true) {

@@ -20,8 +20,7 @@ class Table {
     var unitsVisible:  [Bool]!   // currently showing
     var weeksVisible:  [Bool]!   // currently showing
     var updated:        Bool!    // flag for update signal
-    
-    var items: [String]!
+    var items:         [String]!
     
     // MARK: - INITIALIZER
     
@@ -33,18 +32,17 @@ class Table {
         monthsVisible = [true, true, true, true, true, true, true, true, true, true, true, true]
         unitsVisible  = [true, true, true, true, true, true, true, true, true, true, true, true]
         weeksVisible  = []
-        for i in 0..<65 {
+        for _ in 0..<65 {
             weeksVisible.append(true)
         }
         
-        updated       = false
+        updated = false
         
         items = ["", "1", "2", "3", "4", "Jan", "7", "8", "9", "10", "Feb", "12", "13", "14", "15", "Mar", "17", "18", "19", "20", "Apr", "22", "23", "24", "25", "May", "27", "28", "29", "30", "Jun", "32", "33", "34", "35", "Jul", "37", "38", "39", "40", "Aug", "42", "43", "44", "45", "Sep", "28", "12", "11", "42", "Oct", "1", "19", "30", "17", "Nov", "6", "4", "15", "29", "Dec", "0", "37", "22", "45"]
     }
     
     // MARK: - FUNCTIONS
     
-    // FIXME: - deleting random items can still causing crash
     func deleteItem(index: Int) {
         
         var tempMonths: [String] = []
@@ -58,7 +56,7 @@ class Table {
         for i in 0...11 {
             if monthsVisible[i] {
                 tempMonths.append(months[i])
-                tempUnits.append(unitsSold[i])
+                tempUnits.append(unitsSoldShow[i])
             }
         }
         monthsToShow  = tempMonths
@@ -67,6 +65,8 @@ class Table {
     
     func addItem(index: Int) {
         // mark item as visible, recreate arrays with all visible items
+        
+        unitsSoldShow.insert(unitsSold[index], atIndex: index)
         
         var tempMonths: [String] = []
         var tempUnits:  [Double] = []
@@ -79,7 +79,7 @@ class Table {
         for i in 0...11 {
             if monthsVisible[i] {
                 tempMonths.append(months[i])
-                tempUnits.append(unitsSold[i])
+                tempUnits.append(unitsSoldShow[i])
             }
         }
         monthsToShow  = tempMonths
@@ -92,8 +92,9 @@ class Table {
     
     func totalUnitsShowing() -> Double {
         var result = 0.0
-        for i in unitsSoldShow {
-            result = result + i
+        for i in 0...unitsSoldShow.endIndex-1 {
+            result += unitsSoldShow[i]
+            print("\(unitsSoldShow[i]) (\(result))")
         }
         return result
     }

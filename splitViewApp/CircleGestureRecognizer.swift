@@ -56,7 +56,7 @@ class CircleGestureRecognizer: UIGestureRecognizer {
     // check for points in the middle of the circle
     let hasInside = anyPointsInTheMiddle()
     
-    let percentOverlap = calculateBoundingOverlap()
+    _ = calculateBoundingOverlap()
     isCircle = fitResult.error <= tolerance && !hasInside //&& percentOverlap > (1-tolerance)
     state = isCircle ? .Ended : .Failed // fail or end, based on isCircle
   }

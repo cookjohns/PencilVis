@@ -145,7 +145,7 @@ func fitCircle(points: [CGPoint]) -> CircleResult {
   var x: CGFloat = 0
   var y = A0
   var iter = 0
-  for iter = 0; iter<IterMAX; iter++  // usually, 4-6 iterations are enough
+  for iter = 0; iter<IterMAX; iter += 1  // usually, 4-6 iterations are enough
   {
     let Dy = A1 + x*(A22 + A33*x)
     let xnew = x - y/Dy

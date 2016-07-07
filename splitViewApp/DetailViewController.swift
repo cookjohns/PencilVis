@@ -161,6 +161,7 @@ class DetailViewController: UIViewController {
         }
     }
     
+    // FIXME: - December doesn't show back up
     func updateDataSets(dataPoints:[String], values: [Double]) {
         // add dataPoints to chart's dataPoints array
         var dataEntries: [ChartDataEntry] = []
