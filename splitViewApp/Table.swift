@@ -22,6 +22,7 @@ class Table {
     var updated:        Bool!    // flag for update signal
     
     var spreadhSheetItems:       [String]!
+    var spreadSheetVisibleItems: [Bool]!
     
     // MARK: - INITIALIZER
     
@@ -40,6 +41,10 @@ class Table {
         updated = false
         
         spreadhSheetItems = ["", "1", "2", "3", "4", "Jan", "7", "8", "9", "10", "Feb", "12", "13", "14", "15", "Mar", "17", "18", "19", "20", "Apr", "22", "23", "24", "25", "May", "27", "28", "29", "30", "Jun", "32", "33", "34", "35", "Jul", "37", "38", "39", "40", "Aug", "42", "43", "44", "45", "Sep", "28", "12", "11", "42", "Oct", "1", "19", "30", "17", "Nov", "6", "4", "15", "29", "Dec", "0", "37", "22", "45"]
+        spreadSheetVisibleItems = []
+        for _ in 0..<65 {
+            spreadSheetVisibleItems.append(true)
+        }
     }
     
     // MARK: - FUNCTIONS
@@ -62,6 +67,16 @@ class Table {
         }
         monthsToShow  = tempMonths
         unitsSoldShow = tempUnits
+    }
+    
+    func deactivate(index: Int) {
+        self.spreadSheetVisibleItems[index] = false
+        // if index is a month
+        if (index > 4 && index % 5 == 0) {
+            for i in 1...4 {
+                self.spreadSheetVisibleItems[index+i] = false
+            }
+        }
     }
     
     func addItem(index: Int) {
@@ -87,6 +102,16 @@ class Table {
         unitsSoldShow = tempUnits
     }
     
+    func activate(index: Int) {
+        self.spreadSheetVisibleItems[index] = true
+        // if index is a month
+        if (index > 4 && index % 5 == 0) {
+            for i in 1...4 {
+                self.spreadSheetVisibleItems[index+i] = true
+            }
+        }
+    }
+    
     func updateItem(index: Int, amount: Double) {
         unitsSoldShow[index] += amount
     }
@@ -107,5 +132,9 @@ class Table {
             }
         }
         return -1
+    }
+    
+    func isActive(index: Int) -> Bool {
+        return self.spreadSheetVisibleItems[index]
     }
 }
