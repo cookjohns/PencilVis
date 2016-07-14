@@ -305,6 +305,7 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
     // TODO: - Add cell color update
     // make a cell for each cell index path
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let index = indexPath.item
         
         // get a reference to the storyboard cell
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! CollectionViewCell
@@ -314,24 +315,32 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         cell.layer.borderWidth  = 0.5
         cell.label.text = self.table.spreadhSheetItems[indexPath.item]
         
-        if (indexPath.item < 6 || indexPath.item % 5 == 0) {
+        if (index < 6 || index % 5 == 0) {
             // set background to lightblue for title fields
             cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
             let textAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 32.0)!]
             let text = NSAttributedString(string: "\(table.spreadhSheetItems[indexPath.item])", attributes: textAttributes)
             cell.label.attributedText = text
         }
-        if table.monthsToShow.contains(table.spreadhSheetItems[indexPath.item]) {
-            // cell is active, set blue background
+        // if cell is active month label, set blue background
+//        if table.monthsToShow.contains(table.spreadhSheetItems[indexPath.item]) {
+        if (index % 5 == 0 && table.isActive(index)) {
             cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
         }
-        else if (indexPath.item % 5 == 0){
-            // if cell is inactive month label, set background to gray color
+        // if cell is inactive month label, set background to gray color
+        else if (index % 5 == 0 && !table.isActive(index)) {
             cell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
         }
-        else if (indexPath.item > 5 && indexPath.item % 5 != 0){
-            // cell is inactive, set white background
+        // if cell is active, set white background and black text
+        else if (table.isActive(index)) {
             cell.contentView.backgroundColor = UIColor.whiteColor()
+            cell.label.textColor = UIColor.blackColor()
+        }
+        // cell is inactive, set white background and gray text
+//        else if (index > 5 && index % 5 != 0) {
+        else if (!table.isActive(index)) {
+            cell.contentView.backgroundColor = UIColor.whiteColor()
+            cell.label.textColor = UIColor.lightGrayColor()
         }
         
         return cell
@@ -340,7 +349,6 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
     // MARK: - UICollectionViewDelegate protocol
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        // handle tap events
         //print("You selected cell #\(indexPath.item)!")
         
         let index = indexPath.item
@@ -352,49 +360,23 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         // get month index
         let selectedMonth  = (index / 5) - 1
-//        let selectedMonth = (index / 5) * 5
-        
-        // get the cell
-        let selectedCell: CollectionViewCell = collectionView.cellForItemAtIndexPath(indexPath)! as! CollectionViewCell
         
         // if the selected cell is a month
         if (index > 4 && index % 5 == 0) {
-            
-//            if table.monthsToShow.contains(table.months[selectedMonth]) {
+            // active, so make inactive, then delete item in table and change cell color
             if table.isActive(index) {
-                // active, so make inactive, then delete item in table and change cell color
                 table.deleteItem(selectedMonth)
                 table.deactivate(index)
-//                selectedCell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
-                
-                // set all weeks as inactive
-//                for i in 1...4 {
-//                    table.weeksVisible[selectedMonth+i] = false
-//                    let nextIndexPath = NSIndexPath(forRow: indexPath.row + i, inSection: indexPath.section)
-//                    let nextCell: CollectionViewCell = collectionView.cellForItemAtIndexPath(nextIndexPath) as! CollectionViewCell
-//                    nextCell.label.textColor = UIColor.lightGrayColor()
-//                }
             }
+            // inactive, so make it active, then add item back to table and change cell color
             else {
-                // inactive, so make it active, then add item back to table and change cell color
                 table.addItem(selectedMonth)
                 table.activate(index)
-//                selectedCell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
-                
-                // set all weeks as active
-//                for i in 1...4 {
-//                    table.weeksVisible[selectedMonth+i] = true
-//                    let nextIndexPath = NSIndexPath(forRow: indexPath.row + i, inSection: indexPath.section)
-//                    let nextCell: CollectionViewCell = collectionView.cellForItemAtIndexPath(nextIndexPath) as! CollectionViewCell
-//                    nextCell.label.textColor = UIColor.blackColor()
-//                }
             }
         }
+        // otherwise, selected cell is a week
         else {
-            // otherwise, selected cell is a week
-            
             // if selected month is inactive, break
-//            if (table.monthsVisible[selectedMonth] == false) {
             let selectedMon = (index/5) * 5
             if !table.isActive(selectedMon) {
                 return
@@ -402,28 +384,28 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
             
             let selectedAmount = Double(table.spreadhSheetItems[indexPath.item])
 
-            if (table.weeksVisible[indexPath.item] == true) {
-                // active, so make it inactive, then delete the week amount from total and gray out text color
+            // active, so make it inactive, then delete the week amount from total and gray out text color
+            if table.isActive(index) {
+                table.deactivate(index)
                 table.weeksVisible[indexPath.item] = false
                 
                 // change value for month in chart
                 table.updateItem(selectedMonth, amount: -(selectedAmount!))
-                
-//                selectedCell.label.textColor = UIColor.lightGrayColor()
             }
+            // inactive, so make it active, then add week amount back in and recolor cell text
             else {
-                // inactive, so make it active, then add week amount back in and recolor cell text
+                table.activate(index)
                 table.weeksVisible[indexPath.item] = true
                 
                 // change value for month in chart
                 table.updateItem(selectedMonth, amount: selectedAmount!)
-                
-                selectedCell.label.textColor = UIColor.blackColor()
             }
         }
         
         // signal detailView to redraw chart
         detailView.updated = true
+        // signal collectionView to reload cell colors to reflect activity
+        collectionView.reloadData()
     }
     
     // MARK: - UICOllectionViewDelegateFlowLayout
