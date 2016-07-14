@@ -12,89 +12,67 @@ class Table {
     
     // MARK: - VARIABLES
     
-    let months:        [String]! // reference
-    let unitsSold:     [Double]! // reference
-    var monthsToShow:  [String]! // chart data
-    var unitsSoldShow: [Double]! // chart data
-    var monthsVisible: [Bool]!   // currently showing
-    var unitsVisible:  [Bool]!   // currently showing
-    var weeksVisible:  [Bool]!   // currently showing
-    var updated:        Bool!    // flag for update signal
-    var items:         [String]!
+    let months:    [String]! // reference
+    var unitsSold: [Double]! // reference
+    
+    var tableItems:        [String]! // all items in "spreadsheet" table
+    var tableItemsVisible: [Bool]!   // visible items in "spreadsheet" table
+
+    var updated: Bool!    // flag for update signal
+    let COUNT:   Int      // total number of items in table
     
     // MARK: - INITIALIZER
     
     init() {
         months        = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         unitsSold     = [34.0, 54.0, 74.0, 94.0, 114.0, 134.0, 154.0, 174.0, 93.0, 67.0, 54.0, 104.0]
-        monthsToShow  = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-        unitsSoldShow = [34.0, 54.0, 74.0, 94.0, 114.0, 134.0, 154.0, 174.0, 93.0, 67.0, 54.0, 104.0]
-        monthsVisible = [true, true, true, true, true, true, true, true, true, true, true, true]
-        unitsVisible  = [true, true, true, true, true, true, true, true, true, true, true, true]
-        weeksVisible  = []
+        tableItems = ["", "1", "2", "3", "4", "Jan", "7", "8", "9", "10", "Feb", "12", "13", "14", "15", "Mar", "17", "18", "19", "20", "Apr", "22", "23", "24", "25", "May", "27", "28", "29", "30", "Jun", "32", "33", "34", "35", "Jul", "37", "38", "39", "40", "Aug", "42", "43", "44", "45", "Sep", "28", "12", "11", "42", "Oct", "1", "19", "30", "17", "Nov", "6", "4", "15", "29", "Dec", "0", "37", "22", "45"]
+        tableItemsVisible = []
         for _ in 0..<65 {
-            weeksVisible.append(true)
+            tableItemsVisible.append(true)
         }
-        
-        updated = false
-        
-        items = ["", "1", "2", "3", "4", "Jan", "7", "8", "9", "10", "Feb", "12", "13", "14", "15", "Mar", "17", "18", "19", "20", "Apr", "22", "23", "24", "25", "May", "27", "28", "29", "30", "Jun", "32", "33", "34", "35", "Jul", "37", "38", "39", "40", "Aug", "42", "43", "44", "45", "Sep", "28", "12", "11", "42", "Oct", "1", "19", "30", "17", "Nov", "6", "4", "15", "29", "Dec", "0", "37", "22", "45"]
+        updated    = false
+        COUNT = tableItems.count
     }
     
     // MARK: - FUNCTIONS
     
-    func deleteItem(index: Int) {
-        
-        var tempMonths: [String] = []
-        var tempUnits:  [Double] = []
-        
-        // mark items as not visible
-        monthsVisible[index] = false
-        unitsVisible[index]  = false
-        
-        // recreate arrays with all visible items
-        for i in 0...11 {
-            if monthsVisible[i] {
-                tempMonths.append(months[i])
-                tempUnits.append(unitsSoldShow[i])
+    func activate(index: Int) {
+        self.tableItemsVisible[index] = true
+        // if index is a month
+        if (index > 4 && index % 5 == 0) {
+            for i in 1...4 {
+                self.tableItemsVisible[index+i] = true
             }
         }
-        monthsToShow  = tempMonths
-        unitsSoldShow = tempUnits
+            // if index is a week
+        else {
+            unitsSold[(index/5)-1] += Double(self.tableItems[index])!
+        }
     }
     
-    func addItem(index: Int) {
-        // mark item as visible, recreate arrays with all visible items
-        
-        unitsSoldShow.insert(unitsSold[index], atIndex: index)
-        
-        var tempMonths: [String] = []
-        var tempUnits:  [Double] = []
-        
-        // mark items as visible
-        monthsVisible[index] = true
-        unitsVisible[index]  = true
-        
-        // recreate arrays with all visible items
-        for i in 0...11 {
-            if monthsVisible[i] {
-                tempMonths.append(months[i])
-                tempUnits.append(unitsSoldShow[i])
+    func deactivate(index: Int) {
+        self.tableItemsVisible[index] = false
+        // if index is a month
+        if (index > 4 && index % 5 == 0) {
+            for i in 1...4 {
+                self.tableItemsVisible[index+i] = false
             }
         }
-        monthsToShow  = tempMonths
-        unitsSoldShow = tempUnits
+        // if index is a week
+        else {
+            unitsSold[(index/5)-1] -= Double(self.tableItems[index])!
+        }
     }
     
     func updateItem(index: Int, amount: Double) {
-        unitsSoldShow[index] += amount
+//        unitsSoldShow()[index] += amount
     }
     
     func totalUnitsShowing() -> Double {
         var result = 0.0
-        for i in 0...unitsSoldShow.endIndex-1 {
-            result += unitsSoldShow[i]
-            print("\(unitsSoldShow[i]) (\(result))")
+        for i in 0...unitsSoldShow().endIndex-1 {
+            result += unitsSoldShow()[i]
         }
         return result
     }
@@ -106,5 +84,46 @@ class Table {
             }
         }
         return -1
+    }
+    
+    func isActive(index: Int) -> Bool {
+        return self.tableItemsVisible[index]
+    }
+    
+    func monthsToShow() -> [String] {
+        var result: [String] = []
+        var index = 5
+        while index < 65 {
+            if self.isActive(index) {
+                result.append(months[(index/5)-1])
+            }
+        index += 5
+        }
+        return result
+    }
+    
+    func unitsSoldShow() -> [Double] {
+        var result: [Double] = []
+        var index = 5
+        while index < 61 {
+            // if the month is active, add its total from showing weeks
+            if self.isActive(index) {
+                result.append(getWeeksTotalForMonth(index))
+            }
+            // jump to next month in tableItems
+            index += 5
+        }
+        return result
+    }
+    
+    func getWeeksTotalForMonth(index: Int) -> Double {
+        var result = 0.0
+        for i in 1...4 {
+            // if the week is active, add it to the total
+            if self.isActive(index+i) {
+                result += Double(self.tableItems[index+i])!
+            }
+        }
+        return result
     }
 }

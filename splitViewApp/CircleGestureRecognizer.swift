@@ -1,6 +1,5 @@
 //
 //  CircleGestureRecognizer.swift
-//  MatchItUp
 //
 //  Created by John Cook on 6/21/16.
 //  Copyright © 2016 raywenderlich. All rights reserved.
