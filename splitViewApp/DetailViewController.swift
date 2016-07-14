@@ -161,7 +161,6 @@ class DetailViewController: UIViewController {
         }
     }
     
-    // FIXME: - December doesn't show back up
     func updateDataSets(dataPoints:[String], values: [Double]) {
         // add dataPoints to chart's dataPoints array
         var dataEntries: [ChartDataEntry] = []
@@ -204,7 +203,7 @@ class DetailViewController: UIViewController {
     // MARK: - Touch Handling
     
     func doubleTap() {
-        print("Double tap recognized at cell \(pieChartView.highlighted[0].xIndex)")
+//        print("Double tap recognized at cell \(pieChartView.highlighted[0].xIndex)")
         
         // leave function if no valid chart index has been highlighted (double tap outside chart)
         if (pieChartView.highlighted.isEmpty) {

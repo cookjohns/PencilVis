@@ -1,3 +1,11 @@
+//
+//  MasterViewController.swift
+//  splitViewApp
+//
+//  Created by John Cook on 6/11/16.
+//  Copyright © 2016 John Cook. All rights reserved.
+//
+
 import UIKit
 
 class MasterViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextViewDelegate {
@@ -299,7 +307,7 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
     // tell the collection view how many cells to make
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //return self.items.count
-        return self.table.tableItems.count
+        return self.table.COUNT
     }
     
     // make a cell for each cell index path
