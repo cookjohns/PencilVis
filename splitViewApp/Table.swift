@@ -51,7 +51,6 @@ class Table {
         }
     }
     
-    // FIXME: - WEEKS NOT ADDING/REMOVING CORRECTLY WHEN MONTH IS ENGAGED/DISENGAGED
     func deactivate(index: Int) {
         self.tableItemsVisible[index] = false
         // if index is a month
@@ -74,7 +73,6 @@ class Table {
         var result = 0.0
         for i in 0...unitsSoldShow().endIndex-1 {
             result += unitsSoldShow()[i]
-//            print("\(unitsSoldShow()[i]) (\(result))")
         }
         return result
     }
@@ -94,7 +92,7 @@ class Table {
     
     func monthsToShow() -> [String] {
         var result: [String] = []
-        var index = 6
+        var index = 5
         while index < 65 {
             if self.isActive(index) {
                 result.append(months[(index/5)-1])
@@ -110,7 +108,6 @@ class Table {
         while index < 61 {
             // if the month is active, add its total from showing weeks
             if self.isActive(index) {
-//                result.append(unitsSold[(index/5)-1])
                 result.append(getWeeksTotalForMonth(index))
             }
             // jump to next month in tableItems
