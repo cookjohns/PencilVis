@@ -299,7 +299,7 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
     // tell the collection view how many cells to make
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //return self.items.count
-        return self.table.items.count
+        return self.table.spreadhSheetItems.count
     }
     
     // make a cell for each cell index path
@@ -311,16 +311,16 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         // set up cell's appearance
         cell.layer.borderColor  = UIColor.grayColor().CGColor
         cell.layer.borderWidth  = 0.5
-        cell.label.text = self.table.items[indexPath.item]
+        cell.label.text = self.table.spreadhSheetItems[indexPath.item]
         
         if (indexPath.item < 6 || indexPath.item % 5 == 0) {
             // set background to lightblue for title fields
             cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
             let textAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 32.0)!]
-            let text = NSAttributedString(string: "\(table.items[indexPath.item])", attributes: textAttributes)
+            let text = NSAttributedString(string: "\(table.spreadhSheetItems[indexPath.item])", attributes: textAttributes)
             cell.label.attributedText = text
         }
-        if table.monthsToShow.contains(table.items[indexPath.item]) {
+        if table.monthsToShow.contains(table.spreadhSheetItems[indexPath.item]) {
             // cell is active, set blue background
             cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
         }
@@ -391,7 +391,7 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
                 return
             }
             
-            let selectedAmount = Double(table.items[indexPath.item])
+            let selectedAmount = Double(table.spreadhSheetItems[indexPath.item])
 
             if (table.weeksVisible[indexPath.item] == true) {
                 // active, so make it inactive, then delete the week amount from total and gray out text color
