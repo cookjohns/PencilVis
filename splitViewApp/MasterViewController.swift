@@ -302,7 +302,6 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         return self.table.spreadhSheetItems.count
     }
     
-    // TODO: - Add cell color update
     // make a cell for each cell index path
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let index = indexPath.item
@@ -323,7 +322,6 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
             cell.label.attributedText = text
         }
         // if cell is active month label, set blue background
-//        if table.monthsToShow.contains(table.spreadhSheetItems[indexPath.item]) {
         if (index % 5 == 0 && table.isActive(index)) {
             cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
         }
@@ -337,7 +335,6 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
             cell.label.textColor = UIColor.blackColor()
         }
         // cell is inactive, set white background and gray text
-//        else if (index > 5 && index % 5 != 0) {
         else if (!table.isActive(index)) {
             cell.contentView.backgroundColor = UIColor.whiteColor()
             cell.label.textColor = UIColor.lightGrayColor()
@@ -358,6 +355,9 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
             return
         }
         
+        // create array for storing index path's to be updated
+        var indices = [indexPath]
+        
         // get month index
         let selectedMonth  = (index / 5) - 1
         
@@ -372,6 +372,11 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
             else {
                 table.addItem(selectedMonth)
                 table.activate(index)
+            }
+            // add index path's of weeks in selected month
+            for i in 1...4 {
+                var path = NSIndexPath(forRow: indexPath.row + i, inSection: indexPath.section)
+                indices.append(path)
             }
         }
         // otherwise, selected cell is a week
@@ -405,7 +410,7 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         // signal detailView to redraw chart
         detailView.updated = true
         // signal collectionView to reload cell colors to reflect activity
-        collectionView.reloadData()
+        collectionView.reloadItemsAtIndexPaths(indices)
     }
     
     // MARK: - UICOllectionViewDelegateFlowLayout
