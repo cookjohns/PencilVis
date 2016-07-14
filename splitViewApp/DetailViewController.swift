@@ -29,7 +29,7 @@ class DetailViewController: UIViewController {
         didSet {
             if updated == true {
                 // reload chart with new values when value changes
-                updateDataSets(table.monthsToShow, values: table.unitsSoldShow)
+                updateDataSets(table.monthsToShow(), values: table.unitsSoldShow())
                 pieChartView.notifyDataSetChanged()
                 lineChartView.notifyDataSetChanged()
                 barChartView.notifyDataSetChanged()
@@ -46,7 +46,7 @@ class DetailViewController: UIViewController {
         pieChartColors = [String : UIColor]()
 
         // set up chart
-        setChart(table.monthsToShow, values: table.unitsSoldShow)
+        setChart(table.months, values: table.unitsSold)
         
         // set up tap recognizer for double taps (need discrete gesture for each view)
         let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTap))
@@ -90,7 +90,7 @@ class DetailViewController: UIViewController {
         
         // set pie chart data
         let pieChartDataSet = PieChartDataSet(yVals: dataEntries, label: "Units Sold")
-        let pieChartData    = PieChartData(xVals: table.monthsToShow, dataSet: pieChartDataSet)
+        let pieChartData    = PieChartData(xVals: table.monthsToShow(), dataSet: pieChartDataSet)
         pieChartView.data = pieChartData
         
         // set up pie chart center text
@@ -117,12 +117,12 @@ class DetailViewController: UIViewController {
         
         // set up bar chart data
         let barChartDataSet = BarChartDataSet(yVals: dataEntries, label: "Units Sold")
-        let barChartData    = BarChartData(xVals: table.monthsToShow, dataSet: barChartDataSet)
+        let barChartData    = BarChartData(xVals: table.monthsToShow(), dataSet: barChartDataSet)
         barChartView.data = barChartData
         
         // set up line chart data
         let lineChartDataSet = LineChartDataSet(yVals: dataEntries, label: "Units Sold")
-        let lineChartData    = LineChartData(xVals: table.monthsToShow, dataSet: lineChartDataSet)
+        let lineChartData    = LineChartData(xVals: table.monthsToShow(), dataSet: lineChartDataSet)
         lineChartView.data = lineChartData
         
         // remove "Description" label from charts
@@ -174,17 +174,17 @@ class DetailViewController: UIViewController {
         // set pie chart data
         let pieChartDataSet = PieChartDataSet(yVals: dataEntries, label: "Units Sold")
         pieChartDataSet.colors = updatedPieChartColors()
-        let pieChartData    = PieChartData(xVals: table.monthsToShow, dataSet: pieChartDataSet)
+        let pieChartData    = PieChartData(xVals: table.monthsToShow(), dataSet: pieChartDataSet)
         pieChartView.data = pieChartData
         
         // set up bar chart data
         let barChartDataSet = BarChartDataSet(yVals: dataEntries, label: "Units Sold")
-        let barChartData    = BarChartData(xVals: table.monthsToShow, dataSet: barChartDataSet)
+        let barChartData    = BarChartData(xVals: table.monthsToShow(), dataSet: barChartDataSet)
         barChartView.data = barChartData
         
         // set up line chart data
         let lineChartDataSet = LineChartDataSet(yVals: dataEntries, label: "Units Sold")
-        let lineChartData    = LineChartData(xVals: table.monthsToShow, dataSet: lineChartDataSet)
+        let lineChartData    = LineChartData(xVals: table.monthsToShow(), dataSet: lineChartDataSet)
         lineChartView.data = lineChartData
         
         // update pie chart center text (total)
@@ -195,7 +195,7 @@ class DetailViewController: UIViewController {
     
     func updatedPieChartColors() -> [UIColor] {
         var colors: [UIColor] = []
-        for i in table.monthsToShow {
+        for i in table.monthsToShow() {
             colors.append(pieChartColors[i]!)
         }
         return colors
@@ -211,22 +211,22 @@ class DetailViewController: UIViewController {
             return
         }
         
-        let highlightedPointName = table.monthsToShow[pieChartView.highlighted[0].xIndex]
-        let pointToDelete = table.monthsIndexWithMatchingName(highlightedPointName)
+        let highlightedPointName = table.monthsToShow()[pieChartView.highlighted[0].xIndex]
+        let pointToDelete = ((table.monthsIndexWithMatchingName(highlightedPointName)) * 5) + 5
         
-        // delete item from table, reload current view's chart
+        // deactivate item in table, reload current view's chart
         if (pieChartView.hidden == false) {
-            table.deleteItem(pointToDelete)
+            table.deactivate(pointToDelete)
             //print("Double tap recognized")
         }
         else if (lineChartView.hidden == false) {
-            table.deleteItem(pointToDelete)
+            table.deactivate(pointToDelete)
         }
         else {
-            table.deleteItem(pointToDelete)
+            table.deactivate(pointToDelete)
         }
         // update charts with new data set
-        updateDataSets(table.monthsToShow, values: table.unitsSoldShow)
+        updateDataSets(table.monthsToShow(), values: table.unitsSoldShow())
         pieChartView.notifyDataSetChanged()
         lineChartView.notifyDataSetChanged()
         barChartView.notifyDataSetChanged()
