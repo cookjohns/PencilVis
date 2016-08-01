@@ -1,8 +1,8 @@
 //
 //  CircleGestureRecognizer.swift
 //
-//  Created by John Cook on 6/21/16.
-//  Copyright © 2016 raywenderlich. All rights reserved.
+//  Created by raywenderlich. All rights reserved.
+//  Modified by John Cook
 //
 
 import UIKit
