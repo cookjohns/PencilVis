@@ -163,7 +163,7 @@
                 <splitViewController id="XUm-h4-Gog" customClass="SplitViewController" customModule="splitViewApp" customModuleProvider="target" sceneMemberID="viewController">
                     <connections>
                         <segue destination="gzS-fB-kxY" kind="relationship" relationship="detailViewController" id="AIz-HS-jsa"/>
-                        <segue destination="8Ft-kd-Y9E" kind="relationship" relationship="masterViewController" id="luf-H8-pHm"/>
+                        <segue destination="8Ft-kd-Y9E" kind="relationship" relationship="masterViewController" id="8lr-Wh-0bT"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TFA-8r-09K" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -12,6 +12,9 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     // MARK: - VARIABLES
     
+//    @IBOutlet weak var canvasView: CanvasView!
+//    var visualizeAzimuth = false
+    
     var table:      Table!
     var detailView: DetailViewController!
     let reuseIdentifier = "cell" // also set as cell identifier in storyboard
@@ -430,5 +433,29 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let cellWidth = collectionView.frame.width / 5.0
         return CGSize(width: cellWidth, height: 50)
+    }
+    
+    // MARK: - Touches for CanvasView
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        canvasView.drawTouches(touches, withEvent: event)
+    }
+    
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        canvasView.drawTouches(touches, withEvent: event)
+    }
+    
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        canvasView.drawTouches(touches, withEvent: event)
+        canvasView.endTouches(touches, cancel: false)
+    }
+    
+    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+        guard let touches = touches else { return }
+        canvasView.endTouches(touches, cancel: true)
+    }
+    
+    override func touchesEstimatedPropertiesUpdated(touches: Set<NSObject>) {
+        canvasView.updateEstimatedPropertiesForTouches(touches)
     }
 }
