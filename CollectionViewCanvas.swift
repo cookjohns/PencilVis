@@ -8,8 +8,10 @@
 
 import UIKit
 
-class MasterViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextViewDelegate {
-    
+//class CollectionViewCanvas: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextViewDelegate {
+
+class CollectionViewCanvas: UICollectionViewController {
+
     // MARK: - VARIABLES
     
     @IBOutlet weak var canvasView: CanvasView!
@@ -25,15 +27,15 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
     var circleRecognizer: CircleGestureRecognizer!
     
 //    var canvasView = CanvasView()
-    @IBOutlet weak var collectionView: UICollectionView!
+//    @IBOutlet weak var collectionView: UICollectionView!
     
     // MARK: - FUNCTIONS
     
     override func loadView() {
         super.loadView()
         
-        collectionView?.dataSource = self
-                
+//        collectionView?.dataSource = self
+        
         // add segmented controller for switching between chart types
         let segmentedControl = UISegmentedControl(items: ["Pie", "Line", "Bar"])
         segmentedControl.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
@@ -62,7 +64,7 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         textView.layer.borderWidth  = 2
         textView.layer.cornerRadius = 8
         self.view.addSubview(textView)
-        textView.delegate = self
+//        textView.delegate = self
         
         // setup clear button
         clearButton = UIButton()
@@ -83,8 +85,11 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         //circleRecognizer = CircleGestureRecognizer(target: self, action: #selector(circled))
         //view.addGestureRecognizer(circleRecognizer)
         
-//        self.view.addSubview(canvasView)
-//        canvasView.hidden = false        
+        canvasView.tintColor = UIColor.whiteColor()
+        self.collectionView?
+            .addSubview(canvasView)
+        canvasView.hidden = false
+//        collectionView?.hidden = true
     }
     
     /* Use segmented controller to signal detailView to change chart subview */
@@ -112,9 +117,9 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         if (sender.state == .Began) {
             // get location/indexPath/cell of touch, add it to textView, then add to workingData array
             let point = sender.locationInView(self.collectionView)
-            let indexPath = self.collectionView.indexPathForItemAtPoint(point)
+            let indexPath = self.collectionView!.indexPathForItemAtPoint(point)
             if let index = indexPath {
-                let cell = self.collectionView.cellForItemAtIndexPath(indexPath!) as! CollectionViewCell
+                let cell = self.collectionView!.cellForItemAtIndexPath(indexPath!) as! CollectionViewCell
                 let units = Double(cell.label.text!)
                 if let val = units {
                     textView.insertText("\(val)\n")
@@ -218,105 +223,16 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         }
     }
     
-    //    func findCircledCell(center: CGPoint) {
-    //        // walk through the image views and see if the center of the drawn circle was over one of the views
-    //        let indexPath = self.collectionView.indexPathForItemAtPoint(center)
-    //        if let index = indexPath {
-    //            let cell = self.collectionView.cellForItemAtIndexPath(indexPath!) as! CollectionViewCell
-    //            let units = unitsForMonth(cell.label.text!)
-    //            textView.insertText("\(units)\n")
-    //            workingData.append(units)
-    //            print("Circled cell is \(cell.label.text), \(units) units.")
-    //        }
-    //    }
-    //
-    //    func circled(c: CircleGestureRecognizer) {
-    //        if (c.state == .Ended) {
-    //            //print("Made a circle")
-    //            findCircledCell(c.fitResult.center)
-    //        }
-    
-    //        if (c.state == .Began) {
-    //            circlerDrawer.clear()
-    //        }
-    //        if (c.state == .Changed) {
-    //            circlerDrawer.updatePath(c.path)
-    //        }
-    //        if (c.state == .Ended || c.state == .Failed || c.state == .Cancelled) {
-    //            circlerDrawer.updateFit(c.fitResult, madeCircle: c.isCircle)
-    //        }
-    //    }
-    
-    //    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    //        canvasView.drawTouches(touches, withEvent: event)
-    //
-    //        if visualizeAzimuth {
-    //            for touch in touches {
-    //                if touch.type == .Stylus {
-    //                    //reticleView.hidden = false
-    //                    //updateReticleViewWithTouch(touch, event: event)
-    //                }
-    //            }
-    //        }
-    //    }
-    //
-    //    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    //        canvasView.drawTouches(touches, withEvent: event)
-    //
-    //        if visualizeAzimuth {
-    //            for touch in touches {
-    //                if touch.type == .Stylus {
-    //                    //updateReticleViewWithTouch(touch, event: event)
-    //
-    //                    // Use the last predicted touch to update the reticle.
-    //                    //guard let predictedTouch = event?.predictedTouchesForTouch(touch)?.last else { return }
-    //
-    //                    //updateReticleViewWithTouch(predictedTouch, event: event, isPredicted: true)
-    //                }
-    //            }
-    //        }
-    //    }
-    //
-    //    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    //        canvasView.drawTouches(touches, withEvent: event)
-    //        canvasView.endTouches(touches, cancel: false)
-    //
-    //        if visualizeAzimuth {
-    //            for touch in touches {
-    //                if touch.type == .Stylus {
-    //                    //reticleView.hidden = true
-    //                }
-    //            }
-    //        }
-    //    }
-    //
-    //    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
-    //        guard let touches = touches else { return }
-    //        canvasView.endTouches(touches, cancel: true)
-    //
-    //        if visualizeAzimuth {
-    //            for touch in touches {
-    //                if touch.type == .Stylus {
-    //                    //reticleView.hidden = true
-    //                }
-    //            }
-    //        }
-    //    }
-    //    
-    //    override func touchesEstimatedPropertiesUpdated(touches: Set<NSObject>) {
-    //        canvasView.updateEstimatedPropertiesForTouches(touches)
-    //    }
-    
     // MARK: - UICollectionViewDataSource protocol
     
     // tell the collection view how many cells to make
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //return self.items.count
         return self.table.COUNT
     }
     
     // make a cell for each cell index path
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let index = indexPath.item
         
         // get a reference to the storyboard cell
@@ -340,16 +256,16 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         if (index % 5 == 0 && table.isActive(index)) {
             cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
         }
-        // if cell is inactive month label, set background to gray color
+            // if cell is inactive month label, set background to gray color
         else if (index % 5 == 0 && !table.isActive(index)) {
             cell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
         }
-        // if cell is active, set white background and black text
+            // if cell is active, set white background and black text
         else if (table.isActive(index)) {
             cell.contentView.backgroundColor = UIColor.whiteColor()
             cell.label.textColor = UIColor.blackColor()
         }
-        // cell is inactive, set white background and gray text
+            // cell is inactive, set white background and gray text
         else if (!table.isActive(index)) {
             cell.contentView.backgroundColor = UIColor.whiteColor()
             cell.label.textColor = UIColor.lightGrayColor()
@@ -360,7 +276,7 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     // MARK: - UICollectionViewDelegate protocol
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         //print("You selected cell #\(indexPath.item)!")
         
         let index = indexPath.item
@@ -382,7 +298,7 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
             if table.isActive(index) {
                 table.deactivate(index)
             }
-            // inactive, so make it active, then add item back to table and change cell color
+                // inactive, so make it active, then add item back to table and change cell color
             else {
                 table.activate(index)
             }
@@ -392,7 +308,7 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
                 indices.append(path)
             }
         }
-        // otherwise, selected cell is a week
+            // otherwise, selected cell is a week
         else {
             // if selected month is inactive, break
             let selectedMon = (index/5) * 5
@@ -401,14 +317,14 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
             }
             
             let selectedAmount = Double(table.tableItems[indexPath.item])
-
+            
             // active, so make it inactive, then delete the week amount from total and gray out text color
             if table.isActive(index) {
                 table.deactivate(index)
                 // change value for month in chart
                 table.updateItem(selectedMonth, amount: -(selectedAmount!))
             }
-            // inactive, so make it active, then add week amount back in and recolor cell text
+                // inactive, so make it active, then add week amount back in and recolor cell text
             else {
                 table.activate(index)
                 // change value for month in chart

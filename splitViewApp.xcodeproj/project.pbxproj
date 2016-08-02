@@ -19,6 +19,8 @@
 		BD0453321D0CC05F0036CE78 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0453311D0CC05F0036CE78 /* MasterViewController.swift */; };
 		BD0453341D0CC3870036CE78 /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0453331D0CC3870036CE78 /* SplitViewController.swift */; };
 		BD0453361D0CC9DA0036CE78 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0453351D0CC9DA0036CE78 /* CollectionViewCell.swift */; };
+		BD668CA61D50171A00493011 /* CollectionViewCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD668CA51D50171A00493011 /* CollectionViewCanvas.swift */; };
+		BDA2E2EF1D5151B8003D4D94 /* TestCollectionCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA2E2EE1D5151B8003D4D94 /* TestCollectionCanvas.swift */; };
 		BDA324861D1327EC009567EA /* Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA324851D1327EC009567EA /* Table.swift */; };
 		BDEAB0021D1236A80090A119 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEAAFFB1D1236830090A119 /* Charts.framework */; };
 		BDEAB0031D1236A80090A119 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BDEAAFFB1D1236830090A119 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -91,6 +93,8 @@
 		BD0453311D0CC05F0036CE78 /* MasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		BD0453331D0CC3870036CE78 /* SplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
 		BD0453351D0CC9DA0036CE78 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		BD668CA51D50171A00493011 /* CollectionViewCanvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionViewCanvas.swift; path = ../CollectionViewCanvas.swift; sourceTree = "<group>"; };
+		BDA2E2EE1D5151B8003D4D94 /* TestCollectionCanvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCollectionCanvas.swift; sourceTree = "<group>"; };
 		BDA324851D1327EC009567EA /* Table.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Table.swift; sourceTree = "<group>"; };
 		BDEAAFF31D1236830090A119 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = Charts/Charts.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -127,6 +131,8 @@
 		BD04531C1D0CBEA60036CE78 /* splitViewApp */ = {
 			isa = PBXGroup;
 			children = (
+				BDA2E2EE1D5151B8003D4D94 /* TestCollectionCanvas.swift */,
+				BD668CA51D50171A00493011 /* CollectionViewCanvas.swift */,
 				BD04531D1D0CBEA60036CE78 /* AppDelegate.swift */,
 				BD0453211D0CBEA60036CE78 /* Main.storyboard */,
 				BDA324851D1327EC009567EA /* Table.swift */,
@@ -271,10 +277,12 @@
 				BD0249D01D1A0C490000AC1C /* CanvasView.swift in Sources */,
 				BD0453361D0CC9DA0036CE78 /* CollectionViewCell.swift in Sources */,
 				BD0249FA1D1A62250000AC1C /* CircleFit.swift in Sources */,
+				BD668CA61D50171A00493011 /* CollectionViewCanvas.swift in Sources */,
 				BD0249F81D1A61F90000AC1C /* CircleGestureRecognizer.swift in Sources */,
 				BD0453321D0CC05F0036CE78 /* MasterViewController.swift in Sources */,
 				BD0453301D0CC0450036CE78 /* DetailViewController.swift in Sources */,
 				BD0249D21D1A0CA90000AC1C /* Line.swift in Sources */,
+				BDA2E2EF1D5151B8003D4D94 /* TestCollectionCanvas.swift in Sources */,
 				BD04531E1D0CBEA60036CE78 /* AppDelegate.swift in Sources */,
 				BD0453341D0CC3870036CE78 /* SplitViewController.swift in Sources */,
 			);
