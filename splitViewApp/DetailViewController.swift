@@ -23,7 +23,8 @@ class DetailViewController: UIViewController {
     var canvasView: CanvasView!
     var visualizeAzimuth = false
     var table: Table!
-    var masterView: MasterViewController!
+//    var masterView: MasterViewController!
+    var masterView: TestCollectionCanvas!
     var pieChartColors: [String : UIColor]!
     var updated: Bool! {
         didSet {
@@ -231,7 +232,7 @@ class DetailViewController: UIViewController {
         barChartView.notifyDataSetChanged()
         
         // trigger the masterView's UICollectionView to reload it's data/cells (to change appearance for in/active)
-        masterView.collectionView.reloadData()
+        masterView.collectionView!.reloadData()
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {

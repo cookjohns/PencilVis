@@ -24,17 +24,11 @@ class CollectionViewCanvas: UICollectionViewController {
     var clearButton:  UIButton!
     var workingData: [Double]! = []
     
-    var circleRecognizer: CircleGestureRecognizer!
-    
-//    var canvasView = CanvasView()
-//    @IBOutlet weak var collectionView: UICollectionView!
-    
     // MARK: - FUNCTIONS
     
     override func loadView() {
         super.loadView()
         
-//        collectionView?.dataSource = self
         
         // add segmented controller for switching between chart types
         let segmentedControl = UISegmentedControl(items: ["Pie", "Line", "Bar"])
@@ -64,7 +58,6 @@ class CollectionViewCanvas: UICollectionViewController {
         textView.layer.borderWidth  = 2
         textView.layer.cornerRadius = 8
         self.view.addSubview(textView)
-//        textView.delegate = self
         
         // setup clear button
         clearButton = UIButton()
@@ -81,15 +74,6 @@ class CollectionViewCanvas: UICollectionViewController {
         // add long press gesture recognizer to simulate circling with pencil
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress))
         self.view.addGestureRecognizer(longPress)
-        
-        //circleRecognizer = CircleGestureRecognizer(target: self, action: #selector(circled))
-        //view.addGestureRecognizer(circleRecognizer)
-        
-        canvasView.tintColor = UIColor.whiteColor()
-        self.collectionView?
-            .addSubview(canvasView)
-        canvasView.hidden = false
-//        collectionView?.hidden = true
     }
     
     /* Use segmented controller to signal detailView to change chart subview */
