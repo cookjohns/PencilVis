@@ -384,9 +384,14 @@ class TestCollectionCanvas: UICollectionViewController {
     // MARK: - Touches for CanvasView
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let indexPath: NSIndexPath = NSIndexPath(forRow: 13, inSection: 0)
-        self.collectionView(collectionView!, didSelectItemAtIndexPath: indexPath)
-        canvas.drawTouches(touches, withEvent: event)
+//        let indexPath: NSIndexPath = NSIndexPath(forRow: 13, inSection: 0)
+        if touches.first!.type == .Stylus {
+            canvas.drawTouches(touches, withEvent: event)
+        }
+        else {
+            let indexPath = collectionView?.indexPathForItemAtPoint((touches.first?.locationInView(self.view))!)
+            self.collectionView(collectionView!, didSelectItemAtIndexPath: indexPath!)
+        }
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
