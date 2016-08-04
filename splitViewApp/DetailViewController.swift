@@ -23,8 +23,7 @@ class DetailViewController: UIViewController {
     var canvasView: CanvasView!
     var visualizeAzimuth = false
     var table: Table!
-//    var masterView: MasterViewController!
-    var masterView: TestCollectionCanvas!
+    var masterView: CollectionViewCanvas!
     var pieChartColors: [String : UIColor]!
     var updated: Bool! {
         didSet {

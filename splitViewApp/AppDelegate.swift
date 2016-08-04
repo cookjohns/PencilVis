@@ -20,9 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // access MasterViewController and set its table and detailView
         let splitViewController = window!.rootViewController as! UISplitViewController
-//        let masterController    = splitViewController.viewControllers[0] as! MasterViewController
-//        let masterController = splitViewController.viewControllers[0] as! CollectionViewCanvas
-        let masterController = splitViewController.viewControllers[0] as! TestCollectionCanvas
+        let masterController = splitViewController.viewControllers[0] as! CollectionViewCanvas
         let detailController    = splitViewController.viewControllers[1] as! DetailViewController
         masterController.table  = table
         masterController.detailView = detailController

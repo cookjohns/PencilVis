@@ -1,34 +1,60 @@
 //
-//  MasterViewController.swift
-//  splitViewApp
+//  ViewController.swift
+//  CollectionViewExample
 //
-//  Created by John Cook on 6/11/16.
-//  Copyright © 2016 John Cook. All rights reserved.
+//  Created by Justin Hill on 8/2/16.
+//  Copyright © 2016 Justin Hill. All rights reserved.
 //
 
 import UIKit
 
-//class CollectionViewCanvas: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextViewDelegate {
-
 class CollectionViewCanvas: UICollectionViewController {
 
-    // MARK: - VARIABLES
-    
-    @IBOutlet weak var canvasView: CanvasView!
-    var visualizeAzimuth = false
-    
     var table:      Table!
     var detailView: DetailViewController!
-    let reuseIdentifier = "cell" // also set as cell identifier in storyboard
     var textView:     UITextView!
     var clearButton:  UIButton!
     var workingData: [Double]! = []
+    private let ReuseIdentifier = "cell" // also set as cell identifier in storyboard
     
+    var canvas = CanvasView()
+    var visualizeAzimuth = false
+    
+    @IBOutlet weak var baseView: UIView!
     // MARK: - FUNCTIONS
     
-    override func loadView() {
-        super.loadView()
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
+        // containing view's background is white
+        self.view.backgroundColor = UIColor.whiteColor()
+                
+        // the container's background should show through the collection view
+        self.collectionView?.backgroundColor = UIColor.clearColor()
+        
+        // register a cell class to be used for a cell
+        self.collectionView?.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: ReuseIdentifier)
+        
+        // configure the collection view to look nice
+        if let layout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.itemSize = CGSizeMake(100, 100)
+            layout.sectionInset = UIEdgeInsetsMake(15, 15, 15, 15)
+        }
+        
+        // make the canvas' background clear (we want to draw on top of
+        // the collection view.)
+        self.canvas.backgroundColor = UIColor.clearColor()
+        
+        // add the canvas to the container. This essentially gives us:
+        //                container
+        //                /       \
+        //     collectionview    canvas
+        //
+        // the container's subviews array is now [collectionView, canvas]. The
+        // order in which they'll be drawn goes: bottom <-----------> top, i.e.
+        // the first item in the array is the bottom view and the last item in
+        // the array is the top view.
+        self.view.addSubview(self.canvas)
         
         // add segmented controller for switching between chart types
         let segmentedControl = UISegmentedControl(items: ["Pie", "Line", "Bar"])
@@ -58,7 +84,7 @@ class CollectionViewCanvas: UICollectionViewController {
         textView.layer.borderWidth  = 2
         textView.layer.cornerRadius = 8
         self.view.addSubview(textView)
-        
+
         // setup clear button
         clearButton = UIButton()
         clearButton.frame = CGRect(x: 100.0, y: 900.0, width: 300, height: 40)
@@ -74,6 +100,17 @@ class CollectionViewCanvas: UICollectionViewController {
         // add long press gesture recognizer to simulate circling with pencil
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress))
         self.view.addGestureRecognizer(longPress)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // Whenever the container view lays out its subviews, make sure to stretch
+        // the canvas over its entire bounds.
+        self.canvas.frame = self.view.bounds
+        
+        // Also, make sure the canvas view is in front of the collection view.
+//        self.view.bringSubviewToFront(self.canvas)
     }
     
     /* Use segmented controller to signal detailView to change chart subview */
@@ -95,7 +132,7 @@ class CollectionViewCanvas: UICollectionViewController {
             break
         }
     }
-    
+
     func didLongPress(sender: UILongPressGestureRecognizer) {
         // continuous gesture, so make sure that we only recognize it once
         if (sender.state == .Began) {
@@ -215,17 +252,22 @@ class CollectionViewCanvas: UICollectionViewController {
         return self.table.COUNT
     }
     
-    // make a cell for each cell index path
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+//        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ReuseIdentifier, forIndexPath: indexPath)
+//        
+//        cell.contentView.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1)
+        
         let index = indexPath.item
         
+        var label = UILabel()
+        
         // get a reference to the storyboard cell
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! CollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ReuseIdentifier, forIndexPath: indexPath) //as! CollectionViewCell
         
         // set up cell's appearance
         cell.layer.borderColor  = UIColor.grayColor().CGColor
         cell.layer.borderWidth  = 0.5
-        cell.label.text = self.table.tableItems[indexPath.item]
+        label.text = self.table.tableItems[indexPath.item]
         
         if (index < 6 || index % 5 == 0) {
             // set background to lightblue for title fields
@@ -233,7 +275,7 @@ class CollectionViewCanvas: UICollectionViewController {
             if index != 0 {
                 let textAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 32.0)!]
                 let text = NSAttributedString(string: "\(table.tableItems[indexPath.item])", attributes: textAttributes)
-                cell.label.attributedText = text
+                label.attributedText = text
             }
         }
         // if cell is active month label, set blue background
@@ -247,14 +289,15 @@ class CollectionViewCanvas: UICollectionViewController {
             // if cell is active, set white background and black text
         else if (table.isActive(index)) {
             cell.contentView.backgroundColor = UIColor.whiteColor()
-            cell.label.textColor = UIColor.blackColor()
+//            cell.label.textColor = UIColor.blackColor()
         }
             // cell is inactive, set white background and gray text
         else if (!table.isActive(index)) {
             cell.contentView.backgroundColor = UIColor.whiteColor()
-            cell.label.textColor = UIColor.lightGrayColor()
+            label.textColor = UIColor.lightGrayColor()
         }
-        
+
+        cell.addSubview(label)
         return cell
     }
     
@@ -288,7 +331,7 @@ class CollectionViewCanvas: UICollectionViewController {
             }
             // add index path's of weeks in selected month
             for i in 1...4 {
-                var path = NSIndexPath(forRow: indexPath.row + i, inSection: indexPath.section)
+                let path = NSIndexPath(forRow: indexPath.row + i, inSection: indexPath.section)
                 indices.append(path)
             }
         }
@@ -319,7 +362,7 @@ class CollectionViewCanvas: UICollectionViewController {
         // signal detailView to redraw chart
         detailView.updated = true
         // signal collectionView to reload cell colors to reflect activity
-        collectionView.reloadItemsAtIndexPaths(indices)
+        self.collectionView!.reloadItemsAtIndexPaths(indices)
     }
     
     // MARK: - UICOllectionViewDelegateFlowLayout
@@ -336,28 +379,37 @@ class CollectionViewCanvas: UICollectionViewController {
         let cellWidth = collectionView.frame.width / 5.0
         return CGSize(width: cellWidth, height: 50)
     }
+
     
     // MARK: - Touches for CanvasView
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        canvasView.drawTouches(touches, withEvent: event)
+//        let indexPath: NSIndexPath = NSIndexPath(forRow: 13, inSection: 0)
+        if touches.first!.type == .Stylus {
+            canvas.drawTouches(touches, withEvent: event)
+        }
+        else {
+            let indexPath = collectionView?.indexPathForItemAtPoint((touches.first?.locationInView(self.view))!)
+            self.collectionView(collectionView!, didSelectItemAtIndexPath: indexPath!)
+        }
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        canvasView.drawTouches(touches, withEvent: event)
+        self.collectionView?.touchesBegan(touches, withEvent: event)
+        canvas.drawTouches(touches, withEvent: event)
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        canvasView.drawTouches(touches, withEvent: event)
-        canvasView.endTouches(touches, cancel: false)
+        canvas.drawTouches(touches, withEvent: event)
+        canvas.endTouches(touches, cancel: false)
     }
     
     override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
         guard let touches = touches else { return }
-        canvasView.endTouches(touches, cancel: true)
+        canvas.endTouches(touches, cancel: true)
     }
     
     override func touchesEstimatedPropertiesUpdated(touches: Set<NSObject>) {
-        canvasView.updateEstimatedPropertiesForTouches(touches)
+        canvas.updateEstimatedPropertiesForTouches(touches)
     }
 }

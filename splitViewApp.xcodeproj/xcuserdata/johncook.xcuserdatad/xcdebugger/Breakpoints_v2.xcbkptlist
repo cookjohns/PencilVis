@@ -88,11 +88,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "splitViewApp/DetailViewController.swift"
-            timestampString = "491870578.238906"
+            timestampString = "492046302.72851"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
             landmarkName = "viewDidLoad()"
             landmarkType = "5">
          </BreakpointContent>
@@ -136,11 +136,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "splitViewApp/DetailViewController.swift"
-            timestampString = "491870578.238906"
+            timestampString = "492046302.72851"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "238"
-            endingLineNumber = "238"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
             landmarkName = "touchesBegan(_:withEvent:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -152,11 +152,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "splitViewApp/DetailViewController.swift"
-            timestampString = "491870578.238906"
+            timestampString = "492046302.72851"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "208"
-            endingLineNumber = "208"
+            startingLineNumber = "207"
+            endingLineNumber = "207"
             landmarkName = "doubleTap()"
             landmarkType = "5">
          </BreakpointContent>
@@ -200,11 +200,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "splitViewApp/DetailViewController.swift"
-            timestampString = "491870578.238906"
+            timestampString = "492046302.72851"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "215"
-            endingLineNumber = "215"
+            startingLineNumber = "214"
+            endingLineNumber = "214"
             landmarkName = "doubleTap()"
             landmarkType = "5">
          </BreakpointContent>
@@ -216,11 +216,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "splitViewApp/DetailViewController.swift"
-            timestampString = "491870578.238906"
+            timestampString = "492046302.72851"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "211"
-            endingLineNumber = "211"
+            startingLineNumber = "210"
+            endingLineNumber = "210"
             landmarkName = "doubleTap()"
             landmarkType = "5">
          </BreakpointContent>
@@ -232,11 +232,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "splitViewApp/DetailViewController.swift"
-            timestampString = "491870578.238906"
+            timestampString = "492046302.72851"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "235"
-            endingLineNumber = "235"
+            startingLineNumber = "234"
+            endingLineNumber = "234"
             landmarkName = "doubleTap()"
             landmarkType = "5">
          </BreakpointContent>
@@ -248,11 +248,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "splitViewApp/DetailViewController.swift"
-            timestampString = "491870578.238906"
+            timestampString = "492046302.72851"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "99"
-            endingLineNumber = "99"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
             landmarkName = "setChart(_:values:)"
             landmarkType = "5">
          </BreakpointContent>
