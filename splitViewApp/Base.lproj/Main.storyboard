@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="XUm-h4-Gog">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="XUm-h4-Gog">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -96,66 +96,51 @@
             </objects>
             <point key="canvasLocation" x="223" y="349"/>
         </scene>
-        <!--Master View Controller-->
-        <scene sceneID="ksn-Hx-F4Y">
+        <!--Collection View Canvas-->
+        <scene sceneID="fBv-7c-gQS">
             <objects>
-                <collectionViewController id="8Ft-kd-Y9E" customClass="MasterViewController" customModule="splitViewApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="x5c-Wl-nri">
+                <collectionViewController id="Mlx-YI-310" customClass="CollectionViewCanvas" customModule="splitViewApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" contentMode="scaleToFill" dataMode="prototypes" id="NgB-FJ-TOY">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="6" minimumInteritemSpacing="6" id="cgB-lQ-qSm">
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="6" minimumInteritemSpacing="6" id="WC9-Ju-Tyx">
                             <size key="itemSize" width="50" height="50"/>
                             <size key="headerReferenceSize" width="0.0" height="50"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="mC0-c3-olf" customClass="CollectionViewCell" customModule="splitViewApp" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="f53-B2-3w3">
                                 <rect key="frame" x="0.0" y="60" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3M2-NV-RC3">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qWp-Ad-ZVQ">
                                             <rect key="frame" x="4" y="14" width="42" height="21"/>
-                                            <gestureRecognizers/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
-                                <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstItem="3M2-NV-RC3" firstAttribute="centerX" secondItem="mC0-c3-olf" secondAttribute="centerX" id="7ks-bA-VMo"/>
-                                    <constraint firstItem="3M2-NV-RC3" firstAttribute="centerY" secondItem="mC0-c3-olf" secondAttribute="centerY" id="AJf-XS-8cf"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="label" destination="3M2-NV-RC3" id="wNT-fJ-Ldc"/>
-                                </connections>
                             </collectionViewCell>
                         </cells>
-                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="JS8-Ie-Jpg">
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="oI8-qL-HpM">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </collectionReusableView>
                         <connections>
-                            <outlet property="dataSource" destination="8Ft-kd-Y9E" id="yGP-Ht-MEe"/>
-                            <outlet property="delegate" destination="8Ft-kd-Y9E" id="Hbb-pp-zbN"/>
+                            <outlet property="dataSource" destination="Mlx-YI-310" id="0pS-uo-fiN"/>
+                            <outlet property="delegate" destination="Mlx-YI-310" id="PAL-ff-QeE"/>
                         </connections>
                     </collectionView>
-                    <toolbarItems/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="collectionView" destination="x5c-Wl-nri" id="XGU-TC-7Nj"/>
-                    </connections>
                 </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VNO-3i-0iu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dm3-QJ-n0d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="229" y="-310"/>
+            <point key="canvasLocation" x="223" y="-350"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="XHV-13-YZL">
@@ -163,7 +148,7 @@
                 <splitViewController id="XUm-h4-Gog" customClass="SplitViewController" customModule="splitViewApp" customModuleProvider="target" sceneMemberID="viewController">
                     <connections>
                         <segue destination="gzS-fB-kxY" kind="relationship" relationship="detailViewController" id="AIz-HS-jsa"/>
-                        <segue destination="8Ft-kd-Y9E" kind="relationship" relationship="masterViewController" id="luf-H8-pHm"/>
+                        <segue destination="Mlx-YI-310" kind="relationship" relationship="masterViewController" id="cU2-Is-zQL"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TFA-8r-09K" userLabel="First Responder" sceneMemberID="firstResponder"/>

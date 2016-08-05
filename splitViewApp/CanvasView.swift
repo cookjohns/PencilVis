@@ -58,7 +58,7 @@ class CanvasView: UIView {
     /// A `CGContext` for drawing the last representation of lines no longer receiving updates into.
     lazy var frozenContext: CGContext = {
         let scale = self.window!.screen.scale
-        var size = self.bounds.size
+        var size = CGSize(width:600, height:600)//self.bounds.size
         
         size.width *= scale
         size.height *= scale
