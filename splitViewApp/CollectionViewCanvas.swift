@@ -10,6 +10,8 @@ import UIKit
 
 class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
+    // MARK: - VARIABLES
+    
     var table:      Table!
     var detailView: DetailViewController!
     var textView:     UITextView!
@@ -21,7 +23,6 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     var canvas = CanvasView()
     var visualizeAzimuth = false
     
-    @IBOutlet weak var baseView: UIView!
     // MARK: - FUNCTIONS
     
     override func viewDidLoad() {
@@ -98,6 +99,15 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         // add long press gesture recognizer to simulate circling with pencil
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress))
         self.view.addGestureRecognizer(longPress)
+        
+//        // add double tap gesture recognizer so things don't crash when double tapping
+//        // set up tap recognizer for double taps (need discrete gesture for each view)
+//        let tapCanvas = UITapGestureRecognizer(target: self, action: #selector(doubleTap))
+//        tapCanvas.numberOfTapsRequired = 2
+//        self.canvas.addGestureRecognizer(tapCanvas)
+//        let tapCollection = UITapGestureRecognizer(target: self, action: #selector(doubleTap))
+//        tapCollection.numberOfTapsRequired = 2
+//        self.collectionView!.addGestureRecognizer(tapCollection)
     }
     
     override func viewDidLayoutSubviews() {
@@ -137,7 +147,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             // get location/indexPath/cell of touch, add it to textView, then add to workingData array
             let point = sender.locationInView(self.collectionView)
             let indexPath = self.collectionView!.indexPathForItemAtPoint(point)
-            if let index = indexPath {
+            if indexPath != nil {
                 let cell = self.collectionView!.cellForItemAtIndexPath(indexPath!) as! CollectionViewCell
                 let units = Double(cell.label.text!)
                 if let val = units {
@@ -147,6 +157,10 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             }
         }
     }
+    
+//    func doubleTap() {
+//        print("double tap recognized")
+//    }
     
     func textViewDidChange(textView: UITextView) {
         let lastChar = textView.text.characters.last
@@ -261,13 +275,11 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         cell.layer.borderWidth  = 0.5
         cell.label.text = self.table.tableItems[index]
         cell.label.textAlignment = .Center
+        let textAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 20.0)!]
+        let text = NSAttributedString(string: "\(table.tableItems[indexPath.item])", attributes: textAttributes)
+        cell.label.attributedText = text
         
         if cellLoadCount < 70 {
-            // set all cell labels
-            let textAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 20.0)!]
-            let text = NSAttributedString(string: "\(table.tableItems[indexPath.item])", attributes: textAttributes)
-            cell.label.attributedText = text
-            
             // set blue baackgrounds
             if index != 0 && index != 70 && (index < 5 || index % 5 == 0) {
                 cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
@@ -286,6 +298,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                 // if cell is inactive month label, set background to gray color
             else if (isMonth && !table.isActive(index)) {
                 cell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
+                cell.label.textColor = UIColor.lightGrayColor()
             }
                 // if cell is active, set white background and black text (or top left cell)
             else if (table.isActive(index)) {
@@ -319,15 +332,15 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         
         // if the selected cell is a month
         if (isMonth) {
-            // active, so make inactive, then delete item in table and change cell color
+            // if cell is (going to be) active, make it inactive, then delete item in table and change cell color
             if table.isActive(index) {
                 table.deactivate(index)
             }
-                // inactive, so make it active, then add item back to table and change cell color
+                // if cell is inactive, make it active, then add item back to table and change cell color
             else {
                 table.activate(index)
             }
-            // add index path's of weeks in selected month
+            // add index paths of weeks in selected month
             for i in 1...4 {
                 let path = NSIndexPath(forRow: indexPath.row + i, inSection: indexPath.section)
                 indices.append(path)
@@ -336,12 +349,16 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             // otherwise, selected cell is a week
         else {
             // if selected month is inactive, break
-            let selectedMon = (index/5) * 5
-            if !table.isActive(selectedMonth) {//selectedMon) {
+            if !table.isActive(selectedMonth) {
                 return
             }
             
             let selectedAmount = Double(table.tableItems[indexPath.item])
+            
+            // check for empty cell
+            if selectedAmount == nil {
+                return
+            }
             
             // active, so make it inactive, then delete the week amount from total and gray out text color
             if table.isActive(index) {
@@ -363,7 +380,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         self.collectionView!.reloadItemsAtIndexPaths(indices)
     }
     
-    // MARK: - UICOllectionViewDelegateFlowLayout
+    // MARK: - UICollectionViewDelegateFlowLayout
     
     // side-to-side
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
@@ -395,7 +412,9 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         }
         else {
             let indexPath = collectionView?.indexPathForItemAtPoint((touches.first?.locationInView(self.view))!)
-            self.collectionView(collectionView!, didSelectItemAtIndexPath: indexPath!)
+            if indexPath != nil {
+                self.collectionView(collectionView!, didSelectItemAtIndexPath: indexPath!)
+            }
         }
     }
     
