@@ -73,7 +73,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         trailingConstraint.active = true
         
         // setup textField
-        textView = UITextView(frame: CGRectMake(100, 730.0, 300.0, 150.0))
+        textView = UITextView(frame: CGRectMake(100, 755.0, 300.0, 150.0))
         textView.textAlignment      = NSTextAlignment.Left
         textView.textColor          = UIColor.blueColor()
         textView.backgroundColor    = UIColor(white: 0.9, alpha: 1)
@@ -84,7 +84,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
 
         // setup clear button
         clearButton = UIButton()
-        clearButton.frame = CGRect(x: 100.0, y: 900.0, width: 300, height: 40)
+        clearButton.frame = CGRect(x: 100.0, y: 925.0, width: 300, height: 40)
         clearButton.layer.cornerRadius = 8
         clearButton.backgroundColor    = UIColor(white: 0.9, alpha: 1)
         clearButton.layer.borderColor  = UIColor.grayColor().CGColor
@@ -260,12 +260,13 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         cell.layer.borderColor  = UIColor.grayColor().CGColor
         cell.layer.borderWidth  = 0.5
         cell.label.text = self.table.tableItems[index]
+        cell.label.textAlignment = .Center
         
         if (index < 6 || index % 5 == 0) {
             // set background to lightblue for title fields
             cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
             if index != 0 && index != 65 {
-                let textAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 32.0)!]
+                let textAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 20.0)!]
                 let text = NSAttributedString(string: "\(table.tableItems[indexPath.item])", attributes: textAttributes)
                 cell.label.attributedText = text
             }
@@ -278,8 +279,8 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         else if (index % 5 == 0 && !table.isActive(index)) {
             cell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
         }
-            // if cell is active, set white background and black text
-        else if (table.isActive(index) && index > 4) {
+            // if cell is active, set white background and black text (or top left cell)
+        else if (index == 0 || table.isActive(index) && index > 4) {
             cell.contentView.backgroundColor = UIColor.whiteColor()
         }
             // cell is inactive, set white background and gray text
@@ -374,7 +375,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
 
     // insets, leveraged to eliminate vertical spaces
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        let sectionInsets = UIEdgeInsets(top: 20.0, left: 19.5, bottom: 10.0, right: 19.5)
+        let sectionInsets = UIEdgeInsets(top: -24.0, left: 19.5, bottom: 10.0, right: 19.5)
         return sectionInsets
     }
     
