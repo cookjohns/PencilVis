@@ -267,14 +267,14 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         if (index < 6 || index % 5 == 0) {
             // set background to lightblue for title fields
             cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
-            if index != 0 {
+            if index != 0 && index != 65 {
                 let textAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 32.0)!]
                 let text = NSAttributedString(string: "\(table.tableItems[indexPath.item])", attributes: textAttributes)
                 label.attributedText = text
             }
         }
         // if cell is active month label, set blue background
-        if (index % 5 == 0 && table.isActive(index)) {
+        if (index % 5 == 0 && table.isActive(index) && index != 0 && index != 65) {
             cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
         }
             // if cell is inactive month label, set background to gray color
@@ -282,7 +282,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             cell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
         }
             // if cell is active, set white background and black text
-        else if (table.isActive(index)) {
+        else if (table.isActive(index) && index > 4) {
             cell.contentView.backgroundColor = UIColor.whiteColor()
         }
             // cell is inactive, set white background and gray text
@@ -377,7 +377,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
 
     // insets, leveraged to eliminate vertical spaces
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        let sectionInsets = UIEdgeInsets(top: 30.0, left: 19.5, bottom: 10.0, right: 19.5)
+        let sectionInsets = UIEdgeInsets(top: 20.0, left: 19.5, bottom: 10.0, right: 19.5)
         return sectionInsets
     }
     
