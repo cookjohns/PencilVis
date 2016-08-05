@@ -129,11 +129,11 @@
 		BD04531C1D0CBEA60036CE78 /* splitViewApp */ = {
 			isa = PBXGroup;
 			children = (
-				BDA2E2EE1D5151B8003D4D94 /* CollectionViewCanvas.swift */,
 				BD04531D1D0CBEA60036CE78 /* AppDelegate.swift */,
 				BD0453211D0CBEA60036CE78 /* Main.storyboard */,
 				BDA324851D1327EC009567EA /* Table.swift */,
 				BD0453331D0CC3870036CE78 /* SplitViewController.swift */,
+				BDA2E2EE1D5151B8003D4D94 /* CollectionViewCanvas.swift */,
 				BD04532F1D0CC0450036CE78 /* DetailViewController.swift */,
 				BD0453351D0CC9DA0036CE78 /* CollectionViewCell.swift */,
 				BD0453311D0CC05F0036CE78 /* MasterViewController.swift */,

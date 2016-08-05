@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CollectionViewCanvas: UICollectionViewController {
+class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
     var table:      Table!
     var detailView: DetailViewController!
@@ -109,7 +109,7 @@ class CollectionViewCanvas: UICollectionViewController {
         // the canvas over its entire bounds.
         self.canvas.frame = self.view.bounds
         
-        // Also, make sure the canvas view is in front of the collection view.
+        // Also, make sure the canvas view is in front of the collection view and on-screen controls
 //        self.view.bringSubviewToFront(self.canvas)
     }
     
@@ -248,18 +248,13 @@ class CollectionViewCanvas: UICollectionViewController {
     
     // tell the collection view how many cells to make
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //return self.items.count
         return self.table.COUNT
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ReuseIdentifier, forIndexPath: indexPath)
-//        
-//        cell.contentView.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1)
-        
         let index = indexPath.item
         
-        var label = UILabel()
+        let label = UILabel()
         
         // get a reference to the storyboard cell
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ReuseIdentifier, forIndexPath: indexPath) //as! CollectionViewCell
@@ -289,7 +284,6 @@ class CollectionViewCanvas: UICollectionViewController {
             // if cell is active, set white background and black text
         else if (table.isActive(index)) {
             cell.contentView.backgroundColor = UIColor.whiteColor()
-//            cell.label.textColor = UIColor.blackColor()
         }
             // cell is inactive, set white background and gray text
         else if (!table.isActive(index)) {
@@ -304,8 +298,6 @@ class CollectionViewCanvas: UICollectionViewController {
     // MARK: - UICollectionViewDelegate protocol
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        //print("You selected cell #\(indexPath.item)!")
-        
         let index = indexPath.item
         
         // check for valid selection box
@@ -367,24 +359,31 @@ class CollectionViewCanvas: UICollectionViewController {
     
     // MARK: - UICOllectionViewDelegateFlowLayout
     
+    // side-to-side
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
         return -0.5
     }
     
+    // top-to-bottom
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 0
     }
     
+    // cell size based on percentage of frame width
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let cellWidth = collectionView.frame.width / 5.0
+        let cellWidth = collectionView.frame.width / 5.41
         return CGSize(width: cellWidth, height: 50)
     }
 
+    // insets, leveraged to eliminate vertical spaces
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        let sectionInsets = UIEdgeInsets(top: 30.0, left: 19.5, bottom: 10.0, right: 19.5)
+        return sectionInsets
+    }
     
     // MARK: - Touches for CanvasView
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-//        let indexPath: NSIndexPath = NSIndexPath(forRow: 13, inSection: 0)
         if touches.first!.type == .Stylus {
             canvas.drawTouches(touches, withEvent: event)
         }
