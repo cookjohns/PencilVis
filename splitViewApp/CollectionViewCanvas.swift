@@ -16,6 +16,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     var clearButton:  UIButton!
     var workingData: [Double]! = []
     private let ReuseIdentifier = "cell" // also set as cell identifier in storyboard
+    var cellLoadCount: Int = 0
     
     var canvas = CanvasView()
     var visualizeAzimuth = false
@@ -250,11 +251,10 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let index = indexPath.item
+        let isMonth = index % 5 == 0 && index != 65 ? true : false
         
         // get a reference to the storyboard cell
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ReuseIdentifier, forIndexPath: indexPath) as! CollectionViewCell
-        
-//        let label = cell.label //UILabel()
         
         // set up cell's appearance
         cell.layer.borderColor  = UIColor.grayColor().CGColor
@@ -262,34 +262,41 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         cell.label.text = self.table.tableItems[index]
         cell.label.textAlignment = .Center
         
-        if (index < 6 || index % 5 == 0) {
-            // set background to lightblue for title fields
-            cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
-            if index != 0 && index != 65 {
-                let textAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 20.0)!]
-                let text = NSAttributedString(string: "\(table.tableItems[indexPath.item])", attributes: textAttributes)
-                cell.label.attributedText = text
+        if cellLoadCount < 70 {
+            // set all cell labels
+            let textAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 20.0)!]
+            let text = NSAttributedString(string: "\(table.tableItems[indexPath.item])", attributes: textAttributes)
+            cell.label.attributedText = text
+            
+            // set blue baackgrounds
+            if index != 0 && index != 70 && (index < 5 || index % 5 == 0) {
+                cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
+            }
+            cellLoadCount += 1
+        }
+        else {
+            // catch for top line
+            if index < 5 {
+                return cell
+            }
+            // if cell is (going to be) active month label, set blue background
+            if (isMonth && table.isActive(index)) {
+                cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
+            }
+                // if cell is inactive month label, set background to gray color
+            else if (isMonth && !table.isActive(index)) {
+                cell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
+            }
+                // if cell is active, set white background and black text (or top left cell)
+            else if (table.isActive(index)) {
+                cell.contentView.backgroundColor = UIColor.whiteColor()
+            }
+                // cell is inactive, set white background and gray text
+            else if (!table.isActive(index)) {
+                cell.contentView.backgroundColor = UIColor.whiteColor()
+                cell.label.textColor = UIColor.lightGrayColor()
             }
         }
-        // if cell is active month label, set blue background
-        if (index % 5 == 0 && table.isActive(index) && index != 0 && index != 65) {
-            cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
-        }
-            // if cell is inactive month label, set background to gray color
-        else if (index % 5 == 0 && !table.isActive(index)) {
-            cell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
-        }
-            // if cell is active, set white background and black text (or top left cell)
-        else if (index == 0 || table.isActive(index) && index > 4) {
-            cell.contentView.backgroundColor = UIColor.whiteColor()
-        }
-            // cell is inactive, set white background and gray text
-        else if (!table.isActive(index)) {
-            cell.contentView.backgroundColor = UIColor.whiteColor()
-            cell.label.textColor = UIColor.lightGrayColor()
-        }
-
-//        cell.addSubview(label)
         return cell
     }
     
@@ -297,6 +304,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let index = indexPath.item
+        let isMonth = index % 5 == 0 && index != 65 ? true : false
         
         // check for valid selection box
         if (index < 5) {
@@ -310,7 +318,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         let selectedMonth  = (index / 5) - 1
         
         // if the selected cell is a month
-        if (index > 4 && index % 5 == 0) {
+        if (isMonth) {
             // active, so make inactive, then delete item in table and change cell color
             if table.isActive(index) {
                 table.deactivate(index)
@@ -329,7 +337,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         else {
             // if selected month is inactive, break
             let selectedMon = (index/5) * 5
-            if !table.isActive(selectedMon) {
+            if !table.isActive(selectedMonth) {//selectedMon) {
                 return
             }
             
