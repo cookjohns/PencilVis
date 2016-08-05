@@ -32,9 +32,6 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         // the container's background should show through the collection view
         self.collectionView?.backgroundColor = UIColor.clearColor()
         
-        // register a cell class to be used for a cell
-        self.collectionView?.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: ReuseIdentifier)
-        
         // configure the collection view to look nice
         if let layout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.itemSize = CGSizeMake(100, 100)
@@ -254,15 +251,15 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let index = indexPath.item
         
-        let label = UILabel()
-        
         // get a reference to the storyboard cell
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ReuseIdentifier, forIndexPath: indexPath) //as! CollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ReuseIdentifier, forIndexPath: indexPath) as! CollectionViewCell
+        
+//        let label = cell.label //UILabel()
         
         // set up cell's appearance
         cell.layer.borderColor  = UIColor.grayColor().CGColor
         cell.layer.borderWidth  = 0.5
-        label.text = self.table.tableItems[indexPath.item]
+        cell.label.text = self.table.tableItems[index]
         
         if (index < 6 || index % 5 == 0) {
             // set background to lightblue for title fields
@@ -270,7 +267,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             if index != 0 && index != 65 {
                 let textAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 32.0)!]
                 let text = NSAttributedString(string: "\(table.tableItems[indexPath.item])", attributes: textAttributes)
-                label.attributedText = text
+                cell.label.attributedText = text
             }
         }
         // if cell is active month label, set blue background
@@ -288,10 +285,10 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             // cell is inactive, set white background and gray text
         else if (!table.isActive(index)) {
             cell.contentView.backgroundColor = UIColor.whiteColor()
-            label.textColor = UIColor.lightGrayColor()
+            cell.label.textColor = UIColor.lightGrayColor()
         }
 
-        cell.addSubview(label)
+//        cell.addSubview(label)
         return cell
     }
     
