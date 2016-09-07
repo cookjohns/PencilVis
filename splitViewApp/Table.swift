@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Table {
     
@@ -21,6 +22,8 @@ class Table {
     var updated: Bool!    // flag for update signal
     let COUNT:   Int      // total number of items in table
     
+    var recentIntersection: CGPoint!
+    
     // MARK: - INITIALIZER
     
     init() {
@@ -33,6 +36,8 @@ class Table {
         }
         updated    = false
         COUNT = tableItems.count
+        
+        recentIntersection = CGPoint()
     }
     
     // MARK: - FUNCTIONS

@@ -8,11 +8,11 @@
 
 import UIKit
 
-class MasterViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextViewDelegate {
+class MasterViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextViewDelegate, UIGestureRecognizerDelegate {
     
     // MARK: - VARIABLES
     
-    @IBOutlet weak var canvasView: CanvasView!
+//    @IBOutlet weak var canvasView: CanvasView!
     var visualizeAzimuth = false
     
     var table:      Table!
@@ -26,7 +26,7 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
     
 //    var canvasView = CanvasView()
     @IBOutlet weak var collectionView: UICollectionView!
-    
+        
     // MARK: - FUNCTIONS
     
     override func loadView() {
@@ -80,11 +80,13 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress))
         self.view.addGestureRecognizer(longPress)
         
-        //circleRecognizer = CircleGestureRecognizer(target: self, action: #selector(circled))
-        //view.addGestureRecognizer(circleRecognizer)
+        circleRecognizer = CircleGestureRecognizer(target: self, action: #selector(circled))
+        self.view.addGestureRecognizer(circleRecognizer)
+        circleRecognizer.enabled = true
+        circleRecognizer.delegate = self
         
 //        self.view.addSubview(canvasView)
-//        canvasView.hidden = false        
+//        canvasView.hidden = false     
     }
     
     /* Use segmented controller to signal detailView to change chart subview */
@@ -122,6 +124,7 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
                 workingData.append(units!)
             }
         }
+        print("current intersection: \(table.recentIntersection)")
     }
     
     func textViewDidChange(textView: UITextView) {
@@ -218,94 +221,40 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
         }
     }
     
-    //    func findCircledCell(center: CGPoint) {
-    //        // walk through the image views and see if the center of the drawn circle was over one of the views
-    //        let indexPath = self.collectionView.indexPathForItemAtPoint(center)
-    //        if let index = indexPath {
-    //            let cell = self.collectionView.cellForItemAtIndexPath(indexPath!) as! CollectionViewCell
-    //            let units = unitsForMonth(cell.label.text!)
-    //            textView.insertText("\(units)\n")
-    //            workingData.append(units)
-    //            print("Circled cell is \(cell.label.text), \(units) units.")
-    //        }
-    //    }
-    //
-    //    func circled(c: CircleGestureRecognizer) {
-    //        if (c.state == .Ended) {
-    //            //print("Made a circle")
-    //            findCircledCell(c.fitResult.center)
-    //        }
+        func findCircledCell(center: CGPoint) {
+            // walk through the image views and see if the center of the drawn circle was over one of the views
+            let indexPath = self.collectionView.indexPathForItemAtPoint(center)
+            if let index = indexPath {
+                let cell = self.collectionView.cellForItemAtIndexPath(indexPath!) as! CollectionViewCell
+                let units = unitsForMonth(cell.label.text!)
+                textView.insertText("\(units)\n")
+                workingData.append(units)
+                print("Circled cell is \(cell.label.text), \(units) units.")
+            }
+        }
     
-    //        if (c.state == .Began) {
-    //            circlerDrawer.clear()
-    //        }
-    //        if (c.state == .Changed) {
-    //            circlerDrawer.updatePath(c.path)
-    //        }
-    //        if (c.state == .Ended || c.state == .Failed || c.state == .Cancelled) {
-    //            circlerDrawer.updateFit(c.fitResult, madeCircle: c.isCircle)
-    //        }
-    //    }
+        func circled(c: CircleGestureRecognizer) {
+            if (c.state == .Ended) {
+                print("Made a circle")
+                findCircledCell(c.fitResult.center)
+            }
     
-    //    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    //        canvasView.drawTouches(touches, withEvent: event)
-    //
-    //        if visualizeAzimuth {
-    //            for touch in touches {
-    //                if touch.type == .Stylus {
-    //                    //reticleView.hidden = false
-    //                    //updateReticleViewWithTouch(touch, event: event)
-    //                }
-    //            }
-    //        }
-    //    }
-    //
-    //    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    //        canvasView.drawTouches(touches, withEvent: event)
-    //
-    //        if visualizeAzimuth {
-    //            for touch in touches {
-    //                if touch.type == .Stylus {
-    //                    //updateReticleViewWithTouch(touch, event: event)
-    //
-    //                    // Use the last predicted touch to update the reticle.
-    //                    //guard let predictedTouch = event?.predictedTouchesForTouch(touch)?.last else { return }
-    //
-    //                    //updateReticleViewWithTouch(predictedTouch, event: event, isPredicted: true)
-    //                }
-    //            }
-    //        }
-    //    }
-    //
-    //    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    //        canvasView.drawTouches(touches, withEvent: event)
-    //        canvasView.endTouches(touches, cancel: false)
-    //
-    //        if visualizeAzimuth {
-    //            for touch in touches {
-    //                if touch.type == .Stylus {
-    //                    //reticleView.hidden = true
-    //                }
-    //            }
-    //        }
-    //    }
-    //
-    //    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
-    //        guard let touches = touches else { return }
-    //        canvasView.endTouches(touches, cancel: true)
-    //
-    //        if visualizeAzimuth {
-    //            for touch in touches {
-    //                if touch.type == .Stylus {
-    //                    //reticleView.hidden = true
-    //                }
-    //            }
-    //        }
-    //    }
-    //    
-    //    override func touchesEstimatedPropertiesUpdated(touches: Set<NSObject>) {
-    //        canvasView.updateEstimatedPropertiesForTouches(touches)
-    //    }
+//            if (c.state == .Began) {
+//                circlerDrawer.clear()
+//            }
+//            if (c.state == .Changed) {
+//                circlerDrawer.updatePath(c.path)
+//            }
+//            if (c.state == .Ended || c.state == .Failed || c.state == .Cancelled) {
+//                circlerDrawer.updateFit(c.fitResult, madeCircle: c.isCircle)
+//            }
+        }
+    
+    func unitsForMonth(month: String) -> Double {
+        let index = table.monthsIndexWithMatchingName(month)
+        return table.unitsSold[index]
+    }
+    
     
     // MARK: - UICollectionViewDataSource protocol
     
@@ -439,25 +388,30 @@ class MasterViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     // MARK: - Touches for CanvasView
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        canvasView.drawTouches(touches, withEvent: event)
-    }
-    
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        canvasView.drawTouches(touches, withEvent: event)
-    }
-    
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        canvasView.drawTouches(touches, withEvent: event)
-        canvasView.endTouches(touches, cancel: false)
-    }
-    
-    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
-        guard let touches = touches else { return }
-        canvasView.endTouches(touches, cancel: true)
-    }
-    
-    override func touchesEstimatedPropertiesUpdated(touches: Set<NSObject>) {
-        canvasView.updateEstimatedPropertiesForTouches(touches)
-    }
+//    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+//        print("here")
+//        canvasView.drawTouches(touches, withEvent: event)
+//    }
+//    
+//    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+//        canvasView.drawTouches(touches, withEvent: event)
+//    }
+//    
+//    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+//        canvasView.drawTouches(touches, withEvent: event)
+//        canvasView.endTouches(touches, cancel: false)
+//        let intersectionPoint = canvasView.getIntersection()
+//        if (intersectionPoint.x >= 0) {
+//            print("got an intersection in MVC class")
+//        }
+//    }
+//    
+//    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+//        guard let touches = touches else { return }
+//        canvasView.endTouches(touches, cancel: true)
+//    }
+//    
+//    override func touchesEstimatedPropertiesUpdated(touches: Set<NSObject>) {
+//        canvasView.updateEstimatedPropertiesForTouches(touches)
+//    }
 }

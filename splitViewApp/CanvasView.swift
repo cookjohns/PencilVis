@@ -34,7 +34,6 @@ class CanvasView: UIView {
 
     /// Array containing all line objects that have been completely drawn into the frozenContext.
     var finishedLines = [Line]()
-
     
     /** 
         Holds a map of `UITouch` objects to `Line` objects whose touch has not ended yet.
@@ -241,6 +240,26 @@ class CanvasView: UIView {
         }
         // update the view
         setNeedsDisplayInRect(updateRect)
+    }
+    
+    func getIntersection() -> CGPoint {
+        // check for 'x' over any data point on chart
+        let recentPoints: [LinePoint]? = lines.count > 0 ? lines[0].points : nil
+        
+        if lines.count > 1 {
+            let previousPoints = lines[1].points
+            
+            for i in 1 ..< recentPoints!.count-1 {
+                for j in 0 ..< previousPoints.count-1 {
+                    if let intersection = intersectionBetweenSegments(recentPoints![i].location, recentPoints![i+1].location, previousPoints[j].location, previousPoints[j+1].location) {
+                        // do whatever you want with `intersection`
+                        print("Intersection found at \(intersection)")
+                        return intersection
+                    }
+                }
+            }
+        }
+        return CGPoint(x: -1, y: -1)
     }
     
     func intersectionBetweenSegments(p0: CGPoint, _ p1: CGPoint, _ p2: CGPoint, _ p3: CGPoint) -> CGPoint? {

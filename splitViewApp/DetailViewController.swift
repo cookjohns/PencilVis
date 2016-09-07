@@ -245,6 +245,14 @@ class DetailViewController: UIViewController {
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         canvasView.drawTouches(touches, withEvent: event)
         canvasView.endTouches(touches, cancel: false)
+        if (touches.first!.type == .Stylus) {
+            let intersection = canvasView.getIntersection()
+            if intersection.x >= 0 {
+                print("Intersection x at \(intersection.x)")
+                var highlighter = pieChartView.highlighter
+                pieChartView.highlightValue(highlight: highlighter!.getHighlight(x: intersection.x, y: intersection.y), callDelegate: true)
+            }
+        }
     }
     
     override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {

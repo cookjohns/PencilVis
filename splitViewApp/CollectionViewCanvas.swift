@@ -100,6 +100,10 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress))
         self.view.addGestureRecognizer(longPress)
         
+        let circleRecognizer = CircleGestureRecognizer(target: self, action: #selector(circled))
+//        self.view.addGestureRecognizer(circleRecognizer)
+        
+        
 //        // add double tap gesture recognizer so things don't crash when double tapping
 //        // set up tap recognizer for double taps (need discrete gesture for each view)
 //        let tapCanvas = UITapGestureRecognizer(target: self, action: #selector(doubleTap))
@@ -156,6 +160,40 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                 workingData.append(units!)
             }
         }
+    }
+    
+    func findCircledCell(center: CGPoint) {
+        // walk through the image views and see if the center of the drawn circle was over one of the views
+        let indexPath = self.collectionView!.indexPathForItemAtPoint(center)
+        if let index = indexPath {
+            let cell = self.collectionView!.cellForItemAtIndexPath(indexPath!) as! CollectionViewCell
+            let units = unitsForMonth(cell.label.text!)
+            textView.insertText("\(units)\n")
+            workingData.append(units)
+            print("Circled cell is \(cell.label.text), \(units) units.")
+        }
+    }
+    
+    func circled(c: CircleGestureRecognizer) {
+        if (c.state == .Ended) {
+            print("Made a circle")
+            findCircledCell(c.fitResult.center)
+        }
+        
+        //            if (c.state == .Began) {
+        //                circlerDrawer.clear()
+        //            }
+        //            if (c.state == .Changed) {
+        //                circlerDrawer.updatePath(c.path)
+        //            }
+        //            if (c.state == .Ended || c.state == .Failed || c.state == .Cancelled) {
+        //                circlerDrawer.updateFit(c.fitResult, madeCircle: c.isCircle)
+        //            }
+    }
+    
+    func unitsForMonth(month: String) -> Double {
+        let index = table.monthsIndexWithMatchingName(month)
+        return table.unitsSold[index]
     }
     
 //    func doubleTap() {
@@ -215,7 +253,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         
         // pop up alert
         let title = "Delete annotations?"
-        let message = "Are you sure you want to delete all annotations from the \(currentChartName()) chart?"
+        let message = "Are you sure you want to delete all annotations from the spreadsheet and \(currentChartName()) chart?"
         
         let ac = UIAlertController(title: title, message: message, preferredStyle: .ActionSheet)
         
@@ -225,6 +263,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             
             // do the annotations deletion
             self.detailView.canvasView.clear()
+            self.canvas.clear()
             
             // clear the textView
             self.textView.text = ""
@@ -426,6 +465,16 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         canvas.drawTouches(touches, withEvent: event)
         canvas.endTouches(touches, cancel: false)
+        if (touches.first!.type == .Stylus) {
+            let intersection = canvas.getIntersection()
+            if intersection.x >= 0 {
+                print("Intersection x at \(intersection.x)")
+                let indexPath = collectionView?.indexPathForItemAtPoint(intersection)
+                if indexPath != nil {
+                    self.collectionView(collectionView!, didSelectItemAtIndexPath: indexPath!)
+                }
+            }
+        }
     }
     
     override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
