@@ -250,7 +250,7 @@ class DetailViewController: UIViewController {
             if intersection.x >= 0 {
                 print("Intersection x at \(intersection.x)")
                 var highlighter = pieChartView.highlighter
-                pieChartView.highlightValue(highlight: highlighter!.getHighlight(x: intersection.x, y: intersection.y), callDelegate: true)
+//                pieChartView.highlightValue(highlight: highlighter!.getHighlight(x: intersection.x, y: intersection.y), callDelegate: true)
             }
         }
     }

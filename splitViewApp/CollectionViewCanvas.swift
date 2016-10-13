@@ -164,8 +164,9 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     
     func findCircledCell(center: CGPoint) {
         // walk through the image views and see if the center of the drawn circle was over one of the views
+        print(self.collectionView!.indexPathForItemAtPoint(center)?.row)
         let indexPath = self.collectionView!.indexPathForItemAtPoint(center)
-        if let index = indexPath {
+        if indexPath != nil {
             let cell = self.collectionView!.cellForItemAtIndexPath(indexPath!) as! CollectionViewCell
             let units = unitsForMonth(cell.label.text!)
             textView.insertText("\(units)\n")
@@ -339,7 +340,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                 cell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
                 cell.label.textColor = UIColor.lightGrayColor()
             }
-                // if cell is active, set white background and black text (or top left cell)
+                //  if cell is active, set white background and black text (or top left cell)
             else if (table.isActive(index)) {
                 cell.contentView.backgroundColor = UIColor.whiteColor()
             }

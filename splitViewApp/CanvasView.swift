@@ -244,21 +244,25 @@ class CanvasView: UIView {
     
     func getIntersection() -> CGPoint {
         // check for 'x' over any data point on chart
-        let recentPoints: [LinePoint]? = lines.count > 0 ? lines[0].points : nil
+        var recentPoints: [LinePoint]? = lines.count > 0 ? lines[lines.endIndex-1].points : nil
         
         if lines.count > 1 {
-            let previousPoints = lines[1].points
+            var previousPoints = lines[lines.endIndex-2].points
             
             for i in 1 ..< recentPoints!.count-1 {
                 for j in 0 ..< previousPoints.count-1 {
-                    if let intersection = intersectionBetweenSegments(recentPoints![i].location, recentPoints![i+1].location, previousPoints[j].location, previousPoints[j+1].location) {
+                    var intersection = intersectionBetweenSegments(recentPoints![i].location, recentPoints![i+1].location, previousPoints[j].location, previousPoints[j+1].location)
+                    if intersection != nil {
                         // do whatever you want with `intersection`
-                        print("Intersection found at \(intersection)")
-                        return intersection
+//                        print("Intersection found at \(intersection)")
+                        return intersection!
                     }
                 }
             }
+            previousPoints.removeAll()
         }
+//        lines.removeAll()
+        recentPoints?.removeAll()
         return CGPoint(x: -1, y: -1)
     }
     
