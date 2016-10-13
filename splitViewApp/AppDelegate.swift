@@ -1,3 +1,4 @@
+
 //
 //  AppDelegate.swift
 //  splitViewApp
@@ -28,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // access DetailViewController and set its table and masterView
         detailController.table = table
         detailController.updated = false
-//        detailController.masterView = masterController
+        detailController.masterView = masterController
         
         return true
     }
