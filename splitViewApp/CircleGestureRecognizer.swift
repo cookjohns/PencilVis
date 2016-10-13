@@ -18,9 +18,9 @@ class CircleGestureRecognizer: UIGestureRecognizer {
   
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent) {
     super.touchesBegan(touches, withEvent: event)
-//    if (touches.count != 1) {
-//      state = .Failed // cancel the gesture if more than one finger is involved
-//    }
+    if (touches.count != 1) {
+      state = .Failed // cancel the gesture if more than one finger is involved
+    }
     state = .Began
     
     let window = view?.window
