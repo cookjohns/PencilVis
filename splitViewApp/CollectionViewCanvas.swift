@@ -507,11 +507,12 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         let hasInside = anyPointsInTheMiddle()
         
         _ = calculateBoundingOverlap()
-        isCircle = fitResult.error <= tolerance && !hasInside //&& percentOverlap > (1-tolerance)
+        isCircle = fitResult.error <= tolerance && !hasInside && calculateBoundingOverlap() > (1-tolerance)
         cState = isCircle ? .Ended : .Failed // fail or end, based on isCircle
         if (cState == .Ended) {
             circled()
         }
+        reset()
     }
     
     override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
@@ -537,6 +538,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         case Cancelled
         case Changed
         case Failed
+        case Possible
     }
     var cState : circleState = .Ended
     
@@ -574,5 +576,12 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         
         let percentOverlap = overlapRectArea / circleBoxArea
         return percentOverlap
+    }
+    
+    func reset() {
+        touchedPoints.removeAll(keepCapacity: true)
+        path = CGPathCreateMutable()
+        isCircle = false
+        cState = .Possible
     }
 }
