@@ -100,10 +100,6 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress))
         self.view.addGestureRecognizer(longPress)
         
-        let circleRecognizer = CircleGestureRecognizer(target: self, action: #selector(circled))
-//        self.view.addGestureRecognizer(circleRecognizer)
-        
-        
 //        // add double tap gesture recognizer so things don't crash when double tapping
 //        // set up tap recognizer for double taps (need discrete gesture for each view)
 //        let tapCanvas = UITapGestureRecognizer(target: self, action: #selector(doubleTap))
@@ -175,20 +171,22 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         }
     }
     
-    func circled(c: CircleGestureRecognizer) {
-        if (c.state == .Ended) {
+//    func circled(c: CircleGestureRecognizer) {
+    func circled() {
+        if (cState == .Ended) {
             print("Made a circle")
-            findCircledCell(c.fitResult.center)
+//            findCircledCell(c.fitResult.center)
+            findCircledCell(fitResult.center)
         }
         
-        //            if (c.state == .Began) {
+        //            if (cState == .Began) {
         //                circlerDrawer.clear()
         //            }
-        //            if (c.state == .Changed) {
-        //                circlerDrawer.updatePath(c.path)
+        //            if (cState == .Changed) {
+        //                circlerDrawer.updatePath(path)
         //            }
-        //            if (c.state == .Ended || c.state == .Failed || c.state == .Cancelled) {
-        //                circlerDrawer.updateFit(c.fitResult, madeCircle: c.isCircle)
+        //            if (cState == .Ended || cState == .Failed || cState == .Cancelled) {
+        //                circlerDrawer.updateFit(fitResult, madeCircle: isCircle)
         //            }
     }
     
@@ -456,11 +454,35 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                 self.collectionView(collectionView!, didSelectItemAtIndexPath: indexPath!)
             }
         }
+        
+        // circle stuff
+        if (touches.count != 1) {
+            cState = .Failed // cancel the gesture if more than one finger is involved
+        }
+        cState = .Began
+        
+        let window = view?.window
+        if let touches = touches as? Set<UITouch>, loc = touches.first?.locationInView(window) {
+            CGPathMoveToPoint(path, nil, loc.x, loc.y)
+        }
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.collectionView?.touchesBegan(touches, withEvent: event)
         canvas.drawTouches(touches, withEvent: event)
+        
+        // circle stuff
+        // don't process other touches if gesture has already failed
+        if cState == .Failed {
+            return
+        }
+        
+        let window = view?.window
+        if let touches = touches as? Set<UITouch>, loc = touches.first?.locationInView(window) {
+            touchedPoints.append(loc)
+            CGPathAddLineToPoint(path, nil, loc.x, loc.y)
+            cState = .Changed
+        }
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -476,14 +498,81 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                 }
             }
         }
+        
+        // cirlce stuff
+        // figure out if path was circle
+        fitResult = fitCircle(touchedPoints)
+        
+        // check for points in the middle of the circle
+        let hasInside = anyPointsInTheMiddle()
+        
+        _ = calculateBoundingOverlap()
+        isCircle = fitResult.error <= tolerance && !hasInside //&& percentOverlap > (1-tolerance)
+        cState = isCircle ? .Ended : .Failed // fail or end, based on isCircle
+        if (cState == .Ended) {
+            circled()
+        }
     }
     
     override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
         guard let touches = touches else { return }
         canvas.endTouches(touches, cancel: true)
+        cState = .Cancelled
     }
     
     override func touchesEstimatedPropertiesUpdated(touches: Set<NSObject>) {
         canvas.updateEstimatedPropertiesForTouches(touches)
+    }
+    
+    // MARK: - Circle Gesture Stuff
+    
+    private var touchedPoints = [CGPoint]() // point history
+    var fitResult = CircleResult()  // info about how circle-like the path is
+    var tolerance: CGFloat = 0.2    // "perfect circle" tolerance
+    var isCircle = false
+    var path = CGPathCreateMutable()
+    enum circleState {
+        case Began
+        case Ended
+        case Cancelled
+        case Changed
+        case Failed
+    }
+    var cState : circleState = .Ended
+    
+    private func anyPointsInTheMiddle() -> Bool {
+        let fitInnerRadius = fitResult.radius / sqrt(2) * tolerance
+        
+        let innerBox = CGRect(
+            x: fitResult.center.x - fitInnerRadius,
+            y: fitResult.center.y - fitInnerRadius,
+            width: 2 * fitInnerRadius,
+            height: 2 * fitInnerRadius)
+        
+        var hasInside = false
+        for point in touchedPoints {
+            if innerBox.contains(point) {
+                hasInside = true
+                break
+            }
+        }
+        return hasInside
+    }
+    
+    private func calculateBoundingOverlap() -> CGFloat {
+        let fitBoundingBox = CGRect(
+            x: fitResult.center.x - fitResult.radius,
+            y: fitResult.center.y - fitResult.radius,
+            width:  2 * fitResult.radius,
+            height: 2 * fitResult.radius)
+        let pathBoundingBox = CGPathGetBoundingBox(path)
+        
+        let overlapRect = fitBoundingBox.intersect(pathBoundingBox)
+        
+        let overlapRectArea = overlapRect.width * overlapRect.height
+        let circleBoxArea = fitBoundingBox.width * fitBoundingBox.height
+        
+        let percentOverlap = overlapRectArea / circleBoxArea
+        return percentOverlap
     }
 }
