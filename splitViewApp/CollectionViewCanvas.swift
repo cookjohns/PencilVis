@@ -2,7 +2,8 @@
 //  ViewController.swift
 //  CollectionViewExample
 //
-//  Created by Justin Hill on 8/2/16.
+//  Created by John Cook on 8/2/16.
+//  Thanks to Justin Hill for direction.
 //  Copyright © 2016 Justin Hill. All rights reserved.
 //
 
