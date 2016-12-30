@@ -22,8 +22,13 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     var detailView: DetailViewController!
     var clearButton:  UIButton!
     var workingData: [Double]! = []
-    var selectedValues: [Double] = []
+    var selectedIndices: [NSIndexPath] = []
     var highlighted: [Bool] = []
+    var arithmeticValue = 0.0 {
+        didSet {
+            print("Arithmetic value: \(arithmeticValue)")
+        }
+    }
     private let ReuseIdentifier = "cell" // also set as cell identifier in storyboard
     
     var canvas = CanvasView()
@@ -80,8 +85,8 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         clearButton.layer.borderColor  = UIColor.grayColor().CGColor
         clearButton.layer.borderWidth  = 1
         clearButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        clearButton.setTitle("Clear annotation", forState: .Normal)
-        clearButton.addTarget(self, action: #selector(clearAnnotation), forControlEvents: .TouchUpInside)
+        clearButton.setTitle("Clear All", forState: .Normal)
+        clearButton.addTarget(self, action: #selector(clearAll), forControlEvents: .TouchUpInside)
         self.view.addSubview(clearButton)
         
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress))
@@ -113,11 +118,11 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         }
         
         table.tableItems[index] = ""
+        selectedIndices.removeAtIndex(selectedIndices.indexOf(indexPath)!)
         
-        let path = NSIndexPath(forRow: indexPath.row, inSection: indexPath.section)
-        indices.append(path)
+        indices.removeAll()
+        indices.append(indexPath)
         self.collectionView!.reloadItemsAtIndexPaths(indices)
-//        self.collectionView?.reloadData()
     }
     
     // for testing - not currently used
@@ -134,7 +139,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                 
                 // set values for circled item
                 if (cell.label.text == "") {
-//                    table.tableItems[index] = "\(selectedValues[0]!)"
+//                    table.tableItems[index] = "\(selectedIndices[0]!)"
 //                    self.collectionView?.reloadData()
                     return
                 }
@@ -145,7 +150,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                 }
                 else {
                     let val = Double(cell.label.text!)
-                    selectedValues.append(val!)
+                    selectedIndices.append(indexPath!)
                     highlighted[index] = true
                     
                     let path = NSIndexPath(forRow: indexPath!.row, inSection: indexPath!.section)
@@ -159,22 +164,22 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         }
     }
     
-    func resultOfOperator(op: String, selectedValues: [Double], newVal: Double) -> Double {
+    func resultOfOperator(op: String, selectedIndices: [Int], newVal: Double) -> Int {
         let c = op.characters.last
         if (c == "+") {
-            return selectedValues[selectedValues.count] + newVal
+            return selectedIndices[selectedIndices.count] + Int(newVal)
         }
         if (c == "-") {
-            return selectedValues[selectedValues.count] - newVal
+            return selectedIndices[selectedIndices.count] - Int(newVal)
         }
         if (c == "*") {
-            return selectedValues[selectedValues.count] * newVal
+            return selectedIndices[selectedIndices.count] * Int(newVal)
         }
         if (c == "/") {
-            return selectedValues[selectedValues.count] / newVal
+            return selectedIndices[selectedIndices.count] / Int(newVal)
         }
         if (c == "%") {
-            return selectedValues[selectedValues.count] % newVal
+            return selectedIndices[selectedIndices.count] % Int(newVal)
         }
         return -1
     }
@@ -187,12 +192,12 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         return table.unitsSold[index]
     }
     
-    @IBAction func clearAnnotation(sender: UIButton) {
+    @IBAction func clearAll(sender: UIButton) {
         print("Button pressed")
         
         // pop up alert
-        let title = "Delete annotations?"
-        let message = "Are you sure you want to delete all annotations?"
+        let title = "Delete all work?"
+        let message = "Are you sure you want to delete all annotations and work?"
         
         let ac = UIAlertController(title: title, message: message, preferredStyle: .ActionSheet)
         
@@ -204,7 +209,13 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             self.canvas.clear()
             
             // reset the selected value array
-            self.selectedValues = []
+            self.selectedIndices.removeAll()
+            
+            // reset the arithmeticValue
+            self.arithmeticValue = 0.0
+            
+            // reset the tableview (remove highlighted cells)
+            self.collectionView?.reloadData()
         })
         ac.addAction(deleteAction)
         
@@ -256,13 +267,15 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         cell.label.attributedText = text
         
         // set highlighted background if necessary
-        if highlighted[index] == true {
+        if self.selectedIndices.indexOf(indexPath) == nil {
+            cell.backgroundColor = UIColor.whiteColor()
+        }
+        else {
             cell.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.9)
-//            cell.backgroundColor = UIColor.blueColor()
         }
         
         // set up operator cells
-        if selectedValues.count == 2 {
+        if selectedIndices.count == 2 {
             // + operator
             if index == 192 {
                 cell.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.6)
@@ -284,12 +297,17 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                 cell.label.text = "/"
             }
         }
-        if selectedValues.count > 2 {
+        if selectedIndices.count > 2 {
             // sum operator
             if index == 192 {
                 cell.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.6)
                 cell.label.text = "SUM"
             }
+        }
+        
+        // arithmeticValue display
+        if index == 203 && arithmeticValue == 0.0 {
+            cell.label.text = ""
         }
         
         return cell
@@ -328,10 +346,9 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                                         let textField = alert.textFields!.first
                                         self.table.tableItems[index] = (textField?.text)!
                                         
-                                        let path = NSIndexPath(forRow: indexPath.row, inSection: indexPath.section)
-                                        indices.append(path)
+                                        indices.removeAll()
+                                        indices.append(indexPath)
                                         self.collectionView!.reloadItemsAtIndexPaths(indices)
-//                                        self.collectionView?.reloadData()
         })
         
         let cancelAction = UIAlertAction(title: "Cancel",
@@ -389,7 +406,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
 //            
 //            // set values for circled item
 //            if (cell.label.text == "") {
-//                table.tableItems[index!] = "\(selectedValues[0])"
+//                table.tableItems[index!] = "\(selectedIndices[0])"
 ////                self.collectionView?.reloadData()
 //                return
 //            }
@@ -400,7 +417,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
 //            }
 //            else {
 //                let val = Double(cell.label.text!)
-//                selectedValues.append(val!)
+//                selectedIndices(val!)
 //                highlighted[index!] = true
 //                
 //                let path = NSIndexPath(forRow: indexPath!.row, inSection: indexPath!.section)
@@ -412,50 +429,69 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
 //        }
     }
     
-    func useSelectedCell(indexIn: NSIndexPath) {
-        let index = indexIn.item
-        var indices = [indexIn]
-        let cell = self.collectionView!.cellForItemAtIndexPath(indexIn) as! CollectionViewCell
+    func useSelectedCell(indexPathIn: NSIndexPath) {
+        let index = indexPathIn.item
+        var indicesToUpdate = [indexPathIn]
+        let cell = self.collectionView!.cellForItemAtIndexPath(indexPathIn) as! CollectionViewCell
         let val = Double(cell.label.text!)
+        indicesToUpdate.removeAll()
         
-        // if it's already selected, deselect and get out
-        if highlighted[index] == true {
-            highlighted[index] = false
-            let indexOfVal = selectedValues.indexOf(val!)
-            selectedValues.removeAtIndex(indexOfVal!)
-            
-            let path = NSIndexPath(forRow: indexIn.row, inSection: indexIn.section)
-            indices.removeAll()
-            indices.append(path)
-            self.collectionView!.reloadItemsAtIndexPaths(indices)
-            setupOperatorCells()
+        // if selection is operator
+        if index > 191 && index < 203 && cell.label.text != "" {
+            let op = cell.label.text
+            if op == "+" {
+                arithmeticValue = Double(table.tableItems[selectedIndices[0].item])! + Double(table.tableItems[selectedIndices[1].item])!
+                selectedIndices.removeAll()
+            }
+            if op == "-" {
+                arithmeticValue = Double(table.tableItems[selectedIndices[0].item])! - Double(table.tableItems[selectedIndices[1].item])!
+                selectedIndices.removeAll()
+            }
+            if op == "*" {
+                arithmeticValue = Double(table.tableItems[selectedIndices[0].item])! * Double(table.tableItems[selectedIndices[1].item])!
+                selectedIndices.removeAll()
+            }
+            if op == "/" {
+                arithmeticValue = Double(table.tableItems[selectedIndices[0].item])! / Double(table.tableItems[selectedIndices[1].item])!
+                selectedIndices.removeAll()
+            }
+            if op == "SUM" {
+                var temp = 0.0
+                for i in 0 ..< selectedIndices.count {
+                    temp += Double(table.tableItems[selectedIndices[i].item])!
+                }
+                arithmeticValue = temp
+                selectedIndices.removeAll()
+            }
+            // update arithmeticValue display cell
+            table.tableItems[203] = "\(arithmeticValue)"
+            self.collectionView?.reloadData()
             return
         }
-            
-        // set values for circled item
-//        if (cell.label.text == "") {
-//            table.tableItems[index] = "\(workingValue!)"
-//            hasWorkingVal = false
-//                
-//            self.collectionView?.reloadData()
-//            return
-//        }
         
-        // is it a month? if not, set up prev/current values
+        // get out if it's a month label
         if (index < 12) {
             return
         }
-        else if cell.label.text != "" {
-            selectedValues.append(val!)
-            highlighted[index] = true
+        
+        // if it's already selected, deselect and get out
+        if let selection = selectedIndices.indexOf(indexPathIn) {
+            selectedIndices.removeAtIndex(selection)
             
-            let path = NSIndexPath(forRow: indexIn.row, inSection: indexIn.section)
-            indices.removeAll()
-            indices.append(path)
-            self.collectionView!.reloadItemsAtIndexPaths(indices)
+            indicesToUpdate.append(indexPathIn)
+            self.collectionView!.reloadItemsAtIndexPaths(indicesToUpdate)
+            setupOperatorCells()
+            return
+        }
+        // otherwise select it (if it's not blank)
+        else if cell.label.text != "" {
+                selectedIndices.append(indexPathIn)
+            
+            indicesToUpdate.append(indexPathIn)
+            self.collectionView!.reloadItemsAtIndexPaths(indicesToUpdate)
             setupOperatorCells()
         }
-        print("Circled cell is \(cell.label.text!)")
+        print("Selected cell is \(cell.label.text!)")
     }
     
     private func anyPointsInTheMiddle() -> Bool {
@@ -564,16 +600,16 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                 // circle and line stuff
                 
                 // determine if path was circle
-                fitResult = fitCircle(touchedPoints)
-                
-                // check for points in the middle of the circle
-                let hasInside = anyPointsInTheMiddle()
-                
-                isCircle = fitResult.error <= tolerance && hasInside
-                cState = isCircle ? .ended : .failed // fail or end, based on isCircle
-                if (isCircle && cState == .ended) {
-//                    useCircledCell(fitResult.center)
-                }
+//                fitResult = fitCircle(touchedPoints)
+//                
+//                // check for points in the middle of the circle
+//                let hasInside = anyPointsInTheMiddle()
+//                
+//                isCircle = fitResult.error <= tolerance && hasInside
+//                cState = isCircle ? .ended : .failed // fail or end, based on isCircle
+//                if (isCircle && cState == .ended) {
+////                    useCircledCell(fitResult.center)
+//                }
                 
                 // so not a circle, must be a line
                 

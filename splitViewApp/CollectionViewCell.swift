@@ -10,4 +10,5 @@ import UIKit
 
 class CollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var label: UILabel!
+    var highlight: Bool = false
 }
