@@ -11,7 +11,7 @@ import UIKit
 
 class Table {
     
-    // MARK: - Properties
+    // MARK: - VARIABLES
     
     let months:    [String]! // reference
     var unitsSold: [Double]! // reference
@@ -24,38 +24,55 @@ class Table {
     
     var recentIntersection: CGPoint!
     
-    // MARK: - Initializer
+    // MARK: - INITIALIZER
     
     init() {
-        months     = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-        unitsSold  = [34.0, 54.0, 74.0, 94.0, 114.0, 134.0, 154.0, 174.0, 93.0, 67.0, 54.0, 104.0]
-        tableItems = ["Mth\\Wk", "1", "2", "3", "4", "Jan", "7", "8", "9", "10", "Feb", "12", "13", "14", "15", "Mar", "17", "18", "19", "20", "Apr", "22", "23", "24", "25", "May", "27", "28", "29", "30", "Jun", "32", "33", "34", "35", "Jul", "37", "38", "39", "40", "Aug", "42", "43", "44", "45", "Sep", "28", "12", "11", "42", "Oct", "1", "19", "30", "17", "Nov", "6", "4", "15", "29", "Dec", "0", "37", "22", "45", "", "", "","", "", "", "", "", "", "", "", "", "", "", ""]
-        updated = false
-        COUNT   = tableItems.count
+        months        = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        unitsSold     = [34.0, 54.0, 74.0, 94.0, 114.0, 134.0, 154.0, 174.0, 93.0, 67.0, 54.0, 104.0]
+        tableItems = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "13", "14", "15", "21", "17", "18", "19", "20", "53", "22", "23", "24", "25", "68", "27", "28", "29", "30", "201", "32", "33", "34", "35", "19", "37", "38", "39", "40", "0", "42", "43", "44", "45", "1", "28", "12", "11", "42", "12", "1", "19", "30", "17", "13", "6", "4", "15", "29", "28", "0", "37", "22", "45", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
+        tableItemsVisible = []
+        for _ in 0..<tableItems.count {
+            tableItemsVisible.append(true)
+        }
+        updated    = false
+        COUNT = tableItems.count
+        
         recentIntersection = CGPoint()
     }
     
-    // MARK: - Modification
+    // MARK: - FUNCTIONS
     
-    func zeroOutWeek(index: Int) {
-        if (index < 65) {
-           unitsSold[(index/5)-1] -= Double(self.tableItems[index])!
+    func activate(index: Int) {
+        self.tableItemsVisible[index] = true
+        // if index is a month
+        if (index > 4 && index % 5 == 0) {
+            for i in 1...4 {
+                self.tableItemsVisible[index+i] = true
+            }
         }
-        tableItems[index] = "0"
+            // if index is a week
+        else {
+            unitsSold[(index/5)-1] += Double(self.tableItems[index])!
+        }
     }
     
-    func zeroOutMonth(index: Int) {
-        for i in 1...4 {
-            self.tableItems[index+i] = "0"
+    func deactivate(index: Int) {
+        self.tableItemsVisible[index] = false
+        // if index is a month
+        if (index > 4 && index % 5 == 0) {
+            for i in 1...4 {
+                self.tableItemsVisible[index+i] = false
+            }
+        }
+        // if index is a week
+        else {
+            unitsSold[(index/5)-1] -= Double(self.tableItems[index])!
         }
     }
     
-    // NOT CURRENTLY USED
     func updateItem(index: Int, amount: Double) {
 //        unitsSoldShow()[index] += amount
     }
-    
-    // MARK: - Retrieval
     
     func totalUnitsShowing() -> Double {
         var result = 0.0
@@ -74,11 +91,17 @@ class Table {
         return -1
     }
     
+    func isActive(index: Int) -> Bool {
+        return self.tableItemsVisible[index]
+    }
+    
     func monthsToShow() -> [String] {
         var result: [String] = []
         var index = 5
         while index < 65 {
+            if self.isActive(index) {
                 result.append(months[(index/5)-1])
+            }
         index += 5
         }
         return result
@@ -88,8 +111,10 @@ class Table {
         var result: [Double] = []
         var index = 5
         while index < 61 {
-            // for each month, add its total from showing weeks
+            // if the month is active, add its total from showing weeks
+            if self.isActive(index) {
                 result.append(getWeeksTotalForMonth(index))
+            }
             // jump to next month in tableItems
             index += 5
         }
@@ -99,8 +124,10 @@ class Table {
     func getWeeksTotalForMonth(index: Int) -> Double {
         var result = 0.0
         for i in 1...4 {
-            // for each week, add it to the total
+            // if the week is active, add it to the total
+            if self.isActive(index+i) {
                 result += Double(self.tableItems[index+i])!
+            }
         }
         return result
     }

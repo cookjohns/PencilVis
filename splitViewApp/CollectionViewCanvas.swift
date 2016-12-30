@@ -11,7 +11,7 @@
 
 import UIKit
 
-class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextViewDelegate {
+class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     // TODO: - UNDO???
     
@@ -20,10 +20,10 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     
     var table:      Table!
     var detailView: DetailViewController!
-    var textView:     UITextView!
     var clearButton:  UIButton!
     var workingData: [Double]! = []
-    var cellLoadCount: Int = 0
+    var selectedValues: [Double] = []
+    var highlighted: [Bool] = []
     private let ReuseIdentifier = "cell" // also set as cell identifier in storyboard
     
     var canvas = CanvasView()
@@ -49,7 +49,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     var storedCircledVal  = -1
     var currentCircledVal = -1
     var activeCircle  = false
-    var selectedEmpty = false
+//    var selectedEmpty = false
     
     // MARK: - View
     
@@ -72,36 +72,6 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         self.canvas.backgroundColor = UIColor.clearColor()
         self.view.addSubview(self.canvas)
         
-        // add segmented controller for switching between chart types
-        let segmentedControl = UISegmentedControl(items: ["Pie", "Line", "Bar"])
-        segmentedControl.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
-        segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(segmentedControl)
-        
-        segmentedControl.addTarget(self, action: #selector(self.chartTypeChanged(_:)), forControlEvents: .ValueChanged)
-        
-        // add constraints for segmented controller
-        let bottomContstraint  = segmentedControl.bottomAnchor.constraintEqualToAnchor(bottomLayoutGuide.topAnchor, constant: -8)
-        let margins            = view.layoutMarginsGuide
-        let leadingConstraint  = segmentedControl.leadingAnchor.constraintEqualToAnchor(margins.leadingAnchor)
-        let trailingConstraint = segmentedControl.trailingAnchor.constraintEqualToAnchor(margins.trailingAnchor)
-        
-        bottomContstraint.active  = true
-        leadingConstraint.active  = true
-        trailingConstraint.active = true
-        
-        // setup textField
-        textView = UITextView(frame: CGRectMake(100, 855.0, 300.0, 50.0))
-        textView.textAlignment      = NSTextAlignment.Left
-        textView.textColor          = UIColor.blueColor()
-        textView.backgroundColor    = UIColor(white: 0.9, alpha: 1)
-        textView.layer.borderColor  = UIColor.grayColor().CGColor
-        textView.layer.borderWidth  = 2
-        textView.layer.cornerRadius = 8
-        self.view.addSubview(textView)
-        textView.delegate = self
-        
         // setup clear button
         clearButton = UIButton()
         clearButton.frame = CGRect(x: 100.0, y: 925.0, width: 300, height: 40)
@@ -113,6 +83,13 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         clearButton.setTitle("Clear annotation", forState: .Normal)
         clearButton.addTarget(self, action: #selector(clearAnnotation), forControlEvents: .TouchUpInside)
         self.view.addSubview(clearButton)
+        
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress))
+        self.view.addGestureRecognizer(longPress)
+        
+        for _ in 0..<table.tableItems.count {
+            highlighted.append(false)
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -121,9 +98,6 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         // Whenever the container view lays out its subviews, make sure to stretch
         // the canvas over its entire bounds.
         self.canvas.frame = self.view.bounds
-        
-        // Also, make sure the canvas view is in front of the collection view and on-screen controls
-        //        self.view.bringSubviewToFront(self.canvas)
     }
     
     // MARK: - Functions
@@ -131,29 +105,19 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     
     func didCrossOutCell(indexPath: NSIndexPath) {
         let index = indexPath.item
-        let isMonth = index % 5 == 0 && index != 65 ? true : false
-        let selectedAmount = Double(table.tableItems[indexPath.item])
+        var indices = [indexPath]
         
         // check for valid selection box
-        if (index < 5) {
+        if (index < 12) {
             return
         }
         
-        // if the selected cell is a month
-        if (isMonth) {
-            table.zeroOutMonth(index)
-        }
-            // otherwise, selected cell is a week
-        else {
-            // if non-zero, zero out
-            if (selectedAmount != nil && selectedAmount != 0) {
-                table.zeroOutWeek(index)
-            }
-        }
+        table.tableItems[index] = ""
         
-        // signal detailView to redraw chart
-        detailView.updated = true
-        collectionView?.reloadData()
+        let path = NSIndexPath(forRow: indexPath.row, inSection: indexPath.section)
+        indices.append(path)
+        self.collectionView!.reloadItemsAtIndexPaths(indices)
+//        self.collectionView?.reloadData()
     }
     
     // for testing - not currently used
@@ -163,17 +127,56 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             // get location/indexPath/cell of touch, add it to textView, then add to workingData array
             let point = sender.locationInView(self.collectionView)
             let indexPath = self.collectionView!.indexPathForItemAtPoint(point)
+            let index = indexPath!.item
+            var indices = [indexPath!]
             if indexPath != nil {
                 let cell = self.collectionView!.cellForItemAtIndexPath(indexPath!) as! CollectionViewCell
-                let units = Double(cell.label.text!)
-                if let val = units {
-                    textView.insertText("\(val)\n")
-                    let range = NSMakeRange(textView.text.characters.count - 1, 0)
-                    textView.scrollRangeToVisible(range)
+                
+                // set values for circled item
+                if (cell.label.text == "") {
+//                    table.tableItems[index] = "\(selectedValues[0]!)"
+//                    self.collectionView?.reloadData()
+                    return
                 }
-                workingData.append(units!)
+                
+                // is it a month? if not, set up prev/current values
+                if (index < 12) {
+                    return
+                }
+                else {
+                    let val = Double(cell.label.text!)
+                    selectedValues.append(val!)
+                    highlighted[index] = true
+                    
+                    let path = NSIndexPath(forRow: indexPath!.row, inSection: indexPath!.section)
+                    indices.removeAll()
+                    indices.append(path)
+                    self.collectionView!.reloadItemsAtIndexPaths(indices)
+//                        self.collectionView!.reloadData()
+                }
+                print("Circled cell is \(cell.label.text!)")
             }
         }
+    }
+    
+    func resultOfOperator(op: String, selectedValues: [Double], newVal: Double) -> Double {
+        let c = op.characters.last
+        if (c == "+") {
+            return selectedValues[selectedValues.count] + newVal
+        }
+        if (c == "-") {
+            return selectedValues[selectedValues.count] - newVal
+        }
+        if (c == "*") {
+            return selectedValues[selectedValues.count] * newVal
+        }
+        if (c == "/") {
+            return selectedValues[selectedValues.count] / newVal
+        }
+        if (c == "%") {
+            return selectedValues[selectedValues.count] % newVal
+        }
+        return -1
     }
     
     // MARK: Interface
@@ -184,67 +187,12 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         return table.unitsSold[index]
     }
     
-    // fires when mathematical operator is entered into textView
-    func textViewDidChange(textView: UITextView) {
-        let lastChar = textView.text.characters.last
-        
-        // addition
-        if (lastChar == "+") {
-            let result = currentCircledVal + storedCircledVal
-            textView.insertText("\nTotal: \(result)\n\n")
-            let range = NSMakeRange(textView.text.characters.count - 1, 0)
-            textView.scrollRangeToVisible(range)
-            storedCircledVal  = -1
-            currentCircledVal = -1
-            workingData = []
-        }
-        
-        // subtraction
-        if (lastChar == "-") {
-            // show addition of everything in workingData, then clear it out
-            var result = workingData[0]
-            for i in 1..<workingData.count {
-                result = result - workingData[i]
-            }
-            textView.insertText("\nTotal: \(result)")
-            let range = NSMakeRange(textView.text.characters.count - 1, 0)
-            textView.scrollRangeToVisible(range)
-            workingData = []
-        }
-        
-        // multiplication
-        if (lastChar == "*") {
-            // show addition of everything in workingData, then clear it out
-            var result = workingData[0]
-            for i in 1..<workingData.count {
-                result = result * workingData[i]
-            }
-            textView.insertText("\nTotal: \(result)")
-            let range = NSMakeRange(textView.text.characters.count - 1, 0)
-            textView.scrollRangeToVisible(range)
-            workingData = []
-        }
-        
-        // division
-        if (lastChar == "/") {
-            // show addition of everything in workingData, then clear it out
-            var result = workingData[0]
-            for i in 1..<workingData.count {
-                result = result / workingData[i]
-            }
-            textView.insertText("\nTotal: \(result)")
-            let range = NSMakeRange(textView.text.characters.count - 1, 0)
-            textView.scrollRangeToVisible(range)
-            workingData = []
-        }
-    }
-    
     @IBAction func clearAnnotation(sender: UIButton) {
         print("Button pressed")
         
         // pop up alert
         let title = "Delete annotations?"
-        let message = "Are you sure you want to delete all annotations from the spreadsheet and \(currentChartName()) chart?"
+        let message = "Are you sure you want to delete all annotations?"
         
         let ac = UIAlertController(title: title, message: message, preferredStyle: .ActionSheet)
         
@@ -253,11 +201,10 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             (action) -> Void in
             
             // do the annotations deletion
-            self.detailView.canvasView.clear()
             self.canvas.clear()
             
-            // clear the textView
-            self.textView.text = ""
+            // reset the selected value array
+            self.selectedValues = []
         })
         ac.addAction(deleteAction)
         
@@ -269,26 +216,6 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         
         // present the alert controller
         presentViewController(ac, animated: true, completion: nil)
-    }
-    
-    /* Use segmented controller to signal detailView to change chart subview */
-    func chartTypeChanged(segControl: UISegmentedControl) {
-        switch segControl.selectedSegmentIndex {
-        case 0:
-            // pie chart
-            detailView.changeChartType(0)
-            break
-        case 1:
-            // line graph
-            detailView.changeChartType(1)
-            break
-        case 2:
-            // bar graph
-            detailView.changeChartType(2)
-            break
-        default:
-            break
-        }
     }
     
     private func currentChartName() -> String {
@@ -315,7 +242,6 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let index = indexPath.item
-        let isMonth = index % 5 == 0 && index < 65 ? true : false
         
         // get a reference to the storyboard cell
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ReuseIdentifier, forIndexPath: indexPath) as! CollectionViewCell
@@ -329,36 +255,106 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         let text = NSAttributedString(string: "\(table.tableItems[indexPath.item])", attributes: textAttributes)
         cell.label.attributedText = text
         
-
-        // catch for top line
-        if index < 5 {
-            cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
+        // set highlighted background if necessary
+        if highlighted[index] == true {
+            cell.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.9)
+//            cell.backgroundColor = UIColor.blueColor()
         }
-        // if cell is month label, set blue background
-        else if (isMonth) {
-            cell.contentView.backgroundColor = UIColor(red: 0, green: 122, blue: 255, alpha: 1)
+        
+        // set up operator cells
+        if selectedValues.count == 2 {
+            // + operator
+            if index == 192 {
+                cell.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.6)
+                cell.label.text = "+"
+            }
+            //- operator
+            if index == 193 {
+                cell.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.6)
+                cell.label.text = "-"
+            }
+            // +* operator
+            if index == 194 {
+                cell.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.6)
+                cell.label.text = "*"
+            }
+            // / operator
+            if index == 195 {
+                cell.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.6)
+                cell.label.text = "/"
+            }
         }
-        //  if cell is week, set white background and black text (or top left cell)
-        else {
-            cell.contentView.backgroundColor = UIColor.whiteColor()
+        if selectedValues.count > 2 {
+            // sum operator
+            if index == 192 {
+                cell.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.6)
+                cell.label.text = "SUM"
+            }
         }
+        
         return cell
+    }
+    
+    func setupOperatorCells() {
+        let path1 = NSIndexPath(forRow: 192, inSection: 0)
+        let path2 = NSIndexPath(forRow: 193, inSection: 0)
+        let path3 = NSIndexPath(forRow: 194, inSection: 0)
+        let path4 = NSIndexPath(forRow: 195, inSection: 0)
+        var indices = [path1, path2, path3, path4]
+        collectionView!.reloadItemsAtIndexPaths(indices)
     }
     
     // MARK: - UICollectionViewDelegate protocol
     
     // use for tapping on cell to add data
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        // anchor alert pop-up with text entry to indexpath
+        let index = indexPath.item
+        //        let isMonth = index % 5 == 0 && index != 65 ? true : false
+        var indices = [indexPath]
         
-        // populate cell with text entry (check for digits only)
+        // check for valid selection box
+        if (index < 12) {
+            return
+        }
+        
+        let alert = UIAlertController(title:   "Insert value",
+                                      message: "",
+                                      preferredStyle: .Alert)
+        
+        let saveAction = UIAlertAction(title: "Save",
+                                       style: .Default,
+                                       handler: { (action:UIAlertAction) -> Void in
+                                        
+                                        let textField = alert.textFields!.first
+                                        self.table.tableItems[index] = (textField?.text)!
+                                        
+                                        let path = NSIndexPath(forRow: indexPath.row, inSection: indexPath.section)
+                                        indices.append(path)
+                                        self.collectionView!.reloadItemsAtIndexPaths(indices)
+//                                        self.collectionView?.reloadData()
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel",
+                                         style: .Default) { (action: UIAlertAction) -> Void in
+        }
+        
+        alert.addTextFieldWithConfigurationHandler {
+            (textField: UITextField) -> Void in
+        }
+        
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        
+        presentViewController(alert,
+                              animated:   true,
+                              completion: nil)
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
     // side-to-side
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return -0.5
+        return -1
     }
     
     // top-to-bottom
@@ -368,84 +364,98 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     
     // cell size based on percentage of frame width
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let cellWidth = collectionView.frame.width / 5.41
+        let cellWidth = collectionView.frame.width / 12.41
         return CGSize(width: cellWidth, height: 50)
     }
     
     // insets, leveraged to eliminate vertical spaces
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        let sectionInsets = UIEdgeInsets(top: -24.0, left: 19.5, bottom: 10.0, right: 19.5)
+        let sectionInsets = UIEdgeInsets(top: -24.0, left: 22.5, bottom: 10.0, right: 22.5)
         return sectionInsets
     }
+
     
     // MARK: - Circle Gesture
     
-    func findAndUseCircledCell(center: CGPoint) {
+    func useCircledCell(center: CGPoint) {
         // walk through the image views and see if the center of the drawn circle was over one of the views
-        print(self.collectionView!.indexPathForItemAtPoint(center)?.row)
-        let indexPath = self.collectionView!.indexPathForItemAtPoint(center)
-        if indexPath != nil {
-            let indexPathInt = self.collectionView!.indexPathForItemAtPoint(center)?.row
-            let cell = self.collectionView!.cellForItemAtIndexPath(indexPath!) as! CollectionViewCell
-            let label = cell.label.text
+//        print(self.collectionView!.indexPathForItemAtPoint(center)?.row)
+//        let indexPath = self.collectionView!.indexPathForItemAtPoint(center)
+//        var indices = [indexPath!]
+//        let index = indexPath!.item
+//        if indexPath != nil {
+//            let index = self.collectionView!.indexPathForItemAtPoint(center)?.row
+//            let cell = self.collectionView!.cellForItemAtIndexPath(indexPath!) as! CollectionViewCell
+//            
+//            // set values for circled item
+//            if (cell.label.text == "") {
+//                table.tableItems[index!] = "\(selectedValues[0])"
+////                self.collectionView?.reloadData()
+//                return
+//            }
+//            
+//            // is it a month? if not, set up prev/current values
+//            if (index < 12) {
+//                return
+//            }
+//            else {
+//                let val = Double(cell.label.text!)
+//                selectedValues.append(val!)
+//                highlighted[index!] = true
+//                
+//                let path = NSIndexPath(forRow: indexPath!.row, inSection: indexPath!.section)
+//                indices.removeAll()
+//                indices.append(path)
+//                self.collectionView!.reloadItemsAtIndexPaths(indices)
+//            }
+//            print("Circled cell is \(cell.label.text!)")
+//        }
+    }
+    
+    func useSelectedCell(indexIn: NSIndexPath) {
+        let index = indexIn.item
+        var indices = [indexIn]
+        let cell = self.collectionView!.cellForItemAtIndexPath(indexIn) as! CollectionViewCell
+        let val = Double(cell.label.text!)
+        
+        // if it's already selected, deselect and get out
+        if highlighted[index] == true {
+            highlighted[index] = false
+            let indexOfVal = selectedValues.indexOf(val!)
+            selectedValues.removeAtIndex(indexOfVal!)
             
-            // set values for circled item
-            if (label == "") {
-                selectedEmpty = true
-            }
-            
-            // is it a month? if not, set up prev/current values
-            let labelInt = Int(label!)
-            if (labelInt == nil) {
-                // circled a month
-            }
-            else {
-                textView.insertText("\(String(labelInt!))\n")
-                let range = NSMakeRange(textView.text.characters.count - 1, 0)
-                textView.scrollRangeToVisible(range)
-                if (storedCircledVal == -1) {
-                    storedCircledVal  = Int(label!)!
-                    currentCircledVal = Int(label!)!
-                }
-                else {
-                    currentCircledVal = Int(label!)!
-                }
-            }
-            
-            // what if we've previously selected a circle during this gesture?
-            if (activeCircle) {
-                // previous circle active, do something with that stored data
-                if (selectedEmpty && storedCircledVal >= 0) {
-                    table.tableItems[indexPathInt!] = String(storedCircledVal)
-                    self.collectionView!.reloadData()
-                    
-                    // reset storage, activity, etc.
-                    activeCircle  = false
-                    selectedEmpty = false
-                    storedCircledVal  = -1
-                    currentCircledVal = -1
-                }
-                else {
-                    // not an empty cell, so we're doing an operation on the previously selected cell
-                    
-                }
-            }
-            else {
-                // dont set 'active' if first cell selected is empty... instead, do nothing
-                if (!selectedEmpty) {
-                    activeCircle = true
-                }
-                else {
-                    // reset values because empty cell was selected first
-                    activeCircle  = false // we don't really need to do this here, just remember that activeCircle should remain false
-                    selectedEmpty = false
-                    storedCircledVal  = -1
-                    currentCircledVal = -1
-                }
-            }
-            
-            print("Circled cell is \(cell.label.text!)")
+            let path = NSIndexPath(forRow: indexIn.row, inSection: indexIn.section)
+            indices.removeAll()
+            indices.append(path)
+            self.collectionView!.reloadItemsAtIndexPaths(indices)
+            setupOperatorCells()
+            return
         }
+            
+        // set values for circled item
+//        if (cell.label.text == "") {
+//            table.tableItems[index] = "\(workingValue!)"
+//            hasWorkingVal = false
+//                
+//            self.collectionView?.reloadData()
+//            return
+//        }
+        
+        // is it a month? if not, set up prev/current values
+        if (index < 12) {
+            return
+        }
+        else if cell.label.text != "" {
+            selectedValues.append(val!)
+            highlighted[index] = true
+            
+            let path = NSIndexPath(forRow: indexIn.row, inSection: indexIn.section)
+            indices.removeAll()
+            indices.append(path)
+            self.collectionView!.reloadItemsAtIndexPaths(indices)
+            setupOperatorCells()
+        }
+        print("Circled cell is \(cell.label.text!)")
     }
     
     private func anyPointsInTheMiddle() -> Bool {
@@ -473,7 +483,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             y: fitResult.center.y - fitResult.radius,
             width:  2 * fitResult.radius,
             height: 2 * fitResult.radius)
-        let pathBoundingBox = CGPathGetBoundingBox(path) //path.boundingBox
+        let pathBoundingBox = CGPathGetBoundingBox(path)
         
         let overlapRect = fitBoundingBox.intersect(pathBoundingBox)
         
@@ -551,7 +561,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                 return
             }
             else {
-                // circle stuff
+                // circle and line stuff
                 
                 // determine if path was circle
                 fitResult = fitCircle(touchedPoints)
@@ -559,15 +569,35 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                 // check for points in the middle of the circle
                 let hasInside = anyPointsInTheMiddle()
                 
-//                let boundingOverlap = calculateBoundingOverlap()
-                isCircle = fitResult.error <= tolerance && hasInside //&& calculateBoundingOverlap() > (1-tolerance)
+                isCircle = fitResult.error <= tolerance && hasInside
                 cState = isCircle ? .ended : .failed // fail or end, based on isCircle
                 if (isCircle && cState == .ended) {
-                    findAndUseCircledCell(fitResult.center)
+//                    useCircledCell(fitResult.center)
+                }
+                
+                // so not a circle, must be a line
+                
+                // get every indexPath on the line
+                let coveredIndices = getIndicesForLine(canvas.lines[canvas.lines.endIndex-1])
+                for i in 0..<coveredIndices.count {
+                    useSelectedCell(coveredIndices[i])
                 }
             }
         }
         reset()
+    }
+    
+    func getIndicesForLine(line: Line) -> [NSIndexPath]{
+        var result: [NSIndexPath] = []
+        var points = line.points
+        for i in 1..<points.count {
+            let p = points[i]
+            let index = self.collectionView!.indexPathForItemAtPoint(p.location)
+            if !result.contains(index!) {
+                result.append(index!)
+            }
+        }
+        return result
     }
     
     override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
