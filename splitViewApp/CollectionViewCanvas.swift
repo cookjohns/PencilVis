@@ -111,9 +111,10 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     func didCrossOutCell(indexPath: NSIndexPath) {
         let index = indexPath.item
         var indices = [indexPath]
+        let cell = self.collectionView!.cellForItemAtIndexPath(indexPath) as! CollectionViewCell
         
         // check for valid selection box
-        if (index < 12) {
+        if (index < 12 || cell.label.text == "") {
             return
         }
         
@@ -301,7 +302,15 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             // sum operator
             if index == 192 {
                 cell.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.6)
-                cell.label.text = "SUM"
+                cell.label.text = "∑"
+            }
+            if index == 193 {
+                cell.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.6)
+                cell.label.text = "Sort ↑"
+            }
+            if index == 194 {
+                cell.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.6)
+                cell.label.text = "Sort ↓"
             }
         }
         
@@ -455,7 +464,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                 arithmeticValue = Double(table.tableItems[selectedIndices[0].item])! / Double(table.tableItems[selectedIndices[1].item])!
                 selectedIndices.removeAll()
             }
-            if op == "SUM" {
+            if op == "∑" {
                 var temp = 0.0
                 for i in 0 ..< selectedIndices.count {
                     temp += Double(table.tableItems[selectedIndices[i].item])!
@@ -463,6 +472,15 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                 arithmeticValue = temp
                 selectedIndices.removeAll()
             }
+            if op == "Sort ↑" {
+                sortSelectedIndices(true)
+                selectedIndices.removeAll()
+            }
+            if op == "Sort ↓" {
+                sortSelectedIndices(false)
+                selectedIndices.removeAll()
+            }
+                
             // update arithmeticValue display cell
             table.tableItems[203] = "\(arithmeticValue)"
             self.collectionView?.reloadData()
@@ -492,6 +510,24 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             setupOperatorCells()
         }
         print("Selected cell is \(cell.label.text!)")
+    }
+    
+    private func sortSelectedIndices(ascending: Bool) {
+        // read items into temp array
+        var temp: [Int] = []
+        for i in 0..<selectedIndices.count {
+            temp.append(Int(table.tableItems[selectedIndices[i].item])!)
+        }
+        
+        // sort temp array
+        temp.sortInPlace()
+        if (!ascending) {
+            temp = temp.reverse()
+        }
+        
+        for j in 0..<temp.count {
+            table.tableItems[selectedIndices[j].item] = String(temp[j])
+        }
     }
     
     private func anyPointsInTheMiddle() -> Bool {
