@@ -16,13 +16,17 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     // TODO: - UNDO???
     
     // MARK: - Properties
+    // MARK: - UI
     
-    var chartView: CanvasView!
+    var clearButton: UIButton!
+    var chartButton: UIButton!
+    var hideButton:  UIButton!
+    var chartView:   CanvasView!
+    
     
     // MARK: Table
     
     var table:            Table!
-    var clearButton:      UIButton!
     var selectedIndices: [NSIndexPath] = []
     var highlighted:     [Bool] = []
     var arithmeticValue = 0.0 {
@@ -89,13 +93,39 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         clearButton.addTarget(self, action: #selector(clearAll), forControlEvents: .TouchUpInside)
         self.view.addSubview(clearButton)
         
+        // setup chart button
+        chartButton = UIButton()
+        chartButton.frame = CGRect(x: 500.0, y: 925.0, width: 300, height: 40)
+        chartButton.layer.cornerRadius = 8
+        chartButton.backgroundColor    = UIColor(white: 0.9, alpha: 1)
+        chartButton.layer.borderColor  = UIColor.grayColor().CGColor
+        chartButton.layer.borderWidth  = 1
+        chartButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        chartButton.setTitle("Create Chart", forState: .Normal)
+        chartButton.addTarget(self, action: #selector(createChart), forControlEvents: .TouchUpInside)
+        self.view.addSubview(chartButton)
+        
+        // setup hide button
+        hideButton = UIButton()
+        hideButton.frame = CGRect(x: 900.0, y: 925.0, width: 300, height: 40)
+        hideButton.layer.cornerRadius = 8
+        hideButton.backgroundColor    = UIColor(white: 0.9, alpha: 1)
+        hideButton.layer.borderColor  = UIColor.grayColor().CGColor
+        hideButton.layer.borderWidth  = 1
+        hideButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        hideButton.setTitle("Hide Chart", forState: .Normal)
+        hideButton.addTarget(self, action: #selector(hideChart), forControlEvents: .TouchUpInside)
+        self.view.addSubview(hideButton)
+        
+        // setup chart subview
+        chartView = CanvasView(frame: CGRect(x:650,y:400, width:500, height:400))
+        chartView.backgroundColor = UIColor.lightGrayColor()
+        chartView.hidden = true
+        self.view.addSubview(chartView)
+        
         for _ in 0..<table.getSize() {
             highlighted.append(false)
         }
-        
-        chartView = CanvasView(frame: CGRect(x:650,y:400, width:500, height:400))
-        chartView.backgroundColor = UIColor.lightGrayColor()
-        self.view.addSubview(chartView)
     }
     
     override func viewDidLayoutSubviews() {
@@ -314,6 +344,14 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         
         // present the alert controller
         presentViewController(ac, animated: true, completion: nil)
+    }
+    
+    @IBAction func createChart(sender: UIButton) {
+        chartView.hidden = false
+    }
+    
+    @IBAction func hideChart(sender: UIButton) {
+        chartView.hidden = true
     }
     
     // MARK: - Calculation
