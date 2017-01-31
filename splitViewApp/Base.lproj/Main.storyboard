@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="WPR-Ou-prw">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--Detail View Controller-->
+        <scene sceneID="5NR-Ub-cYI">
+            <objects>
+                <viewController id="gzS-fB-kxY" customClass="DetailViewController" customModule="splitViewApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pQM-GF-YSr"/>
+                        <viewControllerLayoutGuide type="bottom" id="kgn-Xg-1f3"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0ex-h1-hA1">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pWh-3q-3f4" userLabel="Pie Chart View" customClass="PieChartView" customModule="Charts">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="30o-Yn-S2A" customClass="CanvasView" customModule="splitViewApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="30o-Yn-S2A" firstAttribute="leading" secondItem="pWh-3q-3f4" secondAttribute="leading" id="2PY-Fo-vVI"/>
+                                    <constraint firstItem="30o-Yn-S2A" firstAttribute="top" secondItem="pWh-3q-3f4" secondAttribute="top" id="6xa-Wy-rp9"/>
+                                    <constraint firstAttribute="trailing" secondItem="30o-Yn-S2A" secondAttribute="trailing" id="fTK-rL-FtM"/>
+                                    <constraint firstAttribute="bottom" secondItem="30o-Yn-S2A" secondAttribute="bottom" id="hGj-ip-2Tx"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YCl-8O-rha" customClass="LineChartView" customModule="Charts">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P1x-xo-4oB" customClass="CanvasView" customModule="splitViewApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="P1x-xo-4oB" secondAttribute="trailing" id="6lW-jW-zo1"/>
+                                    <constraint firstItem="P1x-xo-4oB" firstAttribute="leading" secondItem="YCl-8O-rha" secondAttribute="leading" id="Y7E-H8-pXD"/>
+                                    <constraint firstAttribute="bottom" secondItem="P1x-xo-4oB" secondAttribute="bottom" id="eWF-rB-Bda"/>
+                                    <constraint firstItem="P1x-xo-4oB" firstAttribute="top" secondItem="YCl-8O-rha" secondAttribute="top" id="hX4-SD-1ZH"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wGs-Gl-dAD" userLabel="Bar Chart View" customClass="BarChartView" customModule="Charts">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IkY-ck-O6B" customClass="CanvasView" customModule="splitViewApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="IkY-ck-O6B" firstAttribute="leading" secondItem="wGs-Gl-dAD" secondAttribute="leading" id="9Te-Mf-98a"/>
+                                    <constraint firstAttribute="bottom" secondItem="IkY-ck-O6B" secondAttribute="bottom" id="Ayw-Ld-LBd"/>
+                                    <constraint firstAttribute="trailing" secondItem="IkY-ck-O6B" secondAttribute="trailing" id="UPA-Wj-j0A"/>
+                                    <constraint firstItem="IkY-ck-O6B" firstAttribute="top" secondItem="wGs-Gl-dAD" secondAttribute="top" id="uRy-Qj-Pjv"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="YCl-8O-rha" firstAttribute="leading" secondItem="0ex-h1-hA1" secondAttribute="leading" id="9Gt-uU-OsF"/>
+                            <constraint firstAttribute="trailing" secondItem="pWh-3q-3f4" secondAttribute="trailing" id="LRl-uW-Qao"/>
+                            <constraint firstItem="pWh-3q-3f4" firstAttribute="leading" secondItem="0ex-h1-hA1" secondAttribute="leading" id="OGB-tX-ZmQ"/>
+                            <constraint firstItem="kgn-Xg-1f3" firstAttribute="top" secondItem="pWh-3q-3f4" secondAttribute="bottom" id="TZl-Px-7bS"/>
+                            <constraint firstAttribute="trailing" secondItem="YCl-8O-rha" secondAttribute="trailing" id="UHL-pn-eJe"/>
+                            <constraint firstItem="YCl-8O-rha" firstAttribute="top" secondItem="0ex-h1-hA1" secondAttribute="top" id="foM-VF-yE4"/>
+                            <constraint firstAttribute="trailing" secondItem="wGs-Gl-dAD" secondAttribute="trailing" id="i4v-Nl-DJK"/>
+                            <constraint firstItem="pWh-3q-3f4" firstAttribute="top" secondItem="0ex-h1-hA1" secondAttribute="top" id="jgA-U6-zWn"/>
+                            <constraint firstItem="wGs-Gl-dAD" firstAttribute="top" secondItem="0ex-h1-hA1" secondAttribute="top" id="ki3-k4-FN1"/>
+                            <constraint firstItem="kgn-Xg-1f3" firstAttribute="top" secondItem="wGs-Gl-dAD" secondAttribute="bottom" id="oMn-Cq-iel"/>
+                            <constraint firstItem="kgn-Xg-1f3" firstAttribute="top" secondItem="YCl-8O-rha" secondAttribute="bottom" id="uYT-cb-dKk"/>
+                            <constraint firstItem="wGs-Gl-dAD" firstAttribute="leading" secondItem="0ex-h1-hA1" secondAttribute="leading" id="vQ7-dW-AIh"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="barCanvasView" destination="IkY-ck-O6B" id="yzO-JK-N4Y"/>
+                        <outlet property="barChartView" destination="wGs-Gl-dAD" id="ihZ-ZN-6ZI"/>
+                        <outlet property="canvasView" destination="30o-Yn-S2A" id="Q5Q-3d-3Qf"/>
+                        <outlet property="lineCanvasView" destination="P1x-xo-4oB" id="fan-ZU-Nr3"/>
+                        <outlet property="lineChartView" destination="YCl-8O-rha" id="pub-8u-PIG"/>
+                        <outlet property="pieCanvasView" destination="30o-Yn-S2A" id="Coh-mS-9j8"/>
+                        <outlet property="pieChartView" destination="pWh-3q-3f4" id="mpD-2U-rBN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="In1-kT-Mjf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="223" y="349"/>
+        </scene>
+        <!--Collection View Canvas-->
+        <scene sceneID="OCR-yO-HMV">
+            <objects>
+                <collectionViewController id="WPR-Ou-prw" customClass="CollectionViewCanvas" customModule="splitViewApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="HD5-kM-F8u">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="t9k-Nz-fqf">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="50" height="50"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="q6m-hX-rpf" customClass="CollectionViewCell" customModule="splitViewApp" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="50" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7NX-q1-7CF">
+                                            <rect key="frame" x="4" y="14" width="92" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <connections>
+                                    <outlet property="label" destination="7NX-q1-7CF" id="wCX-GA-HGJ"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="p3M-Wa-6sC">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </collectionReusableView>
+                        <connections>
+                            <outlet property="dataSource" destination="WPR-Ou-prw" id="RvI-KB-5HL"/>
+                            <outlet property="delegate" destination="WPR-Ou-prw" id="sf1-bK-fdQ"/>
+                        </connections>
+                    </collectionView>
+                    <connections>
+                        <outlet property="collectionView" destination="HD5-kM-F8u" id="r9v-Kb-Iqd"/>
+                    </connections>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="T9u-E9-0dz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-551" y="-1060"/>
+        </scene>
+        <!--Collection View Canvas-->
+        <scene sceneID="fBv-7c-gQS">
+            <objects>
+                <collectionViewController id="Mlx-YI-310" customClass="CollectionViewCanvas" customModule="splitViewApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" contentMode="scaleToFill" dataMode="prototypes" id="NgB-FJ-TOY">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="6" minimumInteritemSpacing="6" id="WC9-Ju-Tyx">
+                            <size key="itemSize" width="50" height="49"/>
+                            <size key="headerReferenceSize" width="0.0" height="50"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="f53-B2-3w3" customClass="CollectionViewCell" customModule="splitViewApp" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="60" width="50" height="49"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="49"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qWp-Ad-ZVQ">
+                                            <rect key="frame" x="4" y="14" width="92" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <connections>
+                                    <outlet property="label" destination="qWp-Ad-ZVQ" id="1cA-6A-WQm"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="oI8-qL-HpM">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </collectionReusableView>
+                        <connections>
+                            <outlet property="dataSource" destination="Mlx-YI-310" id="0pS-uo-fiN"/>
+                            <outlet property="delegate" destination="Mlx-YI-310" id="PAL-ff-QeE"/>
+                        </connections>
+                    </collectionView>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dm3-QJ-n0d" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="223" y="-350"/>
+        </scene>
+        <!--Split View Controller-->
+        <scene sceneID="XHV-13-YZL">
+            <objects>
+                <splitViewController id="XUm-h4-Gog" customClass="SplitViewController" customModule="splitViewApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <connections>
+                        <segue destination="gzS-fB-kxY" kind="relationship" relationship="detailViewController" id="AIz-HS-jsa"/>
+                        <segue destination="Mlx-YI-310" kind="relationship" relationship="masterViewController" id="cU2-Is-zQL"/>
+                    </connections>
+                </splitViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TFA-8r-09K" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-597" y="19"/>
+        </scene>
+    </scenes>
+</document>
