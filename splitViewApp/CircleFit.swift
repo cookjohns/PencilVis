@@ -175,7 +175,7 @@ func fitCircle(points: [CGPoint]) -> CircleResult {
 
 }
 
-
+// MARK: - Sigma
 //****************** Sigma ************************************
 //
 //   estimate of Sigma = square root of RSS divided by N

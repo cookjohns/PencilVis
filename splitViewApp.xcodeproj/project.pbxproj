@@ -12,12 +12,9 @@
 		BD0249FA1D1A62250000AC1C /* CircleFit.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0249F91D1A62250000AC1C /* CircleFit.swift */; };
 		BD0453251D0CBEA60036CE78 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD0453241D0CBEA60036CE78 /* Assets.xcassets */; };
 		BD0453281D0CBEA60036CE78 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD0453261D0CBEA60036CE78 /* LaunchScreen.storyboard */; };
-		BD0453301D0CC0450036CE78 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD04532F1D0CC0450036CE78 /* DetailViewController.swift */; };
-		BD0453341D0CC3870036CE78 /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0453331D0CC3870036CE78 /* SplitViewController.swift */; };
 		BD0453361D0CC9DA0036CE78 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0453351D0CC9DA0036CE78 /* CollectionViewCell.swift */; };
 		BD17C1BB1E0322D100169211 /* Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD17C1BA1E0322D100169211 /* Table.swift */; };
 		BD17C1BD1E0322EF00169211 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD17C1BC1E0322EF00169211 /* Main.storyboard */; };
-		BD17C1BF1E0322FB00169211 /* CollectionViewCanvasNoChartTemp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD17C1BE1E0322FB00169211 /* CollectionViewCanvasNoChartTemp.swift */; };
 		BD17C1C11E03236B00169211 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD17C1C01E03236B00169211 /* AppDelegate.swift */; };
 		BDA2E2EF1D5151B8003D4D94 /* CollectionViewCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA2E2EE1D5151B8003D4D94 /* CollectionViewCanvas.swift */; };
 		BDEAB0021D1236A80090A119 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEAAFFB1D1236830090A119 /* Charts.framework */; };
@@ -84,12 +81,9 @@
 		BD0453241D0CBEA60036CE78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BD0453271D0CBEA60036CE78 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BD0453291D0CBEA60036CE78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BD04532F1D0CC0450036CE78 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
-		BD0453331D0CC3870036CE78 /* SplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
 		BD0453351D0CC9DA0036CE78 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		BD17C1BA1E0322D100169211 /* Table.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Table.swift; sourceTree = "<group>"; };
 		BD17C1BC1E0322EF00169211 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		BD17C1BE1E0322FB00169211 /* CollectionViewCanvasNoChartTemp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCanvasNoChartTemp.swift; sourceTree = "<group>"; };
 		BD17C1C01E03236B00169211 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BDA2E2EE1D5151B8003D4D94 /* CollectionViewCanvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCanvas.swift; sourceTree = "<group>"; };
 		BDEAAFF31D1236830090A119 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = Charts/Charts.xcodeproj; sourceTree = "<group>"; };
@@ -128,10 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				BD17C1C01E03236B00169211 /* AppDelegate.swift */,
-				BD0453331D0CC3870036CE78 /* SplitViewController.swift */,
 				BDA2E2EE1D5151B8003D4D94 /* CollectionViewCanvas.swift */,
-				BD17C1BE1E0322FB00169211 /* CollectionViewCanvasNoChartTemp.swift */,
-				BD04532F1D0CC0450036CE78 /* DetailViewController.swift */,
 				BD0249CF1D1A0C490000AC1C /* CanvasView.swift */,
 				BD17C1BA1E0322D100169211 /* Table.swift */,
 				BD0453351D0CC9DA0036CE78 /* CollectionViewCell.swift */,
@@ -271,12 +262,9 @@
 				BD0453361D0CC9DA0036CE78 /* CollectionViewCell.swift in Sources */,
 				BD0249FA1D1A62250000AC1C /* CircleFit.swift in Sources */,
 				BD17C1BB1E0322D100169211 /* Table.swift in Sources */,
-				BD17C1BF1E0322FB00169211 /* CollectionViewCanvasNoChartTemp.swift in Sources */,
-				BD0453301D0CC0450036CE78 /* DetailViewController.swift in Sources */,
 				BD0249D21D1A0CA90000AC1C /* Line.swift in Sources */,
 				BDA2E2EF1D5151B8003D4D94 /* CollectionViewCanvas.swift in Sources */,
 				BD17C1C11E03236B00169211 /* AppDelegate.swift in Sources */,
-				BD0453341D0CC3870036CE78 /* SplitViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

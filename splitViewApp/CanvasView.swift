@@ -65,7 +65,7 @@ class CanvasView: UIView {
         
         let context = CGBitmapContextCreate(nil, Int(size.width), Int(size.height), 8, 0, colorSpace, CGImageAlphaInfo.PremultipliedLast.rawValue)
 
-        CGContextSetLineCap(context, .Round)
+        CGContextSetLineCap(context!, .Round)
         let transform = CGAffineTransformMakeScale(scale, scale)
         CGContextConcatCTM(context, transform)
         
@@ -242,6 +242,44 @@ class CanvasView: UIView {
         setNeedsDisplayInRect(updateRect)
     }
     
+    func updateEstimatedPropertiesForTouches(touches: Set<NSObject>) {
+        guard isTouchUpdatingEnabled, let touches = touches as? Set<UITouch> else { return }
+        
+        for touch in touches {
+            var isPending = false
+            
+            // Look to retrieve a line from `activeLines`. If no line exists, look it up in `pendingLines`.
+            let possibleLine: Line? = activeLines.objectForKey(touch) as? Line ?? {
+                let pendingLine = pendingLines.objectForKey(touch) as? Line
+                isPending = pendingLine != nil
+                return pendingLine
+                }()
+            
+            // If no line is related to the touch, return as there is no additional work to do.
+            guard let line = possibleLine else { return }
+            
+            switch line.updateWithTouch(touch) {
+            case (true, let updateRect):
+                setNeedsDisplayInRect(updateRect)
+            default:
+                ()
+            }
+            
+            // If this update updated the last point requiring an update, move the line to the `frozenImage`.
+            if isPending && line.isComplete {
+                finishLine(line)
+                pendingLines.removeObjectForKey(touch)
+            }
+                // Otherwise, have the line add any points no longer requiring updates to the `frozenImage`.
+            else {
+                commitLine(line)
+            }
+            
+        }
+    }
+    
+    // MARK: - Intersection
+    
     func getIntersection() -> CGPoint {
         // check for 'x' over any data point on chart
         var recentPoints: [LinePoint]? = lines.count > 0 ? lines[lines.endIndex-1].points : nil
@@ -261,7 +299,6 @@ class CanvasView: UIView {
             }
             previousPoints.removeAll()
         }
-//        lines.removeAll()
         recentPoints?.removeAll()
         return CGPoint(x: -1, y: -1)
     }
@@ -281,41 +318,7 @@ class CanvasView: UIView {
         return nil
     }
     
-    func updateEstimatedPropertiesForTouches(touches: Set<NSObject>) {
-        guard isTouchUpdatingEnabled, let touches = touches as? Set<UITouch> else { return }
-        
-        for touch in touches {
-            var isPending = false
-            
-            // Look to retrieve a line from `activeLines`. If no line exists, look it up in `pendingLines`.
-            let possibleLine: Line? = activeLines.objectForKey(touch) as? Line ?? {
-                let pendingLine = pendingLines.objectForKey(touch) as? Line
-                isPending = pendingLine != nil
-                return pendingLine
-            }()
-            
-            // If no line is related to the touch, return as there is no additional work to do.
-            guard let line = possibleLine else { return }
-            
-            switch line.updateWithTouch(touch) {
-                case (true, let updateRect):
-                    setNeedsDisplayInRect(updateRect)
-                default:
-                    ()
-            }
-            
-            // If this update updated the last point requiring an update, move the line to the `frozenImage`.
-            if isPending && line.isComplete {
-                finishLine(line)
-                pendingLines.removeObjectForKey(touch)
-            }
-            // Otherwise, have the line add any points no longer requiring updates to the `frozenImage`.
-            else {
-                commitLine(line)
-            }
-            
-        }
-    }
+    // MARK: - Line
     
     func commitLine(line: Line) {
         // Have the line draw any segments between points no longer being updated into the `frozenContext` and remove them from the line.

@@ -138,30 +138,7 @@ class DetailViewController: UIViewController {
         barChartView.dragEnabled  = false
     }
     
-    func changeChartType(index: Int) {
-        switch index {
-        case 0:
-            // pie chart visible
-            pieChartView.hidden  = false
-            barChartView.hidden  = true
-            lineChartView.hidden = true
-            canvasView = pieCanvasView
-        case 1:
-            // line graph visible
-            lineChartView.hidden = false
-            pieChartView.hidden  = true
-            barChartView.hidden  = true
-            canvasView = lineCanvasView
-        case 2:
-            // bar graph visible
-            barChartView.hidden  = false
-            pieChartView.hidden  = true
-            lineChartView.hidden = true
-            canvasView = barCanvasView
-        default:
-            break
-        }
-    }
+
     
     func updateDataSets(dataPoints:[String], values: [Double]) {
         // add dataPoints to chart's dataPoints array
@@ -214,38 +191,6 @@ class DetailViewController: UIViewController {
     
     // MARK: - Touch Handling
     
-    //    func doubleTap() {
-    ////        print("Double tap recognized at cell \(pieChartView.highlighted[0].xIndex)")
-    //
-    //        // leave function if no valid chart index has been highlighted (double tap outside chart)
-    //        if (pieChartView.highlighted.isEmpty) {
-    //            return
-    //        }
-    //
-    //        let highlightedPointName = table.monthsToShow()[pieChartView.highlighted[0].xIndex]
-    //        let pointToDelete = ((table.monthsIndexWithMatchingName(highlightedPointName)) * 5) + 5
-    //
-    //        // deactivate item in table, reload current view's chart
-    //        if (pieChartView.hidden == false) {
-    //            table.deactivate(pointToDelete)
-    //            //print("Double tap recognized")
-    //        }
-    //        else if (lineChartView.hidden == false) {
-    //            table.deactivate(pointToDelete)
-    //        }
-    //        else {
-    //            table.deactivate(pointToDelete)
-    //        }
-    //        // update charts with new data set
-    //        updateDataSets(table.monthsToShow(), values: table.unitsSoldShow())
-    //        pieChartView.notifyDataSetChanged()
-    //        lineChartView.notifyDataSetChanged()
-    //        barChartView.notifyDataSetChanged()
-    //
-    //        // trigger the masterView's UICollectionView to reload it's data/cells (to change appearance for in/active)
-    //        masterView.collectionView!.reloadData()
-    //    }
-    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         canvasView.drawTouches(touches, withEvent: event)
     }
@@ -260,10 +205,7 @@ class DetailViewController: UIViewController {
         if (touches.first!.type == .Stylus) {
             let intersection = canvasView.getIntersection()
             if intersection.x >= 0 {
-                print("Intersection x at \(intersection.x)")
-                // trying to deal with cross out on chart
-                //                var highlighter = pieChartView.highlighter
-                //                pieChartView.highlightValue(highlight: highlighter!.getHighlight(x: intersection.x, y: intersection.y), callDelegate: true)
+//                print("Intersection x at \(intersection.x)")
             }
         }
     }

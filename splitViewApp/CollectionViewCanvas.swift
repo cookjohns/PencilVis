@@ -18,12 +18,10 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     // MARK: - Properties
     // MARK: Chart
     
-    var table:      Table!
-    var detailView: DetailViewController!
-    var clearButton:  UIButton!
-    var workingData: [Double]! = []
+    var table:            Table!
+    var clearButton:      UIButton!
     var selectedIndices: [NSIndexPath] = []
-    var highlighted: [Bool] = []
+    var highlighted:     [Bool] = []
     var arithmeticValue = 0.0 {
         didSet {
             print("Arithmetic value: \(arithmeticValue)")
@@ -38,9 +36,9 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     
     private var touchedPoints = [CGPoint]() // point history
     var fitResult = CircleResult()  // info about how circle-like the path is
-    var tolerance: CGFloat = 1.0     // "perfect circle" tolerance
-    var isCircle = false
-    var path = CGPathCreateMutable()
+    var tolerance:  CGFloat = 1.0     // "perfect circle" tolerance
+    var isCircle  = false
+    var path      = CGPathCreateMutable()
     enum circleState {
         case began
         case ended
@@ -53,8 +51,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     
     var storedCircledVal  = -1
     var currentCircledVal = -1
-    var activeCircle  = false
-//    var selectedEmpty = false
+    var activeCircle = false
     
     // MARK: - View
     
@@ -89,10 +86,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         clearButton.addTarget(self, action: #selector(clearAll), forControlEvents: .TouchUpInside)
         self.view.addSubview(clearButton)
         
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress))
-        self.view.addGestureRecognizer(longPress)
-        
-        for _ in 0..<table.tableItems.count {
+        for _ in 0..<table.getSize() {
             highlighted.append(false)
         }
     }
@@ -105,8 +99,105 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         self.canvas.frame = self.view.bounds
     }
     
-    // MARK: - Functions
     // MARK: - Gestures
+    
+    func useCircledCell(center: CGPoint) {
+        let value = self.collectionView!.indexPathForItemAtPoint(center)?.row
+        print("Circled a cell \(value!)")
+        
+        // walk through the image views and see if the center of the drawn circle was over one of the views
+        let indexPath = self.collectionView!.indexPathForItemAtPoint(center)
+        var indices = [indexPath!]
+        let index = indexPath!.item
+        if indexPath != nil && index > 12 && !selectedIndices.isEmpty {
+            let index = self.collectionView!.indexPathForItemAtPoint(center)?.row
+            
+            // get the value from the first selected cell
+            let selectedCell = self.collectionView!.cellForItemAtIndexPath(selectedIndices[0]) as! CollectionViewCell
+            let valueToInsert = selectedCell.label.text
+            
+            // update table and reload cells
+            self.table.updateTable(index!, input: valueToInsert!)
+            
+            indices.removeAll()
+            indices.append(indexPath!)
+            indices.append(selectedIndices[0])
+            self.collectionView!.reloadItemsAtIndexPaths(indices)
+        }
+    }
+    
+    func useSelectedCell(indexPathIn: NSIndexPath) {
+        let index = indexPathIn.item
+        var indicesToUpdate = [indexPathIn]
+        let cell = self.collectionView!.cellForItemAtIndexPath(indexPathIn) as! CollectionViewCell
+        indicesToUpdate.removeAll()
+        
+        // if selection is operator
+        if index > 191 && index < 203 && cell.label.text != "" {
+            let op = cell.label.text
+            if op == "+" {
+                arithmeticValue = Double(table.getTableItem(selectedIndices[0].item))! + Double(table.getTableItem(selectedIndices[1].item))!
+                selectedIndices.removeAll()
+            }
+            if op == "-" {
+                arithmeticValue = Double(table.getTableItem(selectedIndices[0].item))! - Double(table.getTableItem(selectedIndices[1].item))!
+                selectedIndices.removeAll()
+            }
+            if op == "*" {
+                arithmeticValue = Double(table.getTableItem(selectedIndices[0].item))! * Double(table.getTableItem(selectedIndices[1].item))!
+                selectedIndices.removeAll()
+            }
+            if op == "/" {
+                arithmeticValue = Double(table.getTableItem(selectedIndices[0].item))! / Double(table.getTableItem(selectedIndices[1].item))!
+                selectedIndices.removeAll()
+            }
+            if op == "∑" {
+                var temp = 0.0
+                for i in 0 ..< selectedIndices.count {
+                    temp += Double(table.getTableItem(selectedIndices[i].item))!
+                }
+                arithmeticValue = temp
+                selectedIndices.removeAll()
+            }
+            if op == "Sort ↑" {
+                sortSelectedIndices(true)
+                selectedIndices.removeAll()
+            }
+            if op == "Sort ↓" {
+                sortSelectedIndices(false)
+                selectedIndices.removeAll()
+            }
+            
+            // update arithmeticValue display cell
+            table.updateTable(203, input: "\(arithmeticValue)")
+            self.collectionView?.reloadData()
+            return
+        }
+        
+        // get out if it's a month label
+        if (index < 12) {
+            return
+        }
+        
+        // if it's already selected, deselect and get out
+        if let selection = selectedIndices.indexOf(indexPathIn) {
+            selectedIndices.removeAtIndex(selection)
+            
+            indicesToUpdate.append(indexPathIn)
+            self.collectionView!.reloadItemsAtIndexPaths(indicesToUpdate)
+            setupOperatorCells()
+            return
+        }
+            // otherwise select it (if it's not blank)
+        else if cell.label.text != "" {
+            selectedIndices.append(indexPathIn)
+            
+            indicesToUpdate.append(indexPathIn)
+            self.collectionView!.reloadItemsAtIndexPaths(indicesToUpdate)
+            setupOperatorCells()
+        }
+        print("Selected cell is \(cell.label.text!)")
+    }
     
     func didCrossOutCell(indexPath: NSIndexPath) {
         let index = indexPath.item
@@ -118,51 +209,12 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             return
         }
         
-        table.tableItems[index] = ""
+        table.updateTable(index, input: "")
         selectedIndices.removeAtIndex(selectedIndices.indexOf(indexPath)!)
         
         indices.removeAll()
         indices.append(indexPath)
         self.collectionView!.reloadItemsAtIndexPaths(indices)
-    }
-    
-    // for testing - not currently used
-    func didLongPress(sender: UILongPressGestureRecognizer) {
-        // continuous gesture, so make sure that we only recognize it once
-        if (sender.state == .Began) {
-            // get location/indexPath/cell of touch, add it to textView, then add to workingData array
-            let point = sender.locationInView(self.collectionView)
-            let indexPath = self.collectionView!.indexPathForItemAtPoint(point)
-            let index = indexPath!.item
-            var indices = [indexPath!]
-            if indexPath != nil {
-                let cell = self.collectionView!.cellForItemAtIndexPath(indexPath!) as! CollectionViewCell
-                
-                // set values for circled item
-                if (cell.label.text == "") {
-//                    table.tableItems[index] = "\(selectedIndices[0]!)"
-//                    self.collectionView?.reloadData()
-                    return
-                }
-                
-                // is it a month? if not, set up prev/current values
-                if (index < 12) {
-                    return
-                }
-                else {
-                    let val = Double(cell.label.text!)
-                    selectedIndices.append(indexPath!)
-                    highlighted[index] = true
-                    
-                    let path = NSIndexPath(forRow: indexPath!.row, inSection: indexPath!.section)
-                    indices.removeAll()
-                    indices.append(path)
-                    self.collectionView!.reloadItemsAtIndexPaths(indices)
-//                        self.collectionView!.reloadData()
-                }
-                print("Circled cell is \(cell.label.text!)")
-            }
-        }
     }
     
     func resultOfOperator(op: String, selectedIndices: [Int], newVal: Double) -> Int {
@@ -185,19 +237,46 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         return -1
     }
     
-    // MARK: Interface
-    
-    func unitsForMonth(month: String) -> Double {
-        // NOT WORKING
-        let index = table.monthsIndexWithMatchingName(month)
-        return table.unitsSold[index]
+    private func sortSelectedIndices(ascending: Bool) {
+        // sort the selectedIndices
+        let sortedSelectedIndices = selectedIndices.sort {$0.row < $1.row}
+        
+        // read items into temp array
+        var temp: [Int] = []
+        for i in 0..<sortedSelectedIndices.count {
+            let index = sortedSelectedIndices[i].item
+            
+            let stringThingToAdd = table.getTableItem(index)
+            let thingToAdd = Double(stringThingToAdd)
+            temp.append(Int(thingToAdd!))
+        }
+        
+        // sort temp array
+        temp.sortInPlace()
+        if (!ascending) {
+            temp = temp.reverse()
+        }
+        
+        // replace sorted items in tableItems
+        for j in 0..<temp.count {
+            table.updateTable(sortedSelectedIndices[j].item, input: String(temp[j]))
+        }
     }
+    
+    func reset() {
+        touchedPoints.removeAll(keepCapacity: true)
+        path = CGPathCreateMutable()
+        isCircle = false
+        cState = .possible
+    }
+    
+    // MARK: Interface
     
     @IBAction func clearAll(sender: UIButton) {
         print("Button pressed")
         
         // pop up alert
-        let title = "Delete all work?"
+        let title   = "Delete all work?"
         let message = "Are you sure you want to delete all annotations and work?"
         
         let ac = UIAlertController(title: title, message: message, preferredStyle: .ActionSheet)
@@ -230,26 +309,49 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         presentViewController(ac, animated: true, completion: nil)
     }
     
-    private func currentChartName() -> String {
-        if (self.detailView.pieChartView.hidden == false) {
-            return "pie"
+    // MARK: - Calculation
+    
+    private func anyPointsInTheMiddle() -> Bool {
+        let fitInnerRadius = fitResult.radius / sqrt(2) * tolerance
+        
+        let innerBox = CGRect(
+            x: fitResult.center.x - fitInnerRadius,
+            y: fitResult.center.y - fitInnerRadius,
+            width: 2 * fitInnerRadius,
+            height: 2 * fitInnerRadius)
+        
+        var hasInside = false
+        for point in touchedPoints {
+            if innerBox.contains(point) {
+                hasInside = true
+                break
+            }
         }
-        else if (self.detailView.lineChartView.hidden == false) {
-            return "line"
-        }
-        else if (self.detailView.barChartView.hidden == false) {
-            return "bar"
-        }
-        else {
-            return "current"
-        }
+        return hasInside
+    }
+    
+    private func calculateBoundingOverlap() -> CGFloat {
+        let fitBoundingBox = CGRect(
+            x: fitResult.center.x - fitResult.radius,
+            y: fitResult.center.y - fitResult.radius,
+            width:  2 * fitResult.radius,
+            height: 2 * fitResult.radius)
+        let pathBoundingBox = CGPathGetBoundingBox(path)
+        
+        let overlapRect = fitBoundingBox.intersect(pathBoundingBox)
+        
+        let overlapRectArea = overlapRect.width * overlapRect.height
+        let circleBoxArea = fitBoundingBox.width * fitBoundingBox.height
+        
+        let percentOverlap = overlapRectArea / circleBoxArea
+        return percentOverlap
     }
     
     // MARK: - UICollectionViewDataSource protocol
     
     // tell the collection view how many cells to make
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.table.COUNT
+        return self.table.getSize()
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -261,10 +363,10 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         // set up cell's appearance
         cell.layer.borderColor  = UIColor.grayColor().CGColor
         cell.layer.borderWidth  = 0.5
-        cell.label.text = self.table.tableItems[index]
+        cell.label.text = self.table.getTableItem(index)
         cell.label.textAlignment = .Center
         let textAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 20.0)!]
-        let text = NSAttributedString(string: "\(table.tableItems[indexPath.item])", attributes: textAttributes)
+        let text = NSAttributedString(string: "\(table.getTableItem(indexPath.item))", attributes: textAttributes)
         cell.label.attributedText = text
         
         // set highlighted background if necessary
@@ -327,7 +429,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         let path2 = NSIndexPath(forRow: 193, inSection: 0)
         let path3 = NSIndexPath(forRow: 194, inSection: 0)
         let path4 = NSIndexPath(forRow: 195, inSection: 0)
-        var indices = [path1, path2, path3, path4]
+        let indices = [path1, path2, path3, path4]
         collectionView!.reloadItemsAtIndexPaths(indices)
     }
     
@@ -336,7 +438,6 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     // use for tapping on cell to add data
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let index = indexPath.item
-        //        let isMonth = index % 5 == 0 && index != 65 ? true : false
         var indices = [indexPath]
         
         // check for valid selection box
@@ -353,7 +454,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                                        handler: { (action:UIAlertAction) -> Void in
                                         
                                         let textField = alert.textFields!.first
-                                        self.table.tableItems[index] = (textField?.text)!
+                                        self.table.updateTable(index, input: (textField?.text)!)
                                         
                                         indices.removeAll()
                                         indices.append(indexPath)
@@ -398,179 +499,6 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         let sectionInsets = UIEdgeInsets(top: -24.0, left: 22.5, bottom: 10.0, right: 22.5)
         return sectionInsets
-    }
-
-    
-    // MARK: - Circle Gesture
-    
-    func useCircledCell(center: CGPoint) {
-        // walk through the image views and see if the center of the drawn circle was over one of the views
-//        print(self.collectionView!.indexPathForItemAtPoint(center)?.row)
-//        let indexPath = self.collectionView!.indexPathForItemAtPoint(center)
-//        var indices = [indexPath!]
-//        let index = indexPath!.item
-//        if indexPath != nil {
-//            let index = self.collectionView!.indexPathForItemAtPoint(center)?.row
-//            let cell = self.collectionView!.cellForItemAtIndexPath(indexPath!) as! CollectionViewCell
-//            
-//            // set values for circled item
-//            if (cell.label.text == "") {
-//                table.tableItems[index!] = "\(selectedIndices[0])"
-////                self.collectionView?.reloadData()
-//                return
-//            }
-//            
-//            // is it a month? if not, set up prev/current values
-//            if (index < 12) {
-//                return
-//            }
-//            else {
-//                let val = Double(cell.label.text!)
-//                selectedIndices(val!)
-//                highlighted[index!] = true
-//                
-//                let path = NSIndexPath(forRow: indexPath!.row, inSection: indexPath!.section)
-//                indices.removeAll()
-//                indices.append(path)
-//                self.collectionView!.reloadItemsAtIndexPaths(indices)
-//            }
-//            print("Circled cell is \(cell.label.text!)")
-//        }
-    }
-    
-    func useSelectedCell(indexPathIn: NSIndexPath) {
-        let index = indexPathIn.item
-        var indicesToUpdate = [indexPathIn]
-        let cell = self.collectionView!.cellForItemAtIndexPath(indexPathIn) as! CollectionViewCell
-        let val = Double(cell.label.text!)
-        indicesToUpdate.removeAll()
-        
-        // if selection is operator
-        if index > 191 && index < 203 && cell.label.text != "" {
-            let op = cell.label.text
-            if op == "+" {
-                arithmeticValue = Double(table.tableItems[selectedIndices[0].item])! + Double(table.tableItems[selectedIndices[1].item])!
-                selectedIndices.removeAll()
-            }
-            if op == "-" {
-                arithmeticValue = Double(table.tableItems[selectedIndices[0].item])! - Double(table.tableItems[selectedIndices[1].item])!
-                selectedIndices.removeAll()
-            }
-            if op == "*" {
-                arithmeticValue = Double(table.tableItems[selectedIndices[0].item])! * Double(table.tableItems[selectedIndices[1].item])!
-                selectedIndices.removeAll()
-            }
-            if op == "/" {
-                arithmeticValue = Double(table.tableItems[selectedIndices[0].item])! / Double(table.tableItems[selectedIndices[1].item])!
-                selectedIndices.removeAll()
-            }
-            if op == "∑" {
-                var temp = 0.0
-                for i in 0 ..< selectedIndices.count {
-                    temp += Double(table.tableItems[selectedIndices[i].item])!
-                }
-                arithmeticValue = temp
-                selectedIndices.removeAll()
-            }
-            if op == "Sort ↑" {
-                sortSelectedIndices(true)
-                selectedIndices.removeAll()
-            }
-            if op == "Sort ↓" {
-                sortSelectedIndices(false)
-                selectedIndices.removeAll()
-            }
-                
-            // update arithmeticValue display cell
-            table.tableItems[203] = "\(arithmeticValue)"
-            self.collectionView?.reloadData()
-            return
-        }
-        
-        // get out if it's a month label
-        if (index < 12) {
-            return
-        }
-        
-        // if it's already selected, deselect and get out
-        if let selection = selectedIndices.indexOf(indexPathIn) {
-            selectedIndices.removeAtIndex(selection)
-            
-            indicesToUpdate.append(indexPathIn)
-            self.collectionView!.reloadItemsAtIndexPaths(indicesToUpdate)
-            setupOperatorCells()
-            return
-        }
-        // otherwise select it (if it's not blank)
-        else if cell.label.text != "" {
-                selectedIndices.append(indexPathIn)
-            
-            indicesToUpdate.append(indexPathIn)
-            self.collectionView!.reloadItemsAtIndexPaths(indicesToUpdate)
-            setupOperatorCells()
-        }
-        print("Selected cell is \(cell.label.text!)")
-    }
-    
-    private func sortSelectedIndices(ascending: Bool) {
-        // read items into temp array
-        var temp: [Int] = []
-        for i in 0..<selectedIndices.count {
-            temp.append(Int(table.tableItems[selectedIndices[i].item])!)
-        }
-        
-        // sort temp array
-        temp.sortInPlace()
-        if (!ascending) {
-            temp = temp.reverse()
-        }
-        
-        for j in 0..<temp.count {
-            table.tableItems[selectedIndices[j].item] = String(temp[j])
-        }
-    }
-    
-    private func anyPointsInTheMiddle() -> Bool {
-        let fitInnerRadius = fitResult.radius / sqrt(2) * tolerance
-        
-        let innerBox = CGRect(
-            x: fitResult.center.x - fitInnerRadius,
-            y: fitResult.center.y - fitInnerRadius,
-            width: 2 * fitInnerRadius,
-            height: 2 * fitInnerRadius)
-        
-        var hasInside = false
-        for point in touchedPoints {
-            if innerBox.contains(point) {
-                hasInside = true
-                break
-            }
-        }
-        return hasInside
-    }
-    
-    private func calculateBoundingOverlap() -> CGFloat {
-        let fitBoundingBox = CGRect(
-            x: fitResult.center.x - fitResult.radius,
-            y: fitResult.center.y - fitResult.radius,
-            width:  2 * fitResult.radius,
-            height: 2 * fitResult.radius)
-        let pathBoundingBox = CGPathGetBoundingBox(path)
-        
-        let overlapRect = fitBoundingBox.intersect(pathBoundingBox)
-        
-        let overlapRectArea = overlapRect.width * overlapRect.height
-        let circleBoxArea = fitBoundingBox.width * fitBoundingBox.height
-        
-        let percentOverlap = overlapRectArea / circleBoxArea
-        return percentOverlap
-    }
-    
-    func reset() {
-        touchedPoints.removeAll(keepCapacity: true)
-        path = CGPathCreateMutable()
-        isCircle = false
-        cState = .possible
     }
     
     // MARK: - Touch Handling
@@ -636,16 +564,18 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                 // circle and line stuff
                 
                 // determine if path was circle
-//                fitResult = fitCircle(touchedPoints)
-//                
-//                // check for points in the middle of the circle
-//                let hasInside = anyPointsInTheMiddle()
-//                
-//                isCircle = fitResult.error <= tolerance && hasInside
-//                cState = isCircle ? .ended : .failed // fail or end, based on isCircle
-//                if (isCircle && cState == .ended) {
-////                    useCircledCell(fitResult.center)
-//                }
+                fitResult = fitCircle(touchedPoints)
+                
+                // check for points in the middle of the circle
+                let hasInside = anyPointsInTheMiddle()
+                
+                isCircle = fitResult.error <= tolerance && hasInside
+                cState = isCircle ? .ended : .failed // fail or end, based on isCircle
+                if (isCircle && cState == .ended) {
+                    useCircledCell(fitResult.center)
+                    reset()
+                    return
+                }
                 
                 // so not a circle, must be a line
                 
