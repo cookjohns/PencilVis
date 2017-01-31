@@ -57,7 +57,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         // containing view's background is white
         self.view.backgroundColor = UIColor.whiteColor()
         
@@ -86,7 +86,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         clearButton.addTarget(self, action: #selector(clearAll), forControlEvents: .TouchUpInside)
         self.view.addSubview(clearButton)
         
-        for _ in 0..<table.getSize() {
+        for _ in 0..<204 {//table.getSize() {
             highlighted.append(false)
         }
     }
