@@ -127,7 +127,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         chartView.noDataText = "No data selected."
         
         // setup highlighted array
-        for _ in 0..<table.getSize() {
+        for _ in 0..<204 {//table.getSize() {
             highlighted.append(false)
         }
     }

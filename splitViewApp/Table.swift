@@ -28,7 +28,9 @@ class Table {
     
     func updateTable(index: Int, input: String) {
         tableItems[index] = input
-        size += 1
+        if index < 192 {
+//            size += 1
+        }
     }
     
     func removeFromTable(index: Int) {
