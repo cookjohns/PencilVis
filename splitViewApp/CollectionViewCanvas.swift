@@ -16,7 +16,10 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     // TODO: - UNDO???
     
     // MARK: - Properties
-    // MARK: Chart
+    
+    var chartView: CanvasView!
+    
+    // MARK: Table
     
     var table:            Table!
     var clearButton:      UIButton!
@@ -89,6 +92,10 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         for _ in 0..<table.getSize() {
             highlighted.append(false)
         }
+        
+        chartView = CanvasView(frame: CGRect(x:650,y:400, width:500, height:400))
+        chartView.backgroundColor = UIColor.lightGrayColor()
+        self.view.addSubview(chartView)
     }
     
     override func viewDidLayoutSubviews() {
