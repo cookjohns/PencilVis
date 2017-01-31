@@ -10,6 +10,7 @@
 //
 
 import UIKit
+import Charts
 
 class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
@@ -21,7 +22,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     var clearButton: UIButton!
     var chartButton: UIButton!
     var hideButton:  UIButton!
-    var chartView:   CanvasView!
+    var chartView:   PieChartView!
     
     
     // MARK: Table
@@ -118,11 +119,14 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         self.view.addSubview(hideButton)
         
         // setup chart subview
-        chartView = CanvasView(frame: CGRect(x:650,y:400, width:500, height:400))
-        chartView.backgroundColor = UIColor.lightGrayColor()
+        chartView = PieChartView(frame: CGRect(x:650,y:400, width:500, height:400))
+        chartView.backgroundColor = UIColor(white: 0.9, alpha: 1)
         chartView.hidden = true
         self.view.addSubview(chartView)
         
+        chartView.noDataText = "No data selected."
+        
+        // setup highlighted array
         for _ in 0..<table.getSize() {
             highlighted.append(false)
         }
@@ -333,6 +337,9 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             
             // reset the tableview (remove highlighted cells)
             self.collectionView?.reloadData()
+            
+            // get rid of the chart
+            self.chartView.hidden = true
         })
         ac.addAction(deleteAction)
         
@@ -347,11 +354,71 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     }
     
     @IBAction func createChart(sender: UIButton) {
+        // if there's not enough data to create a chart, don't create it
+        if selectedIndices.count < 2 {
+            return
+        }
+        
         chartView.hidden = false
+        var rows = createRowsArray()
+        var vals = createValsArray()
+        setChart(rows, values: vals)
     }
     
     @IBAction func hideChart(sender: UIButton) {
         chartView.hidden = true
+    }
+    
+    // MARK: - Chart
+    
+    func setChart(dataPoints:[String], values: [Double]) {
+        chartView.noDataText = "You need to provide data for the chart"
+        
+        // add dataPoints to chart's dataPoints array
+        var dataEntries: [ChartDataEntry] = []
+        
+        for i in 0..<dataPoints.count {
+            let dataEntry = BarChartDataEntry(value: values[i], xIndex: i)
+            dataEntries.append(dataEntry)
+        }
+        
+        // set pie chart data
+        let pieChartDataSet = PieChartDataSet(yVals: dataEntries, label: "Units")
+        let pieChartData    = PieChartData(xVals: dataEntries, dataSet: pieChartDataSet)
+        chartView.data = pieChartData
+        
+        // set up chart colors, and save references in dictionary
+        var colors: [UIColor] = []
+        
+        for i in 0..<dataPoints.count {
+            let red   = Double(arc4random_uniform(256))
+            let green = Double(arc4random_uniform(256))
+            let blue  = Double(arc4random_uniform(256))
+            
+            let color = UIColor(red: CGFloat(red/255), green: CGFloat(green/255), blue: CGFloat(blue/255), alpha: 1)
+            colors.append(color)
+        }
+        
+        pieChartDataSet.colors = colors
+        
+        // remove "Description" label from charts
+        chartView.descriptionText  = ""
+    }
+    
+    func createRowsArray() -> [String] {
+        var result = [String]()
+        for _ in selectedIndices {
+            result.append("");
+        }
+        return result
+    }
+    
+    func createValsArray() -> [Double] {
+        var result = [Double]()
+        for i in selectedIndices {
+            result.append(Double(i.item))
+        }
+        return result
     }
     
     // MARK: - Calculation
