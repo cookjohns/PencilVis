@@ -22,8 +22,11 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     var clearButton: UIButton!
     var chartButton: UIButton!
     var hideButton:  UIButton!
-    var chartView:   PieChartView!
     
+    // charts
+    var pieChartView:  PieChartView!
+    var barChartView:  BarChartView!
+    var lineChartView: LineChartView!
     
     // MARK: Table
     
@@ -96,7 +99,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         
         // setup chart button
         chartButton = UIButton()
-        chartButton.frame = CGRect(x: 500.0, y: 925.0, width: 300, height: 40)
+        chartButton.frame = CGRect(x: 500.0, y: 925.0, width: 150, height: 40)
         chartButton.layer.cornerRadius = 8
         chartButton.backgroundColor    = UIColor(white: 0.9, alpha: 1)
         chartButton.layer.borderColor  = UIColor.grayColor().CGColor
@@ -108,7 +111,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         
         // setup hide button
         hideButton = UIButton()
-        hideButton.frame = CGRect(x: 900.0, y: 925.0, width: 300, height: 40)
+        hideButton.frame = CGRect(x: 700.0, y: 925.0, width: 150, height: 40)
         hideButton.layer.cornerRadius = 8
         hideButton.backgroundColor    = UIColor(white: 0.9, alpha: 1)
         hideButton.layer.borderColor  = UIColor.grayColor().CGColor
@@ -118,13 +121,26 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         hideButton.addTarget(self, action: #selector(hideChart), forControlEvents: .TouchUpInside)
         self.view.addSubview(hideButton)
         
-        // setup chart subview
-        chartView = PieChartView(frame: CGRect(x:650,y:400, width:500, height:400))
-        chartView.backgroundColor = UIColor(white: 0.9, alpha: 1)
-        chartView.hidden = true
-        self.view.addSubview(chartView)
+        // setup pie chart subview
+        pieChartView = PieChartView(frame: CGRect(x:650,y:400, width:500, height:400))
+        pieChartView.backgroundColor = UIColor(white: 0.9, alpha: 1)
+        pieChartView.hidden = true
+        self.view.addSubview(pieChartView)
+        pieChartView.noDataText = "No data selected."
         
-        chartView.noDataText = "No data selected."
+        // setup bar chart subview
+        barChartView = BarChartView(frame: CGRect(x:650,y:400, width:500, height:400))
+        barChartView.backgroundColor = UIColor(white: 0.9, alpha: 1)
+        barChartView.hidden = true
+        self.view.addSubview(barChartView)
+        barChartView.noDataText = "No data selected."
+        
+        // setup line chart subview
+        lineChartView = LineChartView(frame: CGRect(x:650,y:400, width:500, height:400))
+        lineChartView.backgroundColor = UIColor(white: 0.9, alpha: 1)
+        lineChartView.hidden = true
+        self.view.addSubview(lineChartView)
+        lineChartView.noDataText = "No data selected."
         
         // setup highlighted array
         for _ in 0..<204 {//table.getSize() {
@@ -163,6 +179,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             indices.removeAll()
             indices.append(indexPath!)
             indices.append(selectedIndices[0])
+            clear()
             self.collectionView!.reloadItemsAtIndexPaths(indices)
         }
     }
@@ -256,6 +273,8 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         indices.removeAll()
         indices.append(indexPath)
         self.collectionView!.reloadItemsAtIndexPaths(indices)
+        
+        
     }
     
     func resultOfOperator(op: String, selectedIndices: [Int], newVal: Double) -> Int {
@@ -339,18 +358,40 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             self.collectionView?.reloadData()
             
             // get rid of the chart
-            self.chartView.hidden = true
+            self.pieChartView.hidden  = true
+            self.barChartView.hidden  = true
+            self.lineChartView.hidden = true
         })
         ac.addAction(deleteAction)
         
         // provide location for popover (iPad specific)
         let popover = ac.popoverPresentationController
         popover?.sourceView = self.view
-        popover?.sourceRect = CGRectMake(100, 900, 300, 40)
+        popover?.sourceRect = CGRectMake(100, 920, 300, 40)
         popover?.permittedArrowDirections = UIPopoverArrowDirection.Any
         
         // present the alert controller
         presentViewController(ac, animated: true, completion: nil)
+    }
+    
+    // performs clearing functions without tapping the button
+    func clear() {
+        // do the annotations deletion
+        self.canvas.clear()
+        
+        // reset the selected value array
+        self.selectedIndices.removeAll()
+        
+        // reset the arithmeticValue
+        self.arithmeticValue = 0.0
+        
+        // reset the tableview (remove highlighted cells)
+        self.collectionView?.reloadData()
+        
+        // get rid of the chart
+        self.pieChartView.hidden  = true
+        self.barChartView.hidden  = true
+        self.lineChartView.hidden = true
     }
     
     @IBAction func createChart(sender: UIButton) {
@@ -359,19 +400,66 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             return
         }
         
-        chartView.hidden = false
-        var rows = createRowsArray()
-        var vals = createValsArray()
-        setChart(rows, values: vals)
+        // create alert controller with chart type selections
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        
+        // alert actions
+        let pieChartAction = UIAlertAction(title: "Pie Chart", style: UIAlertActionStyle.Default, handler: {
+            (action) -> Void in
+            
+            self.hideChart(sender)
+            
+            self.pieChartView.hidden = false
+            let rows = self.createRowsArray()
+            let vals = self.createValsArray()
+            self.setChart(rows, values: vals, chartView: self.pieChartView)
+            
+        })
+        let barChartAction = UIAlertAction(title: "Bar Chart", style: UIAlertActionStyle.Default, handler: {
+            (action) -> Void in
+            
+            self.hideChart(sender)
+            
+            self.barChartView.hidden = false
+            let rows = self.createRowsArray()
+            let vals = self.createValsArray()
+            self.setChart(rows, values: vals, chartView: self.barChartView)
+        })
+        let lineChartAction = UIAlertAction(title: "Line Chart", style: UIAlertActionStyle.Default, handler: {
+            (action) -> Void in
+            
+            self.hideChart(sender)
+            
+            self.lineChartView.hidden = false
+            let rows = self.createRowsArray()
+            let vals = self.createValsArray()
+            self.setChart(rows, values: vals, chartView: self.lineChartView)
+        })
+        
+        // add selections to alert controller
+        alertController.addAction(pieChartAction)
+        alertController.addAction(barChartAction)
+        alertController.addAction(lineChartAction)
+        
+        // create popover to hold alert controller
+        let popover = alertController.popoverPresentationController
+        popover?.sourceView = self.view
+        popover?.sourceRect = CGRectMake(500, 925, 150, 40)
+        popover?.permittedArrowDirections = UIPopoverArrowDirection.Any
+        
+        // present the alert controller
+        presentViewController(alertController, animated: true, completion: nil)
     }
     
     @IBAction func hideChart(sender: UIButton) {
-        chartView.hidden = true
+        pieChartView.hidden  = true
+        barChartView.hidden  = true
+        lineChartView.hidden = true
     }
     
     // MARK: - Chart
     
-    func setChart(dataPoints:[String], values: [Double]) {
+    func setChart(dataPoints:[String], values: [Double], chartView: ChartViewBase) {
         chartView.noDataText = "You need to provide data for the chart"
         
         // add dataPoints to chart's dataPoints array
@@ -382,15 +470,29 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             dataEntries.append(dataEntry)
         }
         
-        // set pie chart data
-        let pieChartDataSet = PieChartDataSet(yVals: dataEntries, label: "Units")
-        let pieChartData    = PieChartData(xVals: dataEntries, dataSet: pieChartDataSet)
-        chartView.data = pieChartData
+        // set chart data
+        var chartDataSet: ChartDataSet!
+        var chartData: ChartData!
+        
+        if chartView is PieChartView {
+            chartDataSet = PieChartDataSet(yVals: dataEntries, label: "Units")
+            chartData    = PieChartData(xVals: dataEntries, dataSet: chartDataSet)
+        }
+        if chartView is BarChartView {
+            chartDataSet = BarChartDataSet(yVals: dataEntries, label: "Units")
+            chartData    = BarChartData(xVals: dataEntries, dataSet: chartDataSet)
+        }
+        if chartView is LineChartView {
+            chartDataSet = LineChartDataSet(yVals: dataEntries, label: "Units")
+            chartData    = LineChartData(xVals: dataEntries, dataSet: chartDataSet)
+        }
+        
+        chartView.data = chartData
         
         // set up chart colors, and save references in dictionary
         var colors: [UIColor] = []
         
-        for i in 0..<dataPoints.count {
+        for _ in 0..<dataPoints.count {
             let red   = Double(arc4random_uniform(256))
             let green = Double(arc4random_uniform(256))
             let blue  = Double(arc4random_uniform(256))
@@ -399,7 +501,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             colors.append(color)
         }
         
-        pieChartDataSet.colors = colors
+        chartDataSet.colors = colors
         
         // remove "Description" label from charts
         chartView.descriptionText  = ""
@@ -416,7 +518,9 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     func createValsArray() -> [Double] {
         var result = [Double]()
         for i in selectedIndices {
-            result.append(Double(i.item))
+            let cell = self.collectionView!.cellForItemAtIndexPath(i) as! CollectionViewCell
+            let val = Double(cell.label.text!)
+            result.append(val!)
         }
         return result
     }

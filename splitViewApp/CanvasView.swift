@@ -169,26 +169,27 @@ class CanvasView: UIView {
         return newLine
     }
     
-    func addPointsOfType(var type: LinePoint.PointType, forTouches touches: [UITouch], toLine line: Line, currentUpdateRect updateRect: CGRect) -> CGRect {
+    func addPointsOfType(type: LinePoint.PointType, forTouches touches: [UITouch], toLine line: Line, currentUpdateRect updateRect: CGRect) -> CGRect {
         var accumulatedRect = CGRect.null
+        var typeIn = type
         
         for (idx, touch) in touches.enumerate() {
             let isStylus = touch.type == .Stylus
             
             // The visualization displays non-`.Stylus` touches differently.
             if !isStylus {
-                type.unionInPlace(.Finger)
+                typeIn.unionInPlace(.Finger)
             }
             
             // Touches with estimated properties require updates; add this information to the `PointType`.
             if isTouchUpdatingEnabled && !touch.estimatedProperties.isEmpty {
-                type.unionInPlace(.NeedsUpdate)
+                typeIn.unionInPlace(.NeedsUpdate)
             }
             
             // The last touch in a set of `.Coalesced` touches is the originating touch. Track it differently.
             if type.contains(.Coalesced) && idx == touches.count - 1 {
-                type.subtractInPlace(.Coalesced)
-                type.unionInPlace(.Standard)
+                typeIn.subtractInPlace(.Coalesced)
+                typeIn.unionInPlace(.Standard)
             }
             
             let touchRect = line.addPointOfType(type, forTouch: touch)
