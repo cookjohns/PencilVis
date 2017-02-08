@@ -23,6 +23,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     var logButton:   UIButton!
     
     var textView:UITextView!
+    var logMessage: String!
     
     // MARK: Table
     
@@ -105,11 +106,13 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         logButton.addTarget(self, action: #selector(showHideLog), forControlEvents: .TouchUpInside)
         self.view.addSubview(logButton)
         
-        // setup line chart subview
+        // setup log
         textView = UITextView(frame: CGRect(x:650,y:400, width:500, height:400))
         textView.backgroundColor = UIColor(white: 0.9, alpha: 1)
         textView.hidden = true
         self.view.addSubview(textView)
+        
+        logMessage = "Created log at: \(NSDate().timeIntervalSince1970)\n\n"
         
         // setup highlighted array
         for _ in 0..<204 {//table.getSize() {
@@ -150,6 +153,9 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             indices.append(selectedIndices[0])
             clear()
             self.collectionView!.reloadItemsAtIndexPaths(indices)
+            
+            // add to log
+            logMessage.appendContentsOf("Copied \(valueToInsert) to cell \(index) with circle gesture: \(NSDate().timeIntervalSince1970)\n\n")
         }
     }
     
@@ -165,18 +171,22 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             if op == "+" {
                 arithmeticValue = Double(table.getTableItem(selectedIndices[0].item))! + Double(table.getTableItem(selectedIndices[1].item))!
                 selectedIndices.removeAll()
+                logMessage.appendContentsOf("Addition: \(NSDate().timeIntervalSince1970)\n\n")
             }
             if op == "-" {
                 arithmeticValue = Double(table.getTableItem(selectedIndices[0].item))! - Double(table.getTableItem(selectedIndices[1].item))!
                 selectedIndices.removeAll()
+                logMessage.appendContentsOf("Subtraction: \(NSDate().timeIntervalSince1970)\n\n")
             }
             if op == "*" {
                 arithmeticValue = Double(table.getTableItem(selectedIndices[0].item))! * Double(table.getTableItem(selectedIndices[1].item))!
                 selectedIndices.removeAll()
+                logMessage.appendContentsOf("Multiplication: \(NSDate().timeIntervalSince1970)\n\n")
             }
             if op == "/" {
                 arithmeticValue = Double(table.getTableItem(selectedIndices[0].item))! / Double(table.getTableItem(selectedIndices[1].item))!
                 selectedIndices.removeAll()
+                logMessage.appendContentsOf("Division: \(NSDate().timeIntervalSince1970)\n\n")
             }
             if op == "∑" {
                 var temp = 0.0
@@ -185,14 +195,17 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                 }
                 arithmeticValue = temp
                 selectedIndices.removeAll()
+                logMessage.appendContentsOf("Summation: \(NSDate().timeIntervalSince1970)\n\n")
             }
             if op == "Sort ↑" {
                 sortSelectedIndices(true)
                 selectedIndices.removeAll()
+                logMessage.appendContentsOf("Sort ascending: \(NSDate().timeIntervalSince1970)\n\n")
             }
             if op == "Sort ↓" {
                 sortSelectedIndices(false)
                 selectedIndices.removeAll()
+                logMessage.appendContentsOf("Sort descending: \(NSDate().timeIntervalSince1970)\n\n")
             }
             
             // update arithmeticValue display cell
@@ -213,6 +226,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             indicesToUpdate.append(indexPathIn)
             self.collectionView!.reloadItemsAtIndexPaths(indicesToUpdate)
             setupOperatorCells()
+            logMessage.appendContentsOf("Deselection: \(NSDate().timeIntervalSince1970)\n\n")
             return
         }
             // otherwise select it (if it's not blank)
@@ -222,6 +236,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             indicesToUpdate.append(indexPathIn)
             self.collectionView!.reloadItemsAtIndexPaths(indicesToUpdate)
             setupOperatorCells()
+            logMessage.appendContentsOf("Selection: \(NSDate().timeIntervalSince1970)\n\n")
         }
         print("Selected cell is \(cell.label.text!)")
     }
@@ -236,14 +251,14 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             return
         }
         
+        logMessage.appendContentsOf("Deleted cell with value \(cell.label.text): \(NSDate().timeIntervalSince1970)\n\n")
+        
         table.updateTable(index, input: "")
         selectedIndices.removeAtIndex(selectedIndices.indexOf(indexPath)!)
         
         indices.removeAll()
         indices.append(indexPath)
         self.collectionView!.reloadItemsAtIndexPaths(indices)
-        
-        
     }
     
     func resultOfOperator(op: String, selectedIndices: [Int], newVal: Double) -> Int {
@@ -336,6 +351,8 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         
         // present the alert controller
         presentViewController(ac, animated: true, completion: nil)
+        
+        logMessage.appendContentsOf("Clear: \(NSDate().timeIntervalSince1970)\n\n")
     }
     
     // performs clearing functions without tapping the button
@@ -359,7 +376,9 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             return
         }
         else {
-            let someText = NSString(string:"some text")
+            logMessage.appendContentsOf("Opened log at: \(NSDate().timeIntervalSince1970)\n\n")
+            
+            let text = NSString(string:logMessage)
             let destinationPath = "myFile.txt"
             let filemgr = NSFileManager.defaultManager()
             if filemgr.fileExistsAtPath(destinationPath) {
@@ -374,12 +393,12 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             } else {
                 print("File does not exist")
                 do {
-                    try someText.writeToFile(destinationPath, atomically: true, encoding: NSUTF8StringEncoding)
+                    try text.writeToFile(destinationPath, atomically: true, encoding: NSUTF8StringEncoding)
                 } catch let error as NSError {  
                     print("Error: \(error)")  
                 }  
             }
-            textView.text = someText as String
+            textView.text = text as String
             textView.hidden = false
         }
     }
