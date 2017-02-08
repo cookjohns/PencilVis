@@ -361,7 +361,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         else {
             let someText = NSString(string:"some text")
             let destinationPath = "myFile.txt"
-            var filemgr = NSFileManager.defaultManager()
+            let filemgr = NSFileManager.defaultManager()
             if filemgr.fileExistsAtPath(destinationPath) {
                 print("File exists")
                 do {
