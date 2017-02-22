@@ -17,42 +17,6 @@
 		BD17C1C11E03236B00169211 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD17C1C01E03236B00169211 /* AppDelegate.swift */; };
 		BD6311B61E40799D004EEE65 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD6311B41E40799D004EEE65 /* Main.storyboard */; };
 		BDA2E2EF1D5151B8003D4D94 /* CollectionViewCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA2E2EE1D5151B8003D4D94 /* CollectionViewCanvas.swift */; };
-		BDBE8A821E5C268200B12571 /* Instructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A501E5C268200B12571 /* Instructions.swift */; };
-		BDBE8A831E5C268200B12571 /* CoachMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A511E5C268200B12571 /* CoachMark.swift */; };
-		BDBE8A841E5C268200B12571 /* CoachMarksController+Deprecated.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A521E5C268200B12571 /* CoachMarksController+Deprecated.swift */; };
-		BDBE8A851E5C268200B12571 /* CoachMarksController+Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A531E5C268200B12571 /* CoachMarksController+Proxy.swift */; };
-		BDBE8A861E5C268200B12571 /* CoachMarksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A541E5C268200B12571 /* CoachMarksController.swift */; };
-		BDBE8A871E5C268200B12571 /* CoachMarksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A561E5C268200B12571 /* CoachMarksViewController.swift */; };
-		BDBE8A881E5C268200B12571 /* CoachMarkArrowOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A581E5C268200B12571 /* CoachMarkArrowOrientation.swift */; };
-		BDBE8A891E5C268200B12571 /* CoachMarkPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A591E5C268200B12571 /* CoachMarkPosition.swift */; };
-		BDBE8A8A1E5C268200B12571 /* UIImage+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A5B1E5C268200B12571 /* UIImage+Bundle.swift */; };
-		BDBE8A8B1E5C268200B12571 /* BlurEffectViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A5D1E5C268200B12571 /* BlurEffectViewHelper.swift */; };
-		BDBE8A8C1E5C268200B12571 /* CoachMarkBodyDefaultViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A5E1E5C268200B12571 /* CoachMarkBodyDefaultViewHelper.swift */; };
-		BDBE8A8D1E5C268200B12571 /* CoachMarkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A5F1E5C268200B12571 /* CoachMarkHelper.swift */; };
-		BDBE8A8E1E5C268200B12571 /* CoachMarkInnerLayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A601E5C268200B12571 /* CoachMarkInnerLayoutHelper.swift */; };
-		BDBE8A8F1E5C268200B12571 /* CoachMarkLayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A611E5C268200B12571 /* CoachMarkLayoutHelper.swift */; };
-		BDBE8A901E5C268200B12571 /* MainViewsLayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A621E5C268200B12571 /* MainViewsLayoutHelper.swift */; };
-		BDBE8A911E5C268200B12571 /* CoachMarkDisplayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A641E5C268200B12571 /* CoachMarkDisplayManager.swift */; };
-		BDBE8A921E5C268200B12571 /* FlowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A651E5C268200B12571 /* FlowManager.swift */; };
-		BDBE8A931E5C268200B12571 /* OverlayViewLayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A661E5C268200B12571 /* OverlayViewLayerManager.swift */; };
-		BDBE8A941E5C268200B12571 /* SkipViewDisplayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A671E5C268200B12571 /* SkipViewDisplayManager.swift */; };
-		BDBE8A951E5C268200B12571 /* CoachMarkArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A691E5C268200B12571 /* CoachMarkArrowView.swift */; };
-		BDBE8A961E5C268200B12571 /* CoachMarkBodyHighlightArrowDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A6A1E5C268200B12571 /* CoachMarkBodyHighlightArrowDelegate.swift */; };
-		BDBE8A971E5C268200B12571 /* CoachMarkBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A6B1E5C268200B12571 /* CoachMarkBodyView.swift */; };
-		BDBE8A981E5C268200B12571 /* CoachMarkSkipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A6C1E5C268200B12571 /* CoachMarkSkipView.swift */; };
-		BDBE8A991E5C268200B12571 /* CoachMarksControllerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A6D1E5C268200B12571 /* CoachMarksControllerDataSource.swift */; };
-		BDBE8A9A1E5C268200B12571 /* CoachMarksControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A6E1E5C268200B12571 /* CoachMarksControllerDelegate.swift */; };
-		BDBE8A9B1E5C268200B12571 /* CoachMarkViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A701E5C268200B12571 /* CoachMarkViewControllerDelegate.swift */; };
-		BDBE8A9C1E5C268200B12571 /* CoachMarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A721E5C268200B12571 /* CoachMarkView.swift */; };
-		BDBE8A9D1E5C268200B12571 /* DummyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A731E5C268200B12571 /* DummyView.swift */; };
-		BDBE8A9E1E5C268200B12571 /* InstructionsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A741E5C268200B12571 /* InstructionsRootView.swift */; };
-		BDBE8A9F1E5C268200B12571 /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A751E5C268200B12571 /* OverlayView.swift */; };
-		BDBE8AA01E5C268200B12571 /* CoachMarkArrowDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A771E5C268200B12571 /* CoachMarkArrowDefaultView.swift */; };
-		BDBE8AA11E5C268200B12571 /* CoachMarkBodyDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A781E5C268200B12571 /* CoachMarkBodyDefaultView.swift */; };
-		BDBE8AA21E5C268200B12571 /* CoachMarkSkipDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBE8A791E5C268200B12571 /* CoachMarkSkipDefaultView.swift */; };
-		BDBE8AA31E5C268200B12571 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BDBE8A7C1E5C268200B12571 /* Images.xcassets */; };
-		BDBE8AA41E5C268200B12571 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDBE8A7D1E5C268200B12571 /* Info.plist */; };
-		BDBE8AA51E5C268200B12571 /* InfoAppExtensions.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDBE8A7E1E5C268200B12571 /* InfoAppExtensions.plist */; };
 		BDEAB0021D1236A80090A119 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEAAFFB1D1236830090A119 /* Charts.framework */; };
 		BDEAB0031D1236A80090A119 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BDEAAFFB1D1236830090A119 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -93,27 +57,6 @@
 			remoteGlobalIDString = 5BA8EC3F1A9D14DC00CE82E1;
 			remoteInfo = "Charts-iOS";
 		};
-		BDF60A821E5D0B32008BFE52 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BDF60A791E5D0B32008BFE52 /* Instructions.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C64FB2E91BB6CA8A0081E5B6;
-			remoteInfo = Instructions;
-		};
-		BDF60A841E5D0B32008BFE52 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BDF60A791E5D0B32008BFE52 /* Instructions.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C6417E331D291A8A004D13EA;
-			remoteInfo = InstructionsAppExtensions;
-		};
-		BDF60A861E5D0B32008BFE52 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BDF60A791E5D0B32008BFE52 /* Instructions.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C64FB2F31BB6CA8A0081E5B6;
-			remoteInfo = InstructionsTests;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -143,45 +86,7 @@
 		BD17C1C01E03236B00169211 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BD6311B51E40799D004EEE65 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BDA2E2EE1D5151B8003D4D94 /* CollectionViewCanvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCanvas.swift; sourceTree = "<group>"; };
-		BDBE8A501E5C268200B12571 /* Instructions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Instructions.swift; sourceTree = "<group>"; };
-		BDBE8A511E5C268200B12571 /* CoachMark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMark.swift; sourceTree = "<group>"; };
-		BDBE8A521E5C268200B12571 /* CoachMarksController+Deprecated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CoachMarksController+Deprecated.swift"; sourceTree = "<group>"; };
-		BDBE8A531E5C268200B12571 /* CoachMarksController+Proxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CoachMarksController+Proxy.swift"; sourceTree = "<group>"; };
-		BDBE8A541E5C268200B12571 /* CoachMarksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarksController.swift; sourceTree = "<group>"; };
-		BDBE8A561E5C268200B12571 /* CoachMarksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CoachMarksViewController.swift; sourceTree = "<group>"; };
-		BDBE8A581E5C268200B12571 /* CoachMarkArrowOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarkArrowOrientation.swift; sourceTree = "<group>"; };
-		BDBE8A591E5C268200B12571 /* CoachMarkPosition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarkPosition.swift; sourceTree = "<group>"; };
-		BDBE8A5B1E5C268200B12571 /* UIImage+Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Bundle.swift"; sourceTree = "<group>"; };
-		BDBE8A5D1E5C268200B12571 /* BlurEffectViewHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurEffectViewHelper.swift; sourceTree = "<group>"; };
-		BDBE8A5E1E5C268200B12571 /* CoachMarkBodyDefaultViewHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarkBodyDefaultViewHelper.swift; sourceTree = "<group>"; };
-		BDBE8A5F1E5C268200B12571 /* CoachMarkHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarkHelper.swift; sourceTree = "<group>"; };
-		BDBE8A601E5C268200B12571 /* CoachMarkInnerLayoutHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarkInnerLayoutHelper.swift; sourceTree = "<group>"; };
-		BDBE8A611E5C268200B12571 /* CoachMarkLayoutHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarkLayoutHelper.swift; sourceTree = "<group>"; };
-		BDBE8A621E5C268200B12571 /* MainViewsLayoutHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewsLayoutHelper.swift; sourceTree = "<group>"; };
-		BDBE8A641E5C268200B12571 /* CoachMarkDisplayManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarkDisplayManager.swift; sourceTree = "<group>"; };
-		BDBE8A651E5C268200B12571 /* FlowManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowManager.swift; sourceTree = "<group>"; };
-		BDBE8A661E5C268200B12571 /* OverlayViewLayerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayViewLayerManager.swift; sourceTree = "<group>"; };
-		BDBE8A671E5C268200B12571 /* SkipViewDisplayManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SkipViewDisplayManager.swift; sourceTree = "<group>"; };
-		BDBE8A691E5C268200B12571 /* CoachMarkArrowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarkArrowView.swift; sourceTree = "<group>"; };
-		BDBE8A6A1E5C268200B12571 /* CoachMarkBodyHighlightArrowDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarkBodyHighlightArrowDelegate.swift; sourceTree = "<group>"; };
-		BDBE8A6B1E5C268200B12571 /* CoachMarkBodyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarkBodyView.swift; sourceTree = "<group>"; };
-		BDBE8A6C1E5C268200B12571 /* CoachMarkSkipView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarkSkipView.swift; sourceTree = "<group>"; };
-		BDBE8A6D1E5C268200B12571 /* CoachMarksControllerDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CoachMarksControllerDataSource.swift; sourceTree = "<group>"; };
-		BDBE8A6E1E5C268200B12571 /* CoachMarksControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarksControllerDelegate.swift; sourceTree = "<group>"; };
-		BDBE8A701E5C268200B12571 /* CoachMarkViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarkViewControllerDelegate.swift; sourceTree = "<group>"; };
-		BDBE8A721E5C268200B12571 /* CoachMarkView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarkView.swift; sourceTree = "<group>"; };
-		BDBE8A731E5C268200B12571 /* DummyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummyView.swift; sourceTree = "<group>"; };
-		BDBE8A741E5C268200B12571 /* InstructionsRootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstructionsRootView.swift; sourceTree = "<group>"; };
-		BDBE8A751E5C268200B12571 /* OverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
-		BDBE8A771E5C268200B12571 /* CoachMarkArrowDefaultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarkArrowDefaultView.swift; sourceTree = "<group>"; };
-		BDBE8A781E5C268200B12571 /* CoachMarkBodyDefaultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarkBodyDefaultView.swift; sourceTree = "<group>"; };
-		BDBE8A791E5C268200B12571 /* CoachMarkSkipDefaultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMarkSkipDefaultView.swift; sourceTree = "<group>"; };
-		BDBE8A7C1E5C268200B12571 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		BDBE8A7D1E5C268200B12571 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BDBE8A7E1E5C268200B12571 /* InfoAppExtensions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InfoAppExtensions.plist; sourceTree = "<group>"; };
-		BDBE8A7F1E5C268200B12571 /* Instructions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Instructions.h; sourceTree = "<group>"; };
 		BDEAAFF31D1236830090A119 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = Charts/Charts.xcodeproj; sourceTree = "<group>"; };
-		BDF60A791E5D0B32008BFE52 /* Instructions.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Instructions.xcodeproj; path = "Instructions-swift2/Instructions.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,7 +106,6 @@
 			children = (
 				BD04531C1D0CBEA60036CE78 /* splitViewApp */,
 				BD04531B1D0CBEA60036CE78 /* Products */,
-				BDF60A791E5D0B32008BFE52 /* Instructions.xcodeproj */,
 				BDEAAFF31D1236830090A119 /* Charts.xcodeproj */,
 			);
 			sourceTree = "<group>";
@@ -228,152 +132,8 @@
 				BD6311B41E40799D004EEE65 /* Main.storyboard */,
 				BD0453261D0CBEA60036CE78 /* LaunchScreen.storyboard */,
 				BD0453291D0CBEA60036CE78 /* Info.plist */,
-				BDBE8A811E5C268200B12571 /* Sources */,
 			);
 			path = splitViewApp;
-			sourceTree = "<group>";
-		};
-		BDBE8A551E5C268200B12571 /* Public */ = {
-			isa = PBXGroup;
-			children = (
-				BDBE8A511E5C268200B12571 /* CoachMark.swift */,
-				BDBE8A521E5C268200B12571 /* CoachMarksController+Deprecated.swift */,
-				BDBE8A531E5C268200B12571 /* CoachMarksController+Proxy.swift */,
-				BDBE8A541E5C268200B12571 /* CoachMarksController.swift */,
-			);
-			path = Public;
-			sourceTree = "<group>";
-		};
-		BDBE8A571E5C268200B12571 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				BDBE8A551E5C268200B12571 /* Public */,
-				BDBE8A561E5C268200B12571 /* CoachMarksViewController.swift */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
-		BDBE8A5A1E5C268200B12571 /* Enums */ = {
-			isa = PBXGroup;
-			children = (
-				BDBE8A581E5C268200B12571 /* CoachMarkArrowOrientation.swift */,
-				BDBE8A591E5C268200B12571 /* CoachMarkPosition.swift */,
-			);
-			name = Enums;
-			path = ../Extra/Enums;
-			sourceTree = "<group>";
-		};
-		BDBE8A5C1E5C268200B12571 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				BDBE8A5B1E5C268200B12571 /* UIImage+Bundle.swift */,
-			);
-			name = Extensions;
-			path = ../Extra/Extensions;
-			sourceTree = "<group>";
-		};
-		BDBE8A631E5C268200B12571 /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				BDBE8A5A1E5C268200B12571 /* Enums */,
-				BDBE8A5C1E5C268200B12571 /* Extensions */,
-				BDBE8A5D1E5C268200B12571 /* BlurEffectViewHelper.swift */,
-				BDBE8A5E1E5C268200B12571 /* CoachMarkBodyDefaultViewHelper.swift */,
-				BDBE8A5F1E5C268200B12571 /* CoachMarkHelper.swift */,
-				BDBE8A601E5C268200B12571 /* CoachMarkInnerLayoutHelper.swift */,
-				BDBE8A611E5C268200B12571 /* CoachMarkLayoutHelper.swift */,
-				BDBE8A621E5C268200B12571 /* MainViewsLayoutHelper.swift */,
-			);
-			path = Helpers;
-			sourceTree = "<group>";
-		};
-		BDBE8A681E5C268200B12571 /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				BDBE8A641E5C268200B12571 /* CoachMarkDisplayManager.swift */,
-				BDBE8A651E5C268200B12571 /* FlowManager.swift */,
-				BDBE8A661E5C268200B12571 /* OverlayViewLayerManager.swift */,
-				BDBE8A671E5C268200B12571 /* SkipViewDisplayManager.swift */,
-			);
-			path = Managers;
-			sourceTree = "<group>";
-		};
-		BDBE8A6F1E5C268200B12571 /* Public */ = {
-			isa = PBXGroup;
-			children = (
-				BDBE8A691E5C268200B12571 /* CoachMarkArrowView.swift */,
-				BDBE8A6A1E5C268200B12571 /* CoachMarkBodyHighlightArrowDelegate.swift */,
-				BDBE8A6B1E5C268200B12571 /* CoachMarkBodyView.swift */,
-				BDBE8A6C1E5C268200B12571 /* CoachMarkSkipView.swift */,
-				BDBE8A6D1E5C268200B12571 /* CoachMarksControllerDataSource.swift */,
-				BDBE8A6E1E5C268200B12571 /* CoachMarksControllerDelegate.swift */,
-			);
-			path = Public;
-			sourceTree = "<group>";
-		};
-		BDBE8A711E5C268200B12571 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				BDBE8A6F1E5C268200B12571 /* Public */,
-				BDBE8A701E5C268200B12571 /* CoachMarkViewControllerDelegate.swift */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
-		BDBE8A761E5C268200B12571 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				BDBE8A721E5C268200B12571 /* CoachMarkView.swift */,
-				BDBE8A731E5C268200B12571 /* DummyView.swift */,
-				BDBE8A741E5C268200B12571 /* InstructionsRootView.swift */,
-				BDBE8A751E5C268200B12571 /* OverlayView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		BDBE8A7A1E5C268200B12571 /* Default Views */ = {
-			isa = PBXGroup;
-			children = (
-				BDBE8A771E5C268200B12571 /* CoachMarkArrowDefaultView.swift */,
-				BDBE8A781E5C268200B12571 /* CoachMarkBodyDefaultView.swift */,
-				BDBE8A791E5C268200B12571 /* CoachMarkSkipDefaultView.swift */,
-			);
-			path = "Default Views";
-			sourceTree = "<group>";
-		};
-		BDBE8A7B1E5C268200B12571 /* Extra */ = {
-			isa = PBXGroup;
-			children = (
-				BDBE8A7A1E5C268200B12571 /* Default Views */,
-			);
-			path = Extra;
-			sourceTree = "<group>";
-		};
-		BDBE8A801E5C268200B12571 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				BDBE8A7C1E5C268200B12571 /* Images.xcassets */,
-				BDBE8A7D1E5C268200B12571 /* Info.plist */,
-				BDBE8A7E1E5C268200B12571 /* InfoAppExtensions.plist */,
-				BDBE8A7F1E5C268200B12571 /* Instructions.h */,
-			);
-			path = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		BDBE8A811E5C268200B12571 /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				BDBE8A501E5C268200B12571 /* Instructions.swift */,
-				BDBE8A571E5C268200B12571 /* Controllers */,
-				BDBE8A631E5C268200B12571 /* Helpers */,
-				BDBE8A681E5C268200B12571 /* Managers */,
-				BDBE8A711E5C268200B12571 /* Protocols */,
-				BDBE8A761E5C268200B12571 /* Views */,
-				BDBE8A7B1E5C268200B12571 /* Extra */,
-				BDBE8A801E5C268200B12571 /* Supporting Files */,
-			);
-			name = Sources;
-			path = "../Instructions-swift2/Sources";
 			sourceTree = "<group>";
 		};
 		BDEAAFF41D1236830090A119 /* Products */ = {
@@ -383,16 +143,6 @@
 				BDEAAFFD1D1236830090A119 /* Charts.framework */,
 				BDEAAFFF1D1236830090A119 /* Charts.framework */,
 				BDEAB0011D1236830090A119 /* ChartsTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		BDF60A7A1E5D0B32008BFE52 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BDF60A831E5D0B32008BFE52 /* Instructions.framework */,
-				BDF60A851E5D0B32008BFE52 /* InstructionsAppExtensions.framework */,
-				BDF60A871E5D0B32008BFE52 /* InstructionsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -451,10 +201,6 @@
 					ProductGroup = BDEAAFF41D1236830090A119 /* Products */;
 					ProjectRef = BDEAAFF31D1236830090A119 /* Charts.xcodeproj */;
 				},
-				{
-					ProductGroup = BDF60A7A1E5D0B32008BFE52 /* Products */;
-					ProjectRef = BDF60A791E5D0B32008BFE52 /* Instructions.xcodeproj */;
-				},
 			);
 			projectRoot = "";
 			targets = (
@@ -492,27 +238,6 @@
 			remoteRef = BDEAB0001D1236830090A119 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		BDF60A831E5D0B32008BFE52 /* Instructions.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Instructions.framework;
-			remoteRef = BDF60A821E5D0B32008BFE52 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BDF60A851E5D0B32008BFE52 /* InstructionsAppExtensions.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = InstructionsAppExtensions.framework;
-			remoteRef = BDF60A841E5D0B32008BFE52 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BDF60A871E5D0B32008BFE52 /* InstructionsTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = InstructionsTests.xctest;
-			remoteRef = BDF60A861E5D0B32008BFE52 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -521,10 +246,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD6311B61E40799D004EEE65 /* Main.storyboard in Resources */,
-				BDBE8AA31E5C268200B12571 /* Images.xcassets in Resources */,
-				BDBE8AA51E5C268200B12571 /* InfoAppExtensions.plist in Resources */,
 				BD0453281D0CBEA60036CE78 /* LaunchScreen.storyboard in Resources */,
-				BDBE8AA41E5C268200B12571 /* Info.plist in Resources */,
 				BD0453251D0CBEA60036CE78 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -536,46 +258,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDBE8A8C1E5C268200B12571 /* CoachMarkBodyDefaultViewHelper.swift in Sources */,
-				BDBE8AA21E5C268200B12571 /* CoachMarkSkipDefaultView.swift in Sources */,
-				BDBE8A981E5C268200B12571 /* CoachMarkSkipView.swift in Sources */,
-				BDBE8A961E5C268200B12571 /* CoachMarkBodyHighlightArrowDelegate.swift in Sources */,
-				BDBE8A971E5C268200B12571 /* CoachMarkBodyView.swift in Sources */,
-				BDBE8AA01E5C268200B12571 /* CoachMarkArrowDefaultView.swift in Sources */,
-				BDBE8A8F1E5C268200B12571 /* CoachMarkLayoutHelper.swift in Sources */,
-				BDBE8A991E5C268200B12571 /* CoachMarksControllerDataSource.swift in Sources */,
-				BDBE8A831E5C268200B12571 /* CoachMark.swift in Sources */,
-				BDBE8A9B1E5C268200B12571 /* CoachMarkViewControllerDelegate.swift in Sources */,
 				BD0249D01D1A0C490000AC1C /* CanvasView.swift in Sources */,
-				BDBE8A8B1E5C268200B12571 /* BlurEffectViewHelper.swift in Sources */,
-				BDBE8AA11E5C268200B12571 /* CoachMarkBodyDefaultView.swift in Sources */,
-				BDBE8A881E5C268200B12571 /* CoachMarkArrowOrientation.swift in Sources */,
-				BDBE8A841E5C268200B12571 /* CoachMarksController+Deprecated.swift in Sources */,
-				BDBE8A921E5C268200B12571 /* FlowManager.swift in Sources */,
-				BDBE8A901E5C268200B12571 /* MainViewsLayoutHelper.swift in Sources */,
-				BDBE8A8D1E5C268200B12571 /* CoachMarkHelper.swift in Sources */,
 				BD0453361D0CC9DA0036CE78 /* CollectionViewCell.swift in Sources */,
-				BDBE8A9F1E5C268200B12571 /* OverlayView.swift in Sources */,
-				BDBE8A8A1E5C268200B12571 /* UIImage+Bundle.swift in Sources */,
-				BDBE8A941E5C268200B12571 /* SkipViewDisplayManager.swift in Sources */,
-				BDBE8A821E5C268200B12571 /* Instructions.swift in Sources */,
-				BDBE8A891E5C268200B12571 /* CoachMarkPosition.swift in Sources */,
-				BDBE8A861E5C268200B12571 /* CoachMarksController.swift in Sources */,
-				BDBE8A8E1E5C268200B12571 /* CoachMarkInnerLayoutHelper.swift in Sources */,
 				BD0249FA1D1A62250000AC1C /* CircleFit.swift in Sources */,
-				BDBE8A951E5C268200B12571 /* CoachMarkArrowView.swift in Sources */,
 				BD17C1BB1E0322D100169211 /* Table.swift in Sources */,
-				BDBE8A9A1E5C268200B12571 /* CoachMarksControllerDelegate.swift in Sources */,
-				BDBE8A931E5C268200B12571 /* OverlayViewLayerManager.swift in Sources */,
 				BD0249D21D1A0CA90000AC1C /* Line.swift in Sources */,
-				BDBE8A9C1E5C268200B12571 /* CoachMarkView.swift in Sources */,
-				BDBE8A9E1E5C268200B12571 /* InstructionsRootView.swift in Sources */,
 				BDA2E2EF1D5151B8003D4D94 /* CollectionViewCanvas.swift in Sources */,
-				BDBE8A9D1E5C268200B12571 /* DummyView.swift in Sources */,
 				BD17C1C11E03236B00169211 /* AppDelegate.swift in Sources */,
-				BDBE8A851E5C268200B12571 /* CoachMarksController+Proxy.swift in Sources */,
-				BDBE8A911E5C268200B12571 /* CoachMarkDisplayManager.swift in Sources */,
-				BDBE8A871E5C268200B12571 /* CoachMarksViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
