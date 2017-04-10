@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:splitViewApp.xcodeproj">
+      location = "self:/Users/johncook/Google Drive/Code/PencilVis/PencilVis.xcodeproj">
    </FileRef>
 </Workspace>

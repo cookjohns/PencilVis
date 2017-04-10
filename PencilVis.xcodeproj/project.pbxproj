@@ -77,7 +77,7 @@
 		BD0249CF1D1A0C490000AC1C /* CanvasView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		BD0249D11D1A0CA90000AC1C /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		BD0249F91D1A62250000AC1C /* CircleFit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleFit.swift; sourceTree = "<group>"; };
-		BD04531A1D0CBEA60036CE78 /* splitViewApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = splitViewApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD04531A1D0CBEA60036CE78 /* PencilVis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PencilVis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD0453241D0CBEA60036CE78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BD0453271D0CBEA60036CE78 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BD0453291D0CBEA60036CE78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -113,7 +113,7 @@
 		BD04531B1D0CBEA60036CE78 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BD04531A1D0CBEA60036CE78 /* splitViewApp.app */,
+				BD04531A1D0CBEA60036CE78 /* PencilVis.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -150,9 +150,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BD0453191D0CBEA60036CE78 /* splitViewApp */ = {
+		BD0453191D0CBEA60036CE78 /* PencilVis */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BD04532C1D0CBEA60036CE78 /* Build configuration list for PBXNativeTarget "splitViewApp" */;
+			buildConfigurationList = BD04532C1D0CBEA60036CE78 /* Build configuration list for PBXNativeTarget "PencilVis" */;
 			buildPhases = (
 				BD0453161D0CBEA60036CE78 /* Sources */,
 				BD0453171D0CBEA60036CE78 /* Frameworks */,
@@ -164,9 +164,9 @@
 			dependencies = (
 				BDEAB0051D1236A80090A119 /* PBXTargetDependency */,
 			);
-			name = splitViewApp;
+			name = PencilVis;
 			productName = splitViewApp;
-			productReference = BD04531A1D0CBEA60036CE78 /* splitViewApp.app */;
+			productReference = BD04531A1D0CBEA60036CE78 /* PencilVis.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -185,7 +185,7 @@
 					};
 				};
 			};
-			buildConfigurationList = BD0453151D0CBEA60036CE78 /* Build configuration list for PBXProject "splitViewApp" */;
+			buildConfigurationList = BD0453151D0CBEA60036CE78 /* Build configuration list for PBXProject "PencilVis" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -204,7 +204,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				BD0453191D0CBEA60036CE78 /* splitViewApp */,
+				BD0453191D0CBEA60036CE78 /* PencilVis */,
 			);
 		};
 /* End PBXProject section */
@@ -393,7 +393,7 @@
 				INFOPLIST_FILE = splitViewApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jc.splitViewApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = PencilVis;
 				PROVISIONING_PROFILE = "";
 				SWIFT_VERSION = 2.3;
 			};
@@ -409,7 +409,7 @@
 				INFOPLIST_FILE = splitViewApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jc.splitViewApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = PencilVis;
 				PROVISIONING_PROFILE = "";
 				SWIFT_VERSION = 2.3;
 			};
@@ -418,7 +418,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BD0453151D0CBEA60036CE78 /* Build configuration list for PBXProject "splitViewApp" */ = {
+		BD0453151D0CBEA60036CE78 /* Build configuration list for PBXProject "PencilVis" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BD04532A1D0CBEA60036CE78 /* Debug */,
@@ -427,7 +427,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BD04532C1D0CBEA60036CE78 /* Build configuration list for PBXNativeTarget "splitViewApp" */ = {
+		BD04532C1D0CBEA60036CE78 /* Build configuration list for PBXNativeTarget "PencilVis" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BD04532D1D0CBEA60036CE78 /* Debug */,

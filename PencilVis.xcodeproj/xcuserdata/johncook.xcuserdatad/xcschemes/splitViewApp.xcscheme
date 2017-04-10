@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BD0453191D0CBEA60036CE78"
-               BuildableName = "splitViewApp.app"
-               BlueprintName = "splitViewApp"
-               ReferencedContainer = "container:splitViewApp.xcodeproj">
+               BuildableName = "PencilVis.app"
+               BlueprintName = "PencilVis"
+               ReferencedContainer = "container:PencilVis.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BD0453191D0CBEA60036CE78"
-            BuildableName = "splitViewApp.app"
-            BlueprintName = "splitViewApp"
-            ReferencedContainer = "container:splitViewApp.xcodeproj">
+            BuildableName = "PencilVis.app"
+            BlueprintName = "PencilVis"
+            ReferencedContainer = "container:PencilVis.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BD0453191D0CBEA60036CE78"
-            BuildableName = "splitViewApp.app"
-            BlueprintName = "splitViewApp"
-            ReferencedContainer = "container:splitViewApp.xcodeproj">
+            BuildableName = "PencilVis.app"
+            BlueprintName = "PencilVis"
+            ReferencedContainer = "container:PencilVis.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BD0453191D0CBEA60036CE78"
-            BuildableName = "splitViewApp.app"
-            BlueprintName = "splitViewApp"
-            ReferencedContainer = "container:splitViewApp.xcodeproj">
+            BuildableName = "PencilVis.app"
+            BlueprintName = "PencilVis"
+            ReferencedContainer = "container:PencilVis.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
