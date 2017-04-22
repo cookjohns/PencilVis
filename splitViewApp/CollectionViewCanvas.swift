@@ -534,41 +534,41 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         let index = indexPath.item
         var indices = [indexPath]
         
-        // check for valid selection box
-        if (index < 12) {
-            return
-        }
-        
-        let alert = UIAlertController(title:   "Insert value",
-                                      message: "",
-                                      preferredStyle: .Alert)
-        
-        let saveAction = UIAlertAction(title: "Save",
-                                       style: .Default,
-                                       handler: { (action:UIAlertAction) -> Void in
-                                        
-                                        let textField = alert.textFields!.first
-                                        self.table.updateTable(index, input: (textField?.text)!)
-                                        
-                                        indices.removeAll()
-                                        indices.append(indexPath)
-                                        self.collectionView!.reloadItemsAtIndexPaths(indices)
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel",
-                                         style: .Default) { (action: UIAlertAction) -> Void in
-        }
-        
-        alert.addTextFieldWithConfigurationHandler {
-            (textField: UITextField) -> Void in
-        }
-        
-        alert.addAction(saveAction)
-        alert.addAction(cancelAction)
-        
-        presentViewController(alert,
-                              animated:   true,
-                              completion: nil)
+//        // check for valid selection box
+//        if (index < 12) {
+//            return
+//        }
+//        
+//        let alert = UIAlertController(title:   "Insert value",
+//                                      message: "",
+//                                      preferredStyle: .Alert)
+//        
+//        let saveAction = UIAlertAction(title: "Save",
+//                                       style: .Default,
+//                                       handler: { (action:UIAlertAction) -> Void in
+//                                        
+//                                        let textField = alert.textFields!.first
+//                                        self.table.updateTable(index, input: (textField?.text)!)
+//                                        
+//                                        indices.removeAll()
+//                                        indices.append(indexPath)
+//                                        self.collectionView!.reloadItemsAtIndexPaths(indices)
+//        })
+//        
+//        let cancelAction = UIAlertAction(title: "Cancel",
+//                                         style: .Default) { (action: UIAlertAction) -> Void in
+//        }
+//        
+//        alert.addTextFieldWithConfigurationHandler {
+//            (textField: UITextField) -> Void in
+//        }
+//        
+//        alert.addAction(saveAction)
+//        alert.addAction(cancelAction)
+//        
+//        presentViewController(alert,
+//                              animated:   true,
+//                              completion: nil)
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
