@@ -644,6 +644,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         canvas.drawTouches(touches, withEvent: event)
         canvas.endTouches(touches, cancel: false)
+        
         if (touches.first!.type == .Stylus) {
             let intersection = canvas.getIntersection()
             if intersection.x >= 0 {
@@ -665,7 +666,9 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                 
                 isCircle = fitResult.error <= tolerance && hasInside
                 cState = isCircle ? .ended : .failed // fail or end, based on isCircle
-                if (isCircle && cState == .ended) {
+                
+                let points = canvas.lines[canvas.lines.endIndex-1].points
+                if (isCircle && cState == .ended && points.count >= 25) {
                     useCircledCell(fitResult.center)
                     reset()
                     return
