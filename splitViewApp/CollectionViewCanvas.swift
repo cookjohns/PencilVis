@@ -90,7 +90,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         clearButton.layer.borderColor  = UIColor.grayColor().CGColor
         clearButton.layer.borderWidth  = 1
         clearButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        clearButton.setTitle("Clear All", forState: .Normal)
+        clearButton.setTitle("Clear Lines", forState: .Normal)
         clearButton.addTarget(self, action: #selector(clearAll), forControlEvents: .TouchUpInside)
         self.view.addSubview(clearButton)
         
