@@ -112,7 +112,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         textView.hidden = true
         self.view.addSubview(textView)
         
-        logMessage = "Created log at: \(NSDate().timeIntervalSince1970-14930110000)\n\n"
+        logMessage = "Created log at: \(NSDate().timeIntervalSince1970-149301100)\n\n"
         
         // setup highlighted array
         for _ in 0..<204 {//table.getSize() {
@@ -155,7 +155,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             self.collectionView!.reloadItemsAtIndexPaths(indices)
             
             // add to log
-            logMessage.appendContentsOf("Copied \(valueToInsert) to cell \(index) with circle gesture: \(NSDate().timeIntervalSince1970-14930110000)\n\n")
+            logMessage.appendContentsOf("Copied \(valueToInsert) to cell \(index) with circle gesture: \(NSDate().timeIntervalSince1970-149301100)\n\n")
         }
     }
     
@@ -171,22 +171,22 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             if op == "+" {
                 arithmeticValue = Double(table.getTableItem(selectedIndices[0].item))! + Double(table.getTableItem(selectedIndices[1].item))!
                 selectedIndices.removeAll()
-                logMessage.appendContentsOf("Addition: \(NSDate().timeIntervalSince1970-14930110000)\n\n")
+                logMessage.appendContentsOf("Addition: \(NSDate().timeIntervalSince1970-149301100)\n\n")
             }
             if op == "-" {
                 arithmeticValue = Double(table.getTableItem(selectedIndices[0].item))! - Double(table.getTableItem(selectedIndices[1].item))!
                 selectedIndices.removeAll()
-                logMessage.appendContentsOf("Subtraction: \(NSDate().timeIntervalSince1970-14930110000)\n\n")
+                logMessage.appendContentsOf("Subtraction: \(NSDate().timeIntervalSince1970-149301100)\n\n")
             }
             if op == "*" {
                 arithmeticValue = Double(table.getTableItem(selectedIndices[0].item))! * Double(table.getTableItem(selectedIndices[1].item))!
                 selectedIndices.removeAll()
-                logMessage.appendContentsOf("Multiplication: \(NSDate().timeIntervalSince1970-14930110000)\n\n")
+                logMessage.appendContentsOf("Multiplication: \(NSDate().timeIntervalSince1970-149301100)\n\n")
             }
             if op == "/" {
                 arithmeticValue = Double(table.getTableItem(selectedIndices[0].item))! / Double(table.getTableItem(selectedIndices[1].item))!
                 selectedIndices.removeAll()
-                logMessage.appendContentsOf("Division: \(NSDate().timeIntervalSince1970-14930110000)\n\n")
+                logMessage.appendContentsOf("Division: \(NSDate().timeIntervalSince1970-149301100)\n\n")
             }
             if op == "∑" {
                 var temp = 0.0
@@ -195,17 +195,17 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
                 }
                 arithmeticValue = temp
                 selectedIndices.removeAll()
-                logMessage.appendContentsOf("Summation: \(NSDate().timeIntervalSince1970-14930110000)\n\n")
+                logMessage.appendContentsOf("Summation: \(NSDate().timeIntervalSince1970-149301100)\n\n")
             }
             if op == "Sort ↑" {
                 sortSelectedIndices(true)
                 selectedIndices.removeAll()
-                logMessage.appendContentsOf("Sort ascending: \(NSDate().timeIntervalSince1970-14930110000)\n\n")
+                logMessage.appendContentsOf("Sort ascending: \(NSDate().timeIntervalSince1970-149301100)\n\n")
             }
             if op == "Sort ↓" {
                 sortSelectedIndices(false)
                 selectedIndices.removeAll()
-                logMessage.appendContentsOf("Sort descending: \(NSDate().timeIntervalSince1970-14930110000)\n\n")
+                logMessage.appendContentsOf("Sort descending: \(NSDate().timeIntervalSince1970-149301100)\n\n")
             }
             
             // update arithmeticValue display cell
@@ -226,7 +226,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             indicesToUpdate.append(indexPathIn)
             self.collectionView!.reloadItemsAtIndexPaths(indicesToUpdate)
             setupOperatorCells()
-            logMessage.appendContentsOf("Deselection: \(NSDate().timeIntervalSince1970-14930110000)\n\n")
+            logMessage.appendContentsOf("Deselection: \(NSDate().timeIntervalSince1970-149301100)\n\n")
             return
         }
             // otherwise select it (if it's not blank)
@@ -236,7 +236,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             indicesToUpdate.append(indexPathIn)
             self.collectionView!.reloadItemsAtIndexPaths(indicesToUpdate)
             setupOperatorCells()
-            logMessage.appendContentsOf("Selection: \(NSDate().timeIntervalSince1970-14930110000)\n\n")
+            logMessage.appendContentsOf("Selection: \(NSDate().timeIntervalSince1970-149301100)\n\n")
         }
         print("Selected cell is \(cell.label.text!)")
     }
@@ -251,7 +251,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             return
         }
         
-        logMessage.appendContentsOf("Deleted cell with value \(cell.label.text): \(NSDate().timeIntervalSince1970-14930110000)\n\n")
+        logMessage.appendContentsOf("Deleted cell with value \(cell.label.text): \(NSDate().timeIntervalSince1970-149301100)\n\n")
         
         table.updateTable(index, input: "")
         selectedIndices.removeAtIndex(selectedIndices.indexOf(indexPath)!)
@@ -352,7 +352,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
         // present the alert controller
         presentViewController(ac, animated: true, completion: nil)
         
-        logMessage.appendContentsOf("Clear: \(NSDate().timeIntervalSince1970-14930110000)\n\n")
+        logMessage.appendContentsOf("Clear: \(NSDate().timeIntervalSince1970-149301100)\n\n")
     }
     
     // performs clearing functions without tapping the button
@@ -376,7 +376,7 @@ class CollectionViewCanvas: UICollectionViewController, UICollectionViewDelegate
             return
         }
         else {
-            logMessage.appendContentsOf("Opened log at: \(NSDate().timeIntervalSince1970-14930110000)\n\n")
+            logMessage.appendContentsOf("Opened log at: \(NSDate().timeIntervalSince1970-149301100)\n\n")
             
             let text = NSString(string:logMessage)
             let destinationPath = "myFile.txt"
